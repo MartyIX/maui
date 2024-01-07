@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Maui.Controls.Sample.Issues.Issue19733">
+    <VerticalStackLayout x:Name="layout">
+        <ScrollView Orientation="Vertical" VerticalScrollBarVisibility="Default" Padding="10,0,10,0">
+            <VerticalStackLayout Padding="30,0" Spacing="25">
+                <HorizontalStackLayout>
+                    <Label Text="Input 1"/>
+                    <Entry/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Input 2"/>
+                    <Entry/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Input 3" AutomationId="Label3"/>
+                    <Entry x:Name="Entry3" AutomationId="Entry3" />
+                    <Label Text="Click on the entry, then click on 'Input 3' label. Focus should NOT jump to the first entry."/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </VerticalStackLayout>
+</ContentPage>

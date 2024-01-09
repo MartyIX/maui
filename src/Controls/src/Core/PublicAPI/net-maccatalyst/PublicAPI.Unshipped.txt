@@ -1,4 +1,8 @@
 #nullable enable
+const Microsoft.Maui.Controls.SetterSpecificity.StyleImplicit = 100 -> int
+const Microsoft.Maui.Controls.SetterSpecificity.StyleLocal = 200 -> int
+const Microsoft.Maui.Controls.SetterSpecificity.StyleRD = 200 -> int
+const Microsoft.Maui.Controls.SetterSpecificity.StyleVSM = 300 -> int
 Microsoft.Maui.Controls.PlatformDragStartingEventArgs
 Microsoft.Maui.Controls.PlatformDragStartingEventArgs.DragInteraction.get -> UIKit.UIDragInteraction!
 Microsoft.Maui.Controls.PlatformDragStartingEventArgs.DragSession.get -> UIKit.IUIDragSession!
@@ -71,6 +75,31 @@ Microsoft.Maui.Controls.PointerGestureRecognizer.PointerReleasedCommand.get -> S
 Microsoft.Maui.Controls.PointerGestureRecognizer.PointerReleasedCommand.set -> void
 Microsoft.Maui.Controls.PointerGestureRecognizer.PointerReleasedCommandParameter.get -> object!
 Microsoft.Maui.Controls.PointerGestureRecognizer.PointerReleasedCommandParameter.set -> void
+Microsoft.Maui.Controls.SetterSpecificity
+Microsoft.Maui.Controls.SetterSpecificity.Binding.get -> int
+Microsoft.Maui.Controls.SetterSpecificity.Class.get -> int
+Microsoft.Maui.Controls.SetterSpecificity.CompareTo(Microsoft.Maui.Controls.SetterSpecificity other) -> int
+Microsoft.Maui.Controls.SetterSpecificity.DynamicResource.get -> int
+Microsoft.Maui.Controls.SetterSpecificity.Equals(Microsoft.Maui.Controls.SetterSpecificity other) -> bool
+Microsoft.Maui.Controls.SetterSpecificity.Id.get -> int
+Microsoft.Maui.Controls.SetterSpecificity.Manual.get -> int
+Microsoft.Maui.Controls.SetterSpecificity.SetterSpecificity() -> void
+Microsoft.Maui.Controls.SetterSpecificity.SetterSpecificity(int style, int id, int class, int type) -> void
+Microsoft.Maui.Controls.SetterSpecificity.SetterSpecificity(int vsm, int manual, int dynamicresource, int binding, int style, int id, int class, int type) -> void
+Microsoft.Maui.Controls.SetterSpecificity.Style.get -> int
+Microsoft.Maui.Controls.SetterSpecificity.Type.get -> int
+Microsoft.Maui.Controls.SetterSpecificity.Vsm.get -> int
+Microsoft.Maui.Controls.SetterSpecificityList
+Microsoft.Maui.Controls.SetterSpecificityList.GetClearedValue(Microsoft.Maui.Controls.SetterSpecificity clearedSpecificity) -> object?
+Microsoft.Maui.Controls.SetterSpecificityList.GetSpecificityAndValue() -> System.Collections.Generic.KeyValuePair<Microsoft.Maui.Controls.SetterSpecificity, object!>
+Microsoft.Maui.Controls.SetterSpecificityList.Remove(Microsoft.Maui.Controls.SetterSpecificity specificity) -> void
+Microsoft.Maui.Controls.SetterSpecificityList.SetterSpecificityList() -> void
+Microsoft.Maui.Controls.SetterSpecificityList.SetValue(Microsoft.Maui.Controls.SetterSpecificity specificity, object! value) -> void
+Microsoft.Maui.Controls.SetterSpecificityList.this[Microsoft.Maui.Controls.SetterSpecificity key].set -> void
+Microsoft.Maui.Controls.SetterSpecificityList._values -> System.Collections.Generic.SortedList<Microsoft.Maui.Controls.SetterSpecificity, object!>?
+override Microsoft.Maui.Controls.SetterSpecificity.GetHashCode() -> int
+static Microsoft.Maui.Controls.SetterSpecificity.operator !=(Microsoft.Maui.Controls.SetterSpecificity left, Microsoft.Maui.Controls.SetterSpecificity right) -> bool
+static Microsoft.Maui.Controls.SetterSpecificity.operator ==(Microsoft.Maui.Controls.SetterSpecificity left, Microsoft.Maui.Controls.SetterSpecificity right) -> bool
 static readonly Microsoft.Maui.Controls.KeyboardAccelerator.KeyProperty -> Microsoft.Maui.Controls.BindableProperty!
 static readonly Microsoft.Maui.Controls.KeyboardAccelerator.ModifiersProperty -> Microsoft.Maui.Controls.BindableProperty!
 static readonly Microsoft.Maui.Controls.DragGestureRecognizer.CanDragProperty -> Microsoft.Maui.Controls.BindableProperty!
@@ -82,6 +111,13 @@ static readonly Microsoft.Maui.Controls.PointerGestureRecognizer.PointerPressedC
 static readonly Microsoft.Maui.Controls.PointerGestureRecognizer.PointerPressedCommandProperty -> Microsoft.Maui.Controls.BindableProperty!
 static readonly Microsoft.Maui.Controls.PointerGestureRecognizer.PointerReleasedCommandParameterProperty -> Microsoft.Maui.Controls.BindableProperty!
 static readonly Microsoft.Maui.Controls.PointerGestureRecognizer.PointerReleasedCommandProperty -> Microsoft.Maui.Controls.BindableProperty!
+static readonly Microsoft.Maui.Controls.SetterSpecificity.DefaultValue -> Microsoft.Maui.Controls.SetterSpecificity
+static readonly Microsoft.Maui.Controls.SetterSpecificity.DynamicResourceSetter -> Microsoft.Maui.Controls.SetterSpecificity
+static readonly Microsoft.Maui.Controls.SetterSpecificity.FromBinding -> Microsoft.Maui.Controls.SetterSpecificity
+static readonly Microsoft.Maui.Controls.SetterSpecificity.FromHandler -> Microsoft.Maui.Controls.SetterSpecificity
+static readonly Microsoft.Maui.Controls.SetterSpecificity.ManualValueSetter -> Microsoft.Maui.Controls.SetterSpecificity
+static readonly Microsoft.Maui.Controls.SetterSpecificity.Trigger -> Microsoft.Maui.Controls.SetterSpecificity
+static readonly Microsoft.Maui.Controls.SetterSpecificity.VisualStateSetter -> Microsoft.Maui.Controls.SetterSpecificity
 virtual Microsoft.Maui.Controls.DragEventArgs.GetPosition(Microsoft.Maui.Controls.Element? relativeTo) -> Microsoft.Maui.Graphics.Point?
 virtual Microsoft.Maui.Controls.DragStartingEventArgs.GetPosition(Microsoft.Maui.Controls.Element? relativeTo) -> Microsoft.Maui.Graphics.Point?
 virtual Microsoft.Maui.Controls.DropEventArgs.GetPosition(Microsoft.Maui.Controls.Element? relativeTo) -> Microsoft.Maui.Graphics.Point?
@@ -144,6 +180,7 @@ override Microsoft.Maui.Controls.SearchBar.IsEnabledCore.get -> bool
 ~Microsoft.Maui.Controls.WebView.UserAgent.get -> string
 ~Microsoft.Maui.Controls.WebView.UserAgent.set -> void
 ~override Microsoft.Maui.Controls.Region.Equals(object obj) -> bool
+~override Microsoft.Maui.Controls.SetterSpecificity.Equals(object obj) -> bool
 ~override Microsoft.Maui.Controls.Shapes.Matrix.Equals(object obj) -> bool
 ~static Microsoft.Maui.Controls.Region.FromRectangles(System.Collections.Generic.IEnumerable<Microsoft.Maui.Graphics.Rect> rectangles) -> Microsoft.Maui.Controls.Region
 ~static readonly Microsoft.Maui.Controls.InputView.CursorPositionProperty -> Microsoft.Maui.Controls.BindableProperty
@@ -213,7 +250,6 @@ Microsoft.Maui.Controls.PlatformPointerEventArgs.Sender.get -> UIKit.UIView!
 ~static readonly Microsoft.Maui.Controls.ContentPage.HideSoftInputOnTappedProperty -> Microsoft.Maui.Controls.BindableProperty
 Microsoft.Maui.Controls.ContentPage.HideSoftInputOnTapped.get -> bool
 Microsoft.Maui.Controls.ContentPage.HideSoftInputOnTapped.set -> void
-
 *REMOVED*~Microsoft.Maui.Controls.Editor.FontFamily.get -> string
 *REMOVED*~Microsoft.Maui.Controls.Editor.FontFamily.set -> void
 *REMOVED*Microsoft.Maui.Controls.Editor.CursorPosition.get -> int
@@ -226,7 +262,6 @@ Microsoft.Maui.Controls.ContentPage.HideSoftInputOnTapped.set -> void
 *REMOVED*Microsoft.Maui.Controls.Editor.FontSize.set -> void
 *REMOVED*Microsoft.Maui.Controls.Editor.SelectionLength.get -> int
 *REMOVED*Microsoft.Maui.Controls.Editor.SelectionLength.set -> void
-
 *REMOVED*~Microsoft.Maui.Controls.SearchBar.FontFamily.get -> string
 *REMOVED*~Microsoft.Maui.Controls.SearchBar.FontFamily.set -> void
 *REMOVED*Microsoft.Maui.Controls.SearchBar.CursorPosition.get -> int
@@ -239,7 +274,6 @@ Microsoft.Maui.Controls.ContentPage.HideSoftInputOnTapped.set -> void
 *REMOVED*Microsoft.Maui.Controls.SearchBar.FontSize.set -> void
 *REMOVED*Microsoft.Maui.Controls.SearchBar.SelectionLength.get -> int
 *REMOVED*Microsoft.Maui.Controls.SearchBar.SelectionLength.set -> void
-
 *REMOVED*~Microsoft.Maui.Controls.Entry.FontFamily.get -> string
 *REMOVED*~Microsoft.Maui.Controls.Entry.FontFamily.set -> void
 *REMOVED*Microsoft.Maui.Controls.Entry.CursorPosition.get -> int
@@ -252,4 +286,3 @@ Microsoft.Maui.Controls.ContentPage.HideSoftInputOnTapped.set -> void
 *REMOVED*Microsoft.Maui.Controls.Entry.FontSize.set -> void
 *REMOVED*Microsoft.Maui.Controls.Entry.SelectionLength.get -> int
 *REMOVED*Microsoft.Maui.Controls.Entry.SelectionLength.set -> void
-

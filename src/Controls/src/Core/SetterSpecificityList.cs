@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 
+#pragma warning disable RS0016 // Add public types and members to the declared API
 namespace Microsoft.Maui.Controls
 {
 	/// <summary>
 	/// Class for managing up to two Specificity values, and falling back to a SortedList once three values are present.
 	/// This yields better performance in cases where a BP has one or two Specificity values set.
 	/// </summary>
-	internal class SetterSpecificityList
+	public class SetterSpecificityList
 	{
 		KeyValuePair<SetterSpecificity, object>? _first;
 		KeyValuePair<SetterSpecificity, object>? _second;
-		SortedList<SetterSpecificity, object>? _values;
+		public SortedList<SetterSpecificity, object>? _values;
 
 		public object this[SetterSpecificity key]
 		{
@@ -123,3 +124,4 @@ namespace Microsoft.Maui.Controls
 		}
 	}
 }
+#pragma warning restore RS0016 // Add public types and members to the declared API

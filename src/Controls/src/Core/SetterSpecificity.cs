@@ -1,10 +1,11 @@
 ﻿#nullable disable
 using System;
 
+#pragma warning disable RS0016 // Add public types and members to the declared API
 namespace Microsoft.Maui.Controls
 {
 	//NOTE: IDEA: review this: merge FROM into a single int (vsm, manual, dynamicR, binding), and CSS into another
-	internal readonly struct SetterSpecificity : IComparable<SetterSpecificity>, IEquatable<SetterSpecificity>
+	public readonly struct SetterSpecificity : IComparable<SetterSpecificity>, IEquatable<SetterSpecificity>
 	{
 		public static readonly SetterSpecificity DefaultValue = new(-1, 0, 0, 0, -1, 0, 0, 0);
 		public static readonly SetterSpecificity VisualStateSetter = new SetterSpecificity(1, 0, 0, 0, 0, 0, 0, 0);
@@ -105,3 +106,4 @@ namespace Microsoft.Maui.Controls
 		public static bool operator !=(SetterSpecificity left, SetterSpecificity right) => !left.Equals(right);
 	}
 }
+#pragma warning restore RS0016 // Add public types and members to the declared API

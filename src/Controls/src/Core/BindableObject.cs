@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
@@ -528,6 +529,8 @@ namespace Microsoft.Maui.Controls
 		internal void SetValueCore(BindableProperty property, object value, SetValueFlags attributes, SetValuePrivateFlags privateAttributes)
 			=> SetValueCore(property, value, attributes, privateAttributes, new SetterSpecificity());
 
+		static int COUNTER = 0;
+
 		internal void SetValueCore(BindableProperty property, object value, SetValueFlags attributes, SetValuePrivateFlags privateAttributes, SetterSpecificity specificity)
 		{
 			if (property == null)
@@ -567,6 +570,23 @@ namespace Microsoft.Maui.Controls
 				var silent = (privateAttributes & SetValuePrivateFlags.Silent) != 0;
 				context.Attributes |= BindableContextAttributes.IsBeingSet;
 				SetValueActual(property, context, value, currentlyApplying, attributes, specificity, silent);
+
+				if (property.PropertyName == "BackgroundColor")
+				{
+					COUNTER++;
+					Debug.WriteLine($"{DateTime.Now}: #{COUNTER}; property={property.PropertyName}, value={value}, currentlyApplying={currentlyApplying}, attributes={attributes}, " +
+						$" specificity=(vsm={specificity.Vsm}," +
+						$" manual={specificity.Manual}," +
+						$" dynamicResource={specificity.DynamicResource}," +
+						$" binding={specificity.Binding}," +
+						$" style={specificity.Style}," +
+						$" id={specificity.Id}, " +
+						$" class={specificity.Class}), " +
+						$" type={specificity.Type}), " +
+						$"silent={silent}," +
+						$"context=(|values|={context.Values._values?.Count}, propName={context.Property?.PropertyName})"
+						);
+				}
 
 				Queue<SetValueArgs> delayQueue = context.DelayedSetters;
 				if (delayQueue != null)

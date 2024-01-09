@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Microsoft.Maui.Controls.Xaml;
 
@@ -106,9 +107,13 @@ namespace Microsoft.Maui.Controls
 				group.CurrentState = target;
 
 				// Apply the setters from the new state
+				int i = 1;
 				foreach (Setter setter in target.Setters)
 				{
+					Debug.WriteLine($"{DateTime.Now}: [visualElement={visualElement.AutomationId}][name={name}][target={target.Name}] Apply setter #{i}/{target.Setters.Count}");
+
 					setter.Apply(visualElement, specificity);
+					i++;
 				}
 
 				return true;

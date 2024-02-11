@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.Maui.Dispatching;
 using Microsoft.Maui.UnitTests;
 using Xunit;
 
@@ -90,7 +89,7 @@ namespace Microsoft.Maui.Controls.Core.UnitTests
 		});
 
 		[Fact]
-		public async Task TestInvokeOnMainThreadWithAsyncFuncError() => DispatcherTest.Run(async () =>
+		public Task TestInvokeOnMainThreadWithAsyncFuncError() => DispatcherTest.Run(async () =>
 		{
 			bool calledFromMainThread = false;
 			MockPlatformServices(
@@ -129,7 +128,7 @@ namespace Microsoft.Maui.Controls.Core.UnitTests
 		});
 
 		[Fact]
-		public async Task TestInvokeOnMainThreadWithAsyncActionError() => DispatcherTest.Run(async () =>
+		public Task TestInvokeOnMainThreadWithAsyncActionError() => DispatcherTest.Run(async () =>
 		{
 			bool calledFromMainThread = false;
 			MockPlatformServices(
@@ -147,7 +146,7 @@ namespace Microsoft.Maui.Controls.Core.UnitTests
 			await Assert.ThrowsAsync<ApplicationException>(MethodThatThrows);
 		});
 
-		private void MockPlatformServices(Action onInvokeOnMainThread, Action<Action> invokeOnMainThread = null)
+		private static void MockPlatformServices(Action onInvokeOnMainThread, Action<Action> invokeOnMainThread = null)
 		{
 			DispatcherProviderStubOptions.InvokeOnMainThread =
 				action =>
@@ -155,9 +154,13 @@ namespace Microsoft.Maui.Controls.Core.UnitTests
 					onInvokeOnMainThread();
 
 					if (invokeOnMainThread == null)
+					{
 						action();
+					}
 					else
+					{
 						invokeOnMainThread(action);
+					}
 				};
 		}
 	}

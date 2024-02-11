@@ -524,9 +524,13 @@ namespace Microsoft.Maui.Controls.Core.UnitTests
 			}
 
 			if (modal)
+			{
 				Routing.RegisterRoute(route, typeof(ShellModalTests.ModalTestPage));
+			}
 			else
+			{
 				Routing.RegisterRoute(route, typeof(ContentPage));
+			}
 
 			shell.Items.Add(item1);
 
@@ -543,9 +547,13 @@ namespace Microsoft.Maui.Controls.Core.UnitTests
 			var item1 = CreateShellItem<FlyoutItem>(asImplicit: true, shellItemRoute: "animals", shellContentRoute: "monkeys");
 
 			if (modal)
+			{
 				Routing.RegisterRoute("details", typeof(ShellModalTests.ModalTestPage));
+			}
 			else
+			{
 				Routing.RegisterRoute("details", typeof(ContentPage));
+			}
 
 			shell.Items.Add(item1);
 

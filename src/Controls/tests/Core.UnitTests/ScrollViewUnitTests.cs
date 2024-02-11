@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Maui.Graphics;
 using NSubstitute;
 using Xunit;
 
@@ -89,7 +86,9 @@ namespace Microsoft.Maui.Controls.Core.UnitTests
 			scrollView.PropertyChanged += (sender, args) =>
 			{
 				if (args.PropertyName == "Content")
+				{
 					changed = true;
+				}
 			};
 
 			var child = new View();
@@ -123,7 +122,9 @@ namespace Microsoft.Maui.Controls.Core.UnitTests
 			scrollView.PropertyChanged += (sender, args) =>
 			{
 				if (args.PropertyName == "Orientation")
+				{
 					signaled = true;
+				}
 			};
 
 			scrollView.Orientation = ScrollOrientation.Horizontal;
@@ -149,7 +150,9 @@ namespace Microsoft.Maui.Controls.Core.UnitTests
 			scrollView.PropertyChanged += (sender, args) =>
 			{
 				if (args.PropertyName == "Orientation")
+				{
 					signaled = true;
+				}
 			};
 
 			scrollView.Orientation = scrollView.Orientation;

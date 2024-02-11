@@ -49,23 +49,35 @@ namespace Microsoft.Maui.Controls.Core.UnitTests
 			BaseShellItem shellElement = null;
 
 			if (useShellContent)
+			{
 				shellElement = CreateShellContent(shellContentRoute: "TestMe");
+			}
 			else
+			{
 				shellElement = CreateShellSection(shellSectionRoute: "TestMe");
+			}
 
 			if (useShellContent)
+			{
 				shell.Items.Add((ShellContent)shellElement);
+			}
 			else
+			{
 				shell.Items.Add((ShellSection)shellElement);
+			}
 
 			var item2 = shell.Items[1];
 
 			Assert.Equal(shellElement.FindParentOfType<ShellItem>(), item2);
 
 			if (useShellContent)
+			{
 				shell.CurrentItem = (ShellContent)shellElement;
+			}
 			else
+			{
 				shell.CurrentItem = (ShellSection)shellElement;
+			}
 
 			Assert.Equal(2, shell.Items.Count);
 			Assert.Equal(shellElement.FindParentOfType<ShellItem>(), item2);
@@ -620,10 +632,10 @@ namespace Microsoft.Maui.Controls.Core.UnitTests
 			shell.Items.Add(item1);
 			shell.Items.Add(item2);
 
-			shell.GoToAsync("//rootlevelcontent2");
+			await shell.GoToAsync("//rootlevelcontent2");
 			Assert.Equal(shell.CurrentItem, item2);
 
-			shell.GoToAsync("//rootlevelcontent1");
+			await shell.GoToAsync("//rootlevelcontent1");
 			Assert.Equal(shell.CurrentItem, item1);
 		}
 
@@ -1292,7 +1304,7 @@ namespace Microsoft.Maui.Controls.Core.UnitTests
 				page = shell.CurrentPage;
 			};
 
-			shell.GoToAsync(new ShellNavigationState("//two/tabfour/"));
+			await shell.GoToAsync(new ShellNavigationState("//two/tabfour/"));
 			Assert.NotNull(page);
 			Assert.IsType<ShellTestPage>(page);
 			Assert.Equal((tabfour as IShellSectionController).PresentedPage, page);

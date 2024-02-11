@@ -27,9 +27,14 @@ namespace Microsoft.Maui.UnitTests
 		public bool Dispatch(Action action)
 		{
 			if (_invokeOnMainThread is null)
+			{
 				action();
+			}
 			else
+			{
 				_invokeOnMainThread.Invoke(action);
+			}
+
 			return true;
 		}
 

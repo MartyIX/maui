@@ -324,9 +324,10 @@ namespace Microsoft.Maui.Controls.Platform
 				_container.Drop -= HandleDrop;
 				_container.Tapped -= OnTap;
 
-				// _container.Tapped -= HandleTapped;
-				// _container.DoubleTapped -= OnTap;
-				// _container.DoubleTapped -= HandleDoubleTapped;
+				_container.Tapped -= HandleTapped;
+				_container.DoubleTapped -= OnTap;
+				_container.DoubleTapped -= HandleDoubleTapped;
+				_container.RightTapped -= OnTap;
 
 				_container.ManipulationDelta -= OnManipulationDelta;
 				_container.ManipulationStarted -= OnManipulationStarted;
@@ -611,7 +612,9 @@ namespace Microsoft.Maui.Controls.Platform
 					return false;
 
 				if (e is DoubleTappedRoutedEventArgs)
-					return g.NumberOfTapsRequired == 1 || g.NumberOfTapsRequired == 2;
+				{
+					return g.NumberOfTapsRequired == 2;
+				}
 
 				return g.NumberOfTapsRequired == 1;
 			}

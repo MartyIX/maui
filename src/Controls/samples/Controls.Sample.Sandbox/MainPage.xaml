@@ -14,8 +14,8 @@
            FontSize="32"
            HorizontalOptions="Center">
       <Label.GestureRecognizers>
-        <!--<TapGestureRecognizer Tapped="OnTap"/>-->
-        <!--<TapGestureRecognizer Tapped="OnDoubleTap" NumberOfTapsRequired="2"/>-->
+        <TapGestureRecognizer Tapped="OnTap1"/>
+        <TapGestureRecognizer Tapped="OnDoubleTap1" NumberOfTapsRequired="2"/>
       </Label.GestureRecognizers>
     </Label>
   </VerticalStackLayout>

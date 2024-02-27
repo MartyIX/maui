@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Internals;
@@ -311,13 +312,22 @@ namespace Microsoft.Maui.Controls.Platform
 
 		void ClearContainerEventHandlers()
 		{
+			Debug.WriteLine("* GPM.ClearContainerEventHandlers()");
+			
 			if (_container != null)
 			{
+				Debug.WriteLine("* GPM.ClearContainerEventHandlers(): NOT NULL");
+
 				_container.DragStarting -= HandleDragStarting;
 				_container.DropCompleted -= HandleDropCompleted;
 				_container.DragOver -= HandleDragOver;
 				_container.Drop -= HandleDrop;
 				_container.Tapped -= OnTap;
+
+				// _container.Tapped -= HandleTapped;
+				// _container.DoubleTapped -= OnTap;
+				// _container.DoubleTapped -= HandleDoubleTapped;
+
 				_container.ManipulationDelta -= OnManipulationDelta;
 				_container.ManipulationStarted -= OnManipulationStarted;
 				_container.ManipulationCompleted -= OnManipulationCompleted;
@@ -331,6 +341,8 @@ namespace Microsoft.Maui.Controls.Platform
 				_container.PointerPressed -= OnPgrPointerPressed;
 				_container.PointerReleased -= OnPgrPointerReleased;
 			}
+
+			Debug.WriteLine("* GPM.ClearContainerEventHandlers()");
 		}
 
 		protected virtual void Dispose(bool disposing)

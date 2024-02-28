@@ -22,14 +22,21 @@ namespace Maui.Controls.Sample
 			// To test shell scenarios, change this to true
 			bool useShell = false;
 
+			Window window;
+
 			if (!useShell)
 			{
-				return new Window(new NavigationPage(new MainPage()));
+				window = new Window(new NavigationPage(new MainPage()));
 			}
 			else
 			{
-				return new Window(new SandboxShell());
+				window = new Window(new SandboxShell());
 			}
+
+			window.MaximumWidth = 400;
+			window.MaximumHeight = 400;
+			return window;
+
 		}
 	}
 }

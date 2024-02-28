@@ -327,7 +327,7 @@ namespace Microsoft.Maui.Controls.Platform
 				_container.Tapped -= HandleTapped;
 				_container.DoubleTapped -= OnTap;
 				_container.DoubleTapped -= HandleDoubleTapped;
-				_container.RightTapped -= OnTap;
+				//_container.RightTapped -= OnTap;
 
 				_container.ManipulationDelta -= OnManipulationDelta;
 				_container.ManipulationStarted -= OnManipulationStarted;

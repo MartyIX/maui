@@ -3,20 +3,32 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Maui.Controls.Sample.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample">
-  <VerticalStackLayout
+    <VerticalStackLayout
             Spacing="25"
             Padding="30,0"
             VerticalOptions="Center">
 
-    <Label x:Name="myLabel"
+        <Label x:Name="myLabel"
            Text="Tap Me"
-           SemanticProperties.HeadingLevel="Level1"
            FontSize="32"
            HorizontalOptions="Center">
-      <Label.GestureRecognizers>
-        <TapGestureRecognizer Tapped="OnTap1"/>
-        <TapGestureRecognizer Tapped="OnDoubleTap1" NumberOfTapsRequired="2"/>
-      </Label.GestureRecognizers>
-    </Label>
-  </VerticalStackLayout>
+            <Label.GestureRecognizers/>
+        </Label>
+
+        <Label x:Name="addTapHandlerLabel"
+           Text="Add tap handler"
+           HorizontalOptions="Center">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="AddNewTapHandler"/>
+            </Label.GestureRecognizers>
+        </Label>
+
+        <Label x:Name="addDoubleTapHandlerLabel"
+           Text="Add double-tap handler"
+           HorizontalOptions="Center">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Tapped="AddNewDoubleTapHandler"/>
+            </Label.GestureRecognizers>
+        </Label>
+    </VerticalStackLayout>
 </ContentPage>

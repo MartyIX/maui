@@ -5,4 +5,11 @@
     xmlns:maui="using:Microsoft.Maui"
     xmlns:local="using:Maui.Controls.Sample.Platform">
 
+    <maui:MauiWinUIApplication.Resources>
+
+        <!--<SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="Pink"/>
+        <SolidColorBrush x:Key="ComboBoxDropDownBorderBrush" Color="Red"/>-->
+
+        <SolidColorBrush x:Key="ComboBoxDropDownGlyphForeground" Color="Blue" />
+    </maui:MauiWinUIApplication.Resources>
 </maui:MauiWinUIApplication>

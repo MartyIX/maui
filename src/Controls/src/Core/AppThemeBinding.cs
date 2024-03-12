@@ -83,6 +83,8 @@ namespace Microsoft.Maui.Controls
 						BindingDiagnostics.SendBindingFailure(this, null, target, _targetProperty, "AppThemeBinding", BindingExpression.CannotConvertTypeErrorMessage, value, _targetProperty.ReturnType);
 						return;
 					}
+
+					System.Diagnostics.Debug.WriteLine($"XXX {target.GetType()?.FullName} - {_targetProperty.PropertyName} - {value}");
 					target.SetValueCore(_targetProperty, value, Internals.SetValueFlags.ClearDynamicResource, BindableObject.SetValuePrivateFlags.Default | BindableObject.SetValuePrivateFlags.Converted, specificity);
 				}
 			};

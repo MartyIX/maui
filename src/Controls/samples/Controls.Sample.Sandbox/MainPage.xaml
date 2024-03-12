@@ -2,5 +2,36 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Maui.Controls.Sample.MainPage"
-    xmlns:local="clr-namespace:Maui.Controls.Sample">
+    xmlns:local="clr-namespace:Maui.Controls.Sample"
+    BackgroundColor="{AppThemeBinding Light=#AAAAAA, Dark=#555555}">
+
+    <ContentPage.Resources>
+
+        <Style TargetType="Picker">
+            <Setter Property="TextColor" Value="{AppThemeBinding Light=White, Dark=Black}" />
+            <Setter Property="TitleColor" Value="{AppThemeBinding Light=White, Dark=Black}" />
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="MinimumHeightRequest" Value="44"/>
+            <Setter Property="MinimumWidthRequest" Value="44"/>
+        </Style>
+
+    </ContentPage.Resources>
+
+
+    <VerticalStackLayout 
+            Spacing="12" 
+            Padding="30" 
+            VerticalOptions="Start">
+        
+        <Label Text="Theme" />
+        <HorizontalStackLayout>
+            <RadioButton x:Name="ThemeLight" Content="Light" CheckedChanged="ThemeLight_CheckedChanged" />
+            <RadioButton x:Name="ThemeDark" Content="Dark" CheckedChanged="ThemeLight_CheckedChanged" />
+        </HorizontalStackLayout>
+
+        <Label Text="Picker:" />
+        <Picker x:Name="Picker" />
+
+    </VerticalStackLayout>
 </ContentPage>

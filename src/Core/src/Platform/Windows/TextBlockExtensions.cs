@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -14,7 +15,14 @@ namespace Microsoft.Maui.Platform
 		public static void UpdateFont(this TextBlock platformControl, Font font, IFontManager fontManager)
 		{
 			platformControl.FontSize = fontManager.GetFontSize(font);
+
+			Stopwatch stopwatch = Stopwatch.StartNew();
+
 			platformControl.FontFamily = fontManager.GetFontFamily(font);
+
+			stopwatch.Stop();
+			Debug.WriteLine($"XXX [TextBlockExtensions.UpdateFont] FontManager.GetFontFamily executed in {stopwatch.ElapsedMilliseconds} ms.");
+
 			platformControl.FontStyle = font.ToFontStyle();
 			platformControl.FontWeight = font.ToFontWeight();
 			platformControl.IsTextScaleFactorEnabled = font.AutoScalingEnabled;

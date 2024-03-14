@@ -3,4 +3,16 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Maui.Controls.Sample.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample">
+
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="UbuntuRegular"/>
+        </Style>
+    </ContentPage.Resources>
+    <VerticalStackLayout x:Name="myContent">
+        <Button Text="Click me" Clicked="Button_Clicked"/>
+        <Label Text="Label 1"/>
+        <Label Text="Label 2"/>
+        <Label Text="Label 3"/>
+    </VerticalStackLayout>
 </ContentPage>

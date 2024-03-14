@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Graphics.Canvas.Text;
@@ -64,7 +65,13 @@ namespace Microsoft.Maui
 
 		FontFamily CreateFontFamily(string fontFamily)
 		{
+			Debug.WriteLine($"XXX [FontManager.Windows.CreateFontFamily] CreateFontFamily {fontFamily}");
+			Stopwatch stopwatch = Stopwatch.StartNew();
+
 			var formatted = string.Join(", ", GetAllFontPossibilities(fontFamily));
+
+			stopwatch.Stop();
+			Debug.WriteLine($"XXX [FontManager.Windows.CreateFontFamily] {stopwatch.ElapsedMilliseconds} ms ('formatted' length is {formatted.Length} characters)");
 
 			var font = new FontFamily(formatted);
 

@@ -10,8 +10,23 @@ namespace Maui.Controls.Sample
 		public static MauiApp CreateMauiApp() =>
 			MauiApp
 				.CreateBuilder()
-				.UseMauiMaps()
+				//.UseMauiMaps()
 				.UseMauiApp<App>()
+				.ConfigureFonts
+				(
+					fonts =>
+					{
+						// Ubuntu fonts (https://fonts.google.com/specimen/Ubuntu/).
+						_ = fonts.AddFont(filename: "Ubuntu-Light.ttf", alias: "UbuntuLight");
+						_ = fonts.AddFont(filename: "Ubuntu-LightItalic.ttf", alias: "UbuntuLightItalic");
+						_ = fonts.AddFont(filename: "Ubuntu-Regular.ttf", alias: "UbuntuRegular");
+						_ = fonts.AddFont(filename: "Ubuntu-Italic.ttf", alias: "UbuntuItalic");
+						_ = fonts.AddFont(filename: "Ubuntu-Medium.ttf", alias: "UbuntuMedium");
+						_ = fonts.AddFont(filename: "Ubuntu-MediumItalic.ttf", alias: "UbuntuMediumItalic");
+						_ = fonts.AddFont(filename: "Ubuntu-Bold.ttf", alias: "UbuntuBold");
+						_ = fonts.AddFont(filename: "Ubuntu-BoldItalic.ttf", alias: "UbuntuBoldItalic");
+					}
+				)
 				.Build();
 	}
 

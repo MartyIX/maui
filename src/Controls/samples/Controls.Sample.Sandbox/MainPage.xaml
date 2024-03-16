@@ -3,4 +3,21 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Maui.Controls.Sample.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample">
+
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="UbuntuRegular"/>
+        </Style>
+    </ContentPage.Resources>
+    <VerticalStackLayout x:Name="myContent">
+        <Button Text="Click me" Clicked="Button_Clicked"/>
+        <Label Text="Label 1" FontFamily="UbuntuLight"/>
+        <Label Text="Label 2" FontFamily="UbuntuLightItalic"/>
+        <Label Text="Label 3" FontFamily="UbuntuRegular"/>
+        <Label Text="Label 4" FontFamily="UbuntuItalic"/>
+        <Label Text="Label 5" FontFamily="UbuntuMedium"/>
+        <Label Text="Label 6" FontFamily="UbuntuMediumItalic"/>
+        <Label Text="Label 7" FontFamily="UbuntuBold"/>
+        <Label Text="Label 8" FontFamily="UbuntuBoldItalic"/>
+    </VerticalStackLayout>
 </ContentPage>

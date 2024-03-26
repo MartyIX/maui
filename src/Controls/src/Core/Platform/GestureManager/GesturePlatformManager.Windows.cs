@@ -688,12 +688,10 @@ namespace Microsoft.Maui.Controls.Platform
 				return;
 			}
 
-			// Stopwatch sw = Stopwatch.StartNew();
-
-			bool canDrag = gestures.GetGesturesFor<DragGestureRecognizer>().FirstOrDefault()?.CanDrag ?? false;
+			bool canDrag = gestures.FirstGestureOrDefault<DragGestureRecognizer>()?.CanDrag ?? false;
 			_container.CanDrag = canDrag;
 
-			bool allowDrop = gestures.GetGesturesFor<DropGestureRecognizer>().FirstOrDefault()?.AllowDrop ?? false;
+			bool allowDrop = gestures.FirstGestureOrDefault<DropGestureRecognizer>()?.AllowDrop ?? false;
 			_container.AllowDrop = allowDrop;
 
 			if (canDrag)

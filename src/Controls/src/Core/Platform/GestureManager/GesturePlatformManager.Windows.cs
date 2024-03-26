@@ -675,14 +675,18 @@ namespace Microsoft.Maui.Controls.Platform
 
 		void UpdateDragAndDropGestureRecognizers()
 		{
-			if (_container == null)
+			if (_container is null)
+			{
 				return;
+			}
 
 			var view = Element as View;
 			IList<IGestureRecognizer>? gestures = view?.GestureRecognizers;
 
-			if (gestures == null)
+			if (gestures is null)
+			{
 				return;
+			}
 
 			Stopwatch sw = Stopwatch.StartNew();
 

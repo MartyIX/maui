@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Internals;
 using Microsoft.Maui.Graphics;
@@ -669,6 +670,9 @@ namespace Microsoft.Maui.Controls.Platform
 			_isPinching = false;
 		}
 
+		static long runs = 0;
+		static TimeSpan totalElapsedTime = TimeSpan.Zero;
+
 		void UpdateDragAndDropGestureRecognizers()
 		{
 			if (_container == null)
@@ -684,20 +688,13 @@ namespace Microsoft.Maui.Controls.Platform
 
 			_container.CanDrag = gestures.GetGesturesFor<DragGestureRecognizer>()
 				.FirstOrDefault()?.CanDrag ?? false;
-			Debug.WriteLine($"#1: {sw.ElapsedMilliseconds} ms");
-
 			_container.AllowDrop = gestures.GetGesturesFor<DropGestureRecognizer>()
 				.FirstOrDefault()?.AllowDrop ?? false;
-
-
-			Debug.WriteLine($"#2: {sw.ElapsedMilliseconds} ms");
 
 			if (_container.CanDrag)
 			{
 				_container.DragStarting += HandleDragStarting;
 				_container.DropCompleted += HandleDropCompleted;
-				Debug.WriteLine($"#3: {sw.ElapsedMilliseconds} ms");
-
 			}
 
 			if (_container.AllowDrop)
@@ -705,11 +702,14 @@ namespace Microsoft.Maui.Controls.Platform
 				_container.DragOver += HandleDragOver;
 				_container.Drop += HandleDrop;
 				_container.DragLeave += HandleDragLeave;
-				Debug.WriteLine($"#4: {sw.ElapsedMilliseconds} ms");
-
 			}
 			
-			Debug.WriteLine($"#5: {sw.ElapsedMilliseconds} ms");
+			TimeSpan elapsed = sw.Elapsed;
+			totalElapsedTime += elapsed;
+			runs++;
+
+			Debug.WriteLine($"#Run#{runs}:   {elapsed.Microseconds} microseconds");
+			Debug.WriteLine($"#Total#{runs}: {totalElapsedTime.Milliseconds} ms");
 		}
 
 		void UpdatingGestureRecognizers()

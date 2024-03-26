@@ -689,19 +689,20 @@ namespace Microsoft.Maui.Controls.Platform
 			}
 
 			Stopwatch sw = Stopwatch.StartNew();
+			
+			bool canDrag = gestures.GetGesturesFor<DragGestureRecognizer>().FirstOrDefault()?.CanDrag ?? false;
+			_container.CanDrag = canDrag;
 
-			_container.CanDrag = gestures.GetGesturesFor<DragGestureRecognizer>()
-				.FirstOrDefault()?.CanDrag ?? false;
-			_container.AllowDrop = gestures.GetGesturesFor<DropGestureRecognizer>()
-				.FirstOrDefault()?.AllowDrop ?? false;
+			bool allowDrop = gestures.GetGesturesFor<DropGestureRecognizer>().FirstOrDefault()?.AllowDrop ?? false;
+			_container.AllowDrop = allowDrop;
 
-			if (_container.CanDrag)
+			if (canDrag)
 			{
 				_container.DragStarting += HandleDragStarting;
 				_container.DropCompleted += HandleDropCompleted;
 			}
 
-			if (_container.AllowDrop)
+			if (allowDrop)
 			{
 				_container.DragOver += HandleDragOver;
 				_container.Drop += HandleDrop;
@@ -766,9 +767,11 @@ namespace Microsoft.Maui.Controls.Platform
 
 			bool hasSwipeGesture = gestures.CountGesturesFor<SwipeGestureRecognizer>() > 0;
 			bool hasPinchGesture = gestures.CountGesturesFor<PinchGestureRecognizer>() > 0;
-			bool hasPanGesture = gestures.CountGesturesFor<PanGestureRecognizer>() > 0;
+			bool hasPanGesture = gestures.CountGesturesFor<PanGestureRecognizer>() > 0;			
 			if (!hasSwipeGesture && !hasPinchGesture && !hasPanGesture)
+			{
 				return;
+			}
 
 			//We can't handle ManipulationMode.Scale and System , so we don't support pinch/pan on a scrollview 
 			if (Element is ScrollView)

@@ -60,26 +60,24 @@ namespace Microsoft.Maui.Controls.Internals
 			}
 		}
 
-		public static int CountGesturesFor<T>(this IEnumerable<IGestureRecognizer>? gestures, Func<T, bool>? predicate = null) where T : GestureRecognizer
+		public static bool HasAnyGesturesFor<T>(this IEnumerable<IGestureRecognizer>? gestures, Func<T, bool>? predicate = null) where T : GestureRecognizer
 		{
 			if (gestures is null)
 			{
-				return 0;
+				return false;
 			}
 
 			predicate ??= x => true;
-
-			int count = 0;
 
 			foreach (IGestureRecognizer item in gestures)
 			{
 				if (item is T gesture && predicate(gesture))
 				{
-					count++;
+					return true;
 				}
 			}
 
-			return count;
+			return false;
 		}
 	}
 }

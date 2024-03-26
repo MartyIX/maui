@@ -22,7 +22,7 @@ namespace Maui.Controls.Sample
 
 		private void Button_Clicked(object sender, EventArgs e)
 		{
-			for (int i = 0; i < 2000; i++)
+			for (int i = 0; i < 10000; i++)
 			{
 				// Add the following XAML.
 				/*

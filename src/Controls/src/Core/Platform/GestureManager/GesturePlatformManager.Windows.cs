@@ -670,8 +670,8 @@ namespace Microsoft.Maui.Controls.Platform
 			_isPinching = false;
 		}
 
-		static long runs = 0;
-		static TimeSpan totalElapsedTime = TimeSpan.Zero;
+		//static long runs = 0;
+		//static TimeSpan totalElapsedTime = TimeSpan.Zero;
 
 		void UpdateDragAndDropGestureRecognizers()
 		{
@@ -688,8 +688,8 @@ namespace Microsoft.Maui.Controls.Platform
 				return;
 			}
 
-			Stopwatch sw = Stopwatch.StartNew();
-			
+			// Stopwatch sw = Stopwatch.StartNew();
+
 			bool canDrag = gestures.GetGesturesFor<DragGestureRecognizer>().FirstOrDefault()?.CanDrag ?? false;
 			_container.CanDrag = canDrag;
 
@@ -709,12 +709,12 @@ namespace Microsoft.Maui.Controls.Platform
 				_container.DragLeave += HandleDragLeave;
 			}
 			
-			TimeSpan elapsed = sw.Elapsed;
-			totalElapsedTime += elapsed;
-			runs++;
+			// TimeSpan elapsed = sw.Elapsed;
+			// totalElapsedTime += elapsed;
+			// runs++;
 
-			Debug.WriteLine($"#Run#{runs}:   {elapsed.Microseconds} microseconds");
-			Debug.WriteLine($"#Total#{runs}: {totalElapsedTime.Milliseconds} ms");
+			//Debug.WriteLine($"#Run#{runs}:   {elapsed.Microseconds} microseconds");
+			// Debug.WriteLine($"#Total#{runs}: {totalElapsedTime.Milliseconds} ms");
 		}
 
 		void UpdatingGestureRecognizers()

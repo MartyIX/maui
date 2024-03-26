@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Internals;
@@ -679,16 +680,24 @@ namespace Microsoft.Maui.Controls.Platform
 			if (gestures == null)
 				return;
 
+			Stopwatch sw = Stopwatch.StartNew();
+
 			_container.CanDrag = gestures.GetGesturesFor<DragGestureRecognizer>()
 				.FirstOrDefault()?.CanDrag ?? false;
+			Debug.WriteLine($"#1: {sw.ElapsedMilliseconds} ms");
 
 			_container.AllowDrop = gestures.GetGesturesFor<DropGestureRecognizer>()
 				.FirstOrDefault()?.AllowDrop ?? false;
+
+
+			Debug.WriteLine($"#2: {sw.ElapsedMilliseconds} ms");
 
 			if (_container.CanDrag)
 			{
 				_container.DragStarting += HandleDragStarting;
 				_container.DropCompleted += HandleDropCompleted;
+				Debug.WriteLine($"#3: {sw.ElapsedMilliseconds} ms");
+
 			}
 
 			if (_container.AllowDrop)
@@ -696,7 +705,11 @@ namespace Microsoft.Maui.Controls.Platform
 				_container.DragOver += HandleDragOver;
 				_container.Drop += HandleDrop;
 				_container.DragLeave += HandleDragLeave;
+				Debug.WriteLine($"#4: {sw.ElapsedMilliseconds} ms");
+
 			}
+			
+			Debug.WriteLine($"#5: {sw.ElapsedMilliseconds} ms");
 		}
 
 		void UpdatingGestureRecognizers()

@@ -727,7 +727,7 @@ namespace Microsoft.Maui.Controls.Platform
 			IList<TapGestureRecognizer>? childGestures =
 				children?.GetChildGesturesFor<TapGestureRecognizer>().ToList();
 
-			if (gestures.GetGesturesFor<TapGestureRecognizer>(g => g.NumberOfTapsRequired == 1).Any()
+			if (gestures.CountGesturesFor<TapGestureRecognizer>(g => g.NumberOfTapsRequired == 1) > 0
 				|| children?.GetChildGesturesFor<TapGestureRecognizer>(g => g.NumberOfTapsRequired == 1).Any() == true)
 			{
 				_container.Tapped += OnTap;
@@ -741,7 +741,7 @@ namespace Microsoft.Maui.Controls.Platform
 				}
 			}
 
-			if (gestures.GetGesturesFor<TapGestureRecognizer>(g => g.NumberOfTapsRequired == 1 || g.NumberOfTapsRequired == 2).Any()
+			if (gestures.CountGesturesFor<TapGestureRecognizer>(g => g.NumberOfTapsRequired == 1 || g.NumberOfTapsRequired == 2) > 0
 				|| children?.GetChildGesturesFor<TapGestureRecognizer>(g => g.NumberOfTapsRequired == 1 || g.NumberOfTapsRequired == 2).Any() == true)
 			{
 				_container.DoubleTapped += OnTap;
@@ -760,9 +760,9 @@ namespace Microsoft.Maui.Controls.Platform
 			_container.PointerPressed += OnPgrPointerPressed;
 			_container.PointerReleased += OnPgrPointerReleased;
 
-			bool hasSwipeGesture = gestures.GetGesturesFor<SwipeGestureRecognizer>().GetEnumerator().MoveNext();
-			bool hasPinchGesture = gestures.GetGesturesFor<PinchGestureRecognizer>().GetEnumerator().MoveNext();
-			bool hasPanGesture = gestures.GetGesturesFor<PanGestureRecognizer>().GetEnumerator().MoveNext();
+			bool hasSwipeGesture = gestures.CountGesturesFor<SwipeGestureRecognizer>() > 0;
+			bool hasPinchGesture = gestures.CountGesturesFor<PinchGestureRecognizer>() > 0;
+			bool hasPanGesture = gestures.CountGesturesFor<PanGestureRecognizer>() > 0;
 			if (!hasSwipeGesture && !hasPinchGesture && !hasPanGesture)
 				return;
 

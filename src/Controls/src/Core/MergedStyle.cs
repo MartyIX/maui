@@ -10,13 +10,17 @@ namespace Microsoft.Maui.Controls
 {
 	sealed class MergedStyle : IStyle
 	{
+		static readonly SetterSpecificity ImplicitSetterSpecificity = new(SetterSpecificity.StyleImplicit, 0, 0, 0);
+		static readonly SetterSpecificity LocalSetterSpecificity = new(SetterSpecificity.StyleLocal, 0, 0, 0);
+		static readonly SetterSpecificity LocalClassSetterSpecificity = new(SetterSpecificity.StyleLocal, 0, 1, 0);
+
 		////If the base type is one of these, stop registering dynamic resources further
 		////The last one (typeof(Element)) is a safety guard as we might be creating VisualElement directly in internal code
 		static readonly IList<Type> s_stopAtTypes = new List<Type> { typeof(View), typeof(Compatibility.Layout<>), typeof(VisualElement), typeof(NavigableElement), typeof(Element) };
 
 		IList<BindableProperty> _classStyleProperties;
 
-		readonly List<BindableProperty> _implicitStyles = new List<BindableProperty>();
+		readonly List<BindableProperty> _implicitStyles = new();
 
 		IList<Style> _classStyles;
 
@@ -101,13 +105,18 @@ namespace Microsoft.Maui.Controls
 		void Apply(BindableObject bindable)
 		{
 			//NOTE specificity could be more fine grained (using distance)
-			ImplicitStyle?.Apply(bindable, new SetterSpecificity(SetterSpecificity.StyleImplicit, 0, 0, 0));
+			ImplicitStyle?.Apply(bindable, ImplicitSetterSpecificity);
 			if (ClassStyles != null)
+			{
 				foreach (var classStyle in ClassStyles)
+				{
 					//NOTE specificity could be more fine grained (using distance)
-					((IStyle)classStyle)?.Apply(bindable, new SetterSpecificity(SetterSpecificity.StyleLocal, 0, 1, 0));
+					((IStyle)classStyle)?.Apply(bindable, LocalClassSetterSpecificity);
+				}
+			}
+
 			//NOTE specificity could be more fine grained (using distance)
-			Style?.Apply(bindable, new SetterSpecificity(SetterSpecificity.StyleLocal, 0, 0, 0));
+			Style?.Apply(bindable, LocalSetterSpecificity);
 		}
 
 		public Type TargetType { get; }
@@ -187,12 +196,22 @@ namespace Microsoft.Maui.Controls
 			bool shouldReApplyImplicitStyle = implicitStyle != ImplicitStyle;
 
 			if (shouldReApplyStyle)
+			{
 				Style?.UnApply(Target);
+			}
+
 			if (shouldReApplyClassStyle && ClassStyles != null)
+			{
 				foreach (var classStyle in ClassStyles)
+				{
 					((IStyle)classStyle)?.UnApply(Target);
+				}
+			}
+
 			if (shouldReApplyImplicitStyle)
+			{
 				ImplicitStyle?.UnApply(Target);
+			}
 
 			_implicitStyle = implicitStyle;
 			_classStyles = classStyles;
@@ -200,15 +219,24 @@ namespace Microsoft.Maui.Controls
 
 			//FIXME compute specificity
 			if (shouldReApplyImplicitStyle)
-				ImplicitStyle?.Apply(Target, new SetterSpecificity(SetterSpecificity.StyleImplicit, 0, 0, 0));
+			{
+				ImplicitStyle?.Apply(Target, ImplicitSetterSpecificity);
+			}
 
 			if (shouldReApplyClassStyle && ClassStyles != null)
+			{
 				foreach (var classStyle in ClassStyles)
+				{
 					//FIXME compute specificity
-					((IStyle)classStyle)?.Apply(Target, new SetterSpecificity(SetterSpecificity.StyleLocal, 0, 1, 0));
+					((IStyle)classStyle)?.Apply(Target, LocalClassSetterSpecificity);
+				}
+			}
+
 			if (shouldReApplyStyle)
+			{
 				//FIXME compute specificity
-				Style?.Apply(Target, new SetterSpecificity(SetterSpecificity.StyleLocal, 0, 0, 0));
+				Style?.Apply(Target, LocalSetterSpecificity);
+			}
 		}
 	}
 }

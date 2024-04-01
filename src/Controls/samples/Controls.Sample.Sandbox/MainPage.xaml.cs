@@ -1,18 +1,27 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Graphics;
 
-namespace Maui.Controls.Sample
+namespace Maui.Controls.Sample;
+
+public partial class MainPage : ContentPage
 {
-	public partial class MainPage : ContentPage
+	private ObservableCollection<string> _cardNames = new();
+
+	public ObservableCollection<string> CardNames
 	{
-		public MainPage()
+		get => _cardNames;
+		set => _cardNames = value;
+	}
+
+	public MainPage()
+	{
+		BindingContext = this;
+		InitializeComponent();
+
+		foreach (var card in Enumerable.Range(1, 5))
 		{
-			InitializeComponent();
+			_cardNames.Add(card.ToString());
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using System.Diagnostics;
 using Microsoft.Maui.Graphics;
 
 namespace Microsoft.Maui.Layouts
@@ -15,7 +16,7 @@ namespace Microsoft.Maui.Layouts
 
 		public Size ArrangeChildren(Rect bounds)
 		{
-			FlexLayout.Layout(bounds.Width, bounds.Height);
+			// FlexLayout.Layout(bounds.Width, bounds.Height);
 
 			foreach (var child in FlexLayout)
 			{
@@ -31,6 +32,10 @@ namespace Microsoft.Maui.Layouts
 
 			return bounds.Size;
 		}
+
+		static double? lastFinalHeight;
+		static double? lastFinalWidth;
+		static int count;
 
 		public Size Measure(double widthConstraint, double heightConstraint)
 		{
@@ -53,6 +58,19 @@ namespace Microsoft.Maui.Layouts
 
 			var finalHeight = LayoutManager.ResolveConstraints(heightConstraint, FlexLayout.Height, measuredHeight, FlexLayout.MinimumHeight, FlexLayout.MaximumHeight);
 			var finalWidth = LayoutManager.ResolveConstraints(widthConstraint, FlexLayout.Width, measuredWidth, FlexLayout.MinimumWidth, FlexLayout.MaximumWidth);
+
+			if (finalHeight == lastFinalHeight && finalWidth == lastFinalWidth)
+			{
+				count++;
+			}
+			else
+			{
+				count = 0;
+				lastFinalHeight = finalHeight;
+				lastFinalWidth = finalWidth;
+			}
+
+			Debug.WriteLine($"finalWidth={finalWidth}, finalHeight={finalHeight}");
 
 			return new Size(finalWidth, finalHeight);
 		}

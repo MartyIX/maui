@@ -14,5 +14,15 @@ namespace Maui.Controls.Sample
 		{
 			InitializeComponent();
 		}
+
+		private void tabsLayout_Loaded(object sender, EventArgs e)
+		{
+			Window.SizeChanged += Window_SizeChanged;
+		}
+
+		private void Window_SizeChanged(object? sender, EventArgs e)
+		{
+			tabsLayout.Invalidate();
+		}
 	}
 }

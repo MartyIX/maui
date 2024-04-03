@@ -1,6 +1,23 @@
 ﻿<ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:layouts="clr-namespace:Maui.Controls.Sample.Layouts"
     x:Class="Maui.Controls.Sample.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample">
+    <VerticalStackLayout>
+        <layouts:TabLayout x:Name="tabsLayout" Loaded="tabsLayout_Loaded" BackgroundColor="red">
+            <layouts:TabLayout.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="BackgroundColor" Value="LightBlue"/>
+                    <Setter Property="Margin" Value="0,0,2,0"/>
+                </Style>
+            </layouts:TabLayout.Resources>
+
+            <Label Text="First tab"/>
+            <Label Text="Second tab"/>
+            <Label Text="Third tab"/>
+            <Label Text="Fourth tab"/>
+            <Label Text="Fifth tab"/>
+        </layouts:TabLayout>
+    </VerticalStackLayout>
 </ContentPage>

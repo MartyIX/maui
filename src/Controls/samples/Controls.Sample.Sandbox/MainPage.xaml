@@ -2,10 +2,38 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:layouts="clr-namespace:Maui.Controls.Sample.Layouts"
+    xmlns:controls="clr-namespace:Maui.Controls.Sample.Sandbox"
     x:Class="Maui.Controls.Sample.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample">
-    <VerticalStackLayout>
-        <layouts:TabLayout x:Name="tabsLayout" Loaded="tabsLayout_Loaded" BackgroundColor="red">
+    <Grid>
+        <Grid.Resources>
+            <!-- Tab colors. -->
+            <Color x:Key="DefaultTabBackgroundColor_Light">#B0B0F0</Color>
+            <Color x:Key="SelectedTabBackgroundColor_Light">#8DD8FF</Color>
+            <Color x:Key="PointerOverTabBackgroundColor_Light">#6DB8CF</Color>
+
+            <Color x:Key="DefaultTabBackgroundColor_Dark">#666666</Color>
+            <Color x:Key="SelectedTabBackgroundColor_Dark">#206080</Color>
+            <Color x:Key="PointerOverTabBackgroundColor_Dark">#4080A0</Color>
+        </Grid.Resources>
+        
+        <Grid.RowDefinitions>
+            <!-- Actual tabs. -->
+            <RowDefinition Height="20"/>
+            <!-- Content of the selected tab. -->
+            <!--<RowDefinition Height="*"/>-->
+        </Grid.RowDefinitions>
+
+        <!-- Column definitions for the first row with the actual tabs. -->
+        <Grid.ColumnDefinitions>
+            <!-- Column for actual tabs. -->
+            <ColumnDefinition Width="*"/>
+
+            <!-- Column for tab drop zone. -->
+            <!--<ColumnDefinition Width="*"/>-->
+        </Grid.ColumnDefinitions>
+
+        <layouts:TabLayout x:Name="tabsLayout" Grid.Row="0" Grid.Column="0" Loaded="tabsLayout_Loaded" BindableLayout.ItemsSource="{Binding ToolTabs}" BackgroundColor="red">
             <layouts:TabLayout.Resources>
                 <Style TargetType="Label">
                     <Setter Property="BackgroundColor" Value="LightBlue"/>
@@ -13,11 +41,55 @@
                 </Style>
             </layouts:TabLayout.Resources>
 
-            <Label Text="First tab"/>
-            <Label Text="Second tab"/>
-            <Label Text="Third tab"/>
-            <Label Text="Fourth tab"/>
-            <Label Text="Fifth tab"/>
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="controls:ToolTab">
+                    <Label Text="{Binding Title}">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding Selected}" Value="True">
+                                <Setter Property="VisualStateManager.VisualStateGroups">
+                                    <VisualStateGroupList>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SelectedTabBackgroundColor_Light}, Dark={StaticResource SelectedTabBackgroundColor_Dark}}"/>
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                            <VisualState x:Name="PointerOver">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SelectedTabBackgroundColor_Light}, Dark={StaticResource SelectedTabBackgroundColor_Dark}}"/>
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateGroupList>
+                                </Setter>
+                            </DataTrigger>
+
+                            <DataTrigger TargetType="Label" Binding="{Binding Selected}" Value="False">
+                                <Setter Property="VisualStateManager.VisualStateGroups">
+                                    <VisualStateGroupList>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource DefaultTabBackgroundColor_Light}, Dark={StaticResource DefaultTabBackgroundColor_Dark}}"/>
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                            <VisualState x:Name="PointerOver">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource PointerOverTabBackgroundColor_Light}, Dark={StaticResource PointerOverTabBackgroundColor_Dark}}"/>
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateGroupList>
+                                </Setter>
+                            </DataTrigger>
+                        </Label.Triggers>
+                        
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" CommandParameter="{Binding}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
         </layouts:TabLayout>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

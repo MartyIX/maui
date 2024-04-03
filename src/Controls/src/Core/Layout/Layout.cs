@@ -1,10 +1,7 @@
 #nullable disable
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui.Controls.Xaml.Diagnostics;
 using Microsoft.Maui.Layouts;
 
 namespace Microsoft.Maui.Controls

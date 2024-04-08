@@ -208,6 +208,10 @@ public class TabLayoutManager : HorizontalStackLayoutManager
 		return result;
 	}
 
+	/// <summary>
+	/// Gets index of the selected tab in the layout's children list.
+	/// </summary>
+	/// <returns>Index of the selected tool tab, or <c>0</c> if no tab is selected.</returns>
 	private int GetSelectedTabIndexOrZero()
 	{
 		int index = 0;

@@ -1,6 +1,4 @@
-using System;
 using Maui.Controls.Sample.Sandbox;
-using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Layouts;
 
@@ -11,7 +9,8 @@ namespace Maui.Controls.Sample.Layouts;
 /// </summary>
 public class TabLayout : HorizontalStackLayout
 {
-    public ToolTab? SelectedTab { get; internal set; }
+	/// <summary>Tab that is currently selected, or <c>null</c> if none is selected at the moment.</summary>
+	public ToolTab? SelectedTab { get; internal set; }
 
     /// <inheritdoc/>
     protected override ILayoutManager CreateLayoutManager()
@@ -22,7 +21,11 @@ public class TabLayout : HorizontalStackLayout
     /// <inheritdoc/>
     public void Invalidate() => this.InvalidateMeasure();
 
-	public void SetSelectedView(ToolTab toolTab)
+	/// <summary>
+	/// Sets selected tool tab.
+	/// </summary>
+	/// <param name="toolTab">Tool tab that is currently selected.</param>
+	public void SetSelected(ToolTab toolTab)
 	{
 		if (SelectedTab is not null)
 			SelectedTab.Selected = false;

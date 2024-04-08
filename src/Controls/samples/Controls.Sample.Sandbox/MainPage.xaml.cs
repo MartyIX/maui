@@ -49,7 +49,7 @@ namespace Maui.Controls.Sample
 			if (view.BindingContext is not ToolTab toolTab)
 				throw new Exception($"Sender is not a view. Got '{view.BindingContext?.GetType().FullName}'.");
 
-			tabsLayout.SetSelectedView(toolTab);
+			tabsLayout.SetSelected(toolTab);
 		}
 	}
 }

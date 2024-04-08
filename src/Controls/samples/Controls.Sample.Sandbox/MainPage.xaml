@@ -2,5 +2,113 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Maui.Controls.Sample.MainPage"
-    xmlns:local="clr-namespace:Maui.Controls.Sample">
+    xmlns:local="clr-namespace:Maui.Controls.Sample"
+    BackgroundColor="white">
+    <HorizontalStackLayout>
+        <HorizontalStackLayout.Resources>
+            <Style Class="label1" TargetType="Label">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="BackgroundColor" Value="LightBlue" />
+                <Setter Property="HeightRequest" Value="150" />
+                <Setter Property="TextColor" Value="Blue" />
+                <Setter Property="LineHeight" Value="2" />
+            </Style>
+
+            <Style Class="label2" TargetType="Label">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="BackgroundColor" Value="LightGreen" />
+                <Setter Property="TextColor" Value="Green" />
+                <Setter Property="LineHeight" Value="2" />
+            </Style>
+
+            <Style Class="labelNormal" TargetType="Label">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="BackgroundColor" Value="Pink" />
+                <Setter Property="HeightRequest" Value="150" />
+                <Setter Property="TextColor" Value="Purple" />
+                <Setter Property="LineHeight" Value="2" />
+            </Style>
+
+            <Style Class="label3" TargetType="Label">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="BackgroundColor" Value="LightGray" />
+                <Setter Property="TextColor" Value="Brown" />
+                <Setter Property="LineHeight" Value="2" />
+            </Style>
+        </HorizontalStackLayout.Resources>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label StyleClass="label1">
+                <Label.Text>
+Hi friend, try change my color!
+second line
+                </Label.Text>
+            </Label>
+        </Grid>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Label StyleClass="label2">
+                <Label.Text>
+Hi friend, try change my color!
+second line
+                </Label.Text>
+            </Label>
+        </Grid>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Label StyleClass="label1" Text="only one line"/>
+        </Grid>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Label StyleClass="labelNormal">
+                <Label.Text>
+first line
+second line
+                </Label.Text>
+            </Label>
+        </Grid>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Label StyleClass="label3" Text="BEHAVIOR DIFFERENCE"/>
+        </Grid>
+    </HorizontalStackLayout>
 </ContentPage>

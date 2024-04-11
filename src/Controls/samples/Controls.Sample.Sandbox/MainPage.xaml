@@ -3,4 +3,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Maui.Controls.Sample.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample">
+    <VerticalStackLayout>
+        <VerticalStackLayout.Resources>
+        </VerticalStackLayout.Resources>
+
+        <HorizontalStackLayout HeightRequest="30">
+            <Label Text="Is entry visible?"/>
+            <Label Text="{Binding IsEntryVisible}"/>
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout HeightRequest="30">
+            <Entry x:Name="stillVisibleEntry" ClearButtonVisibility="Never" MaxLength="40"/>
+            <Entry x:Name="myEntry" ClearButtonVisibility="Never" IsVisible="{Binding IsEntryVisible}" MaxLength="40" PropertyChanged="myEntry_PropertyChanged"/>
+            <Button Text="Switch visibility" Clicked="SwitchVisibility"/>
+            <Button Text="Set focus" Clicked="SetFocus"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
 </ContentPage>

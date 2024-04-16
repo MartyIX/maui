@@ -1,18 +1,31 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui;
+﻿using System.Collections.ObjectModel;
+using Maui.Controls.Sample.Sandbox;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Graphics;
 
-namespace Maui.Controls.Sample
+namespace Maui.Controls.Sample;
+
+public partial class MainPage : ContentPage
 {
-	public partial class MainPage : ContentPage
+	/// <summary>Full list of workspace tabs on this dashboard.</summary>
+	public ObservableCollection<WorkspaceTab> WorkspaceTabs { get; }
+
+
+	public MainPage()
 	{
-		public MainPage()
-		{
-			InitializeComponent();
-		}
+		BindingContext = this;
+		WorkspaceTabs = new();
+
+		WorkspaceTabHeader header1 = new("#1");
+		WorkspaceTabs.Add(new WorkspaceTab(header1));
+
+		WorkspaceTabHeader header2 = new("#2");
+		WorkspaceTabs.Add(new WorkspaceTab(header2));
+
+		InitializeComponent();
+	}
+
+	private void Button_Clicked(object sender, System.EventArgs e)
+	{
+		WorkspaceTabs.Move(0, 1);
 	}
 }

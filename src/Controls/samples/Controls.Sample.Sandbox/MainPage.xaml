@@ -19,8 +19,12 @@
                             <ColumnDefinition Width="4"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Tab header. -->
-                        <ContentView Grid.Column="0" BindingContext="{Binding WorkspaceTabHeader}" Content="{Binding}"/>
+                        <HorizontalStackLayout Grid.Column="0" >
+                            <Label Text="{Binding Path=TabHeader.Title}"/>
+
+                            <!-- Tab header. -->
+                            <controls:WorkspaceTabHeader Title="{Binding Path=TabHeader.Title}"/>
+                        </HorizontalStackLayout>
 
                         <!-- Separator. -->
                         <Border Grid.Column="1" Background="Gray"/>

@@ -1,14 +1,20 @@
 ﻿using Microsoft.Maui.Controls;
 
-namespace Maui.Controls.Sample;
+namespace Maui.Controls.Sample.Sandbox;
 
-public partial class WorkspaceTabHeader : ContentView
+public partial class WorkspaceTabHeader : TemplatedView
 {
-	public string Title { get; }
+	public static readonly BindableProperty TitleProperty = BindableProperty.Create(propertyName: nameof(Title), returnType: typeof(string), declaringType: typeof(WorkspaceTabHeader),
+		defaultValue: default(string), defaultBindingMode: BindingMode.TwoWay);
 
-    public WorkspaceTabHeader(string title)
+	public string Title
 	{
-		Title = title;
+		get => (string)GetValue(TitleProperty);
+		set => SetValue(TitleProperty, value);
+	}
+
+	public WorkspaceTabHeader()
+	{
 		InitializeComponent();
 	}
 }

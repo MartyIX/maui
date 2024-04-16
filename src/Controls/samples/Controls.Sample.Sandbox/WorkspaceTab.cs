@@ -1,6 +1,12 @@
 ﻿namespace Maui.Controls.Sample.Sandbox;
 
-public class WorkspaceTab(WorkspaceTabHeader workspaceTabHeader)
+public class WorkspaceTab
 {
-	public WorkspaceTabHeader WorkspaceTabHeader { get; } = workspaceTabHeader;
+	/// <summary>Header of the workspace tab.</summary>
+	public WorkspaceTabHeader TabHeader { get; }
+
+	public WorkspaceTab(WorkspaceTabHeader tabHeader)
+	{
+		TabHeader = tabHeader;
+	}
 }

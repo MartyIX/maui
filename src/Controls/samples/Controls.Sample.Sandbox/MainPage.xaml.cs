@@ -15,10 +15,13 @@ public partial class MainPage : ContentPage
 		BindingContext = this;
 		WorkspaceTabs = new();
 
-		WorkspaceTabHeader header1 = new("#1");
+		WorkspaceTabHeader header1 = new();
+		header1.Title = "#1";
 		WorkspaceTabs.Add(new WorkspaceTab(header1));
 
-		WorkspaceTabHeader header2 = new("#2");
+		WorkspaceTabHeader header2 = new();
+		header2.Title = "#2";
+
 		WorkspaceTabs.Add(new WorkspaceTab(header2));
 
 		InitializeComponent();

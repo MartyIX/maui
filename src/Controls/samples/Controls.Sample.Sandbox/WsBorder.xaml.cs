@@ -81,14 +81,11 @@ public partial class WsBorder : ContentView
 	}
 
 	// Uncomment these lines to fix the crash when one clicks the "Button wrapped in custom control border control" button.
-	/*
 	/// <inheritdoc/>
 	protected override void OnBindingContextChanged()
 	{
 		// Make sure that WsBorder is not a parent of the content. WsBorder is purely a visual adorner.
-		this.Content.Parent = this.Parent;
-
+		Content.Parent = Parent;
 		base.OnBindingContextChanged();
 	}
-	*/
 }

@@ -6,46 +6,42 @@
              x:DataType="controls:WsBorder"
              HorizontalOptions="Fill"
              VerticalOptions="Fill">
-    <ContentView.ControlTemplate>
-        <ControlTemplate>
-            <Grid BindingContext="{TemplateBinding}">
-                <Grid.RowDefinitions>
-                    <!-- Top border. -->
-                    <RowDefinition Height="{Binding BorderWidth.Top}"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Top border. -->
+            <RowDefinition Height="{Binding BorderWidth.Top}"/>
 
-                    <!-- Content cell. -->
-                    <RowDefinition Height="*"/>
+            <!-- Content cell. -->
+            <RowDefinition Height="*"/>
 
-                    <!-- Bottom border. -->
-                    <RowDefinition Height="{Binding BorderWidth.Bottom}"/>
-                </Grid.RowDefinitions>
+            <!-- Bottom border. -->
+            <RowDefinition Height="{Binding BorderWidth.Bottom}"/>
+        </Grid.RowDefinitions>
 
-                <Grid.ColumnDefinitions>
-                    <!-- Left border. -->
-                    <ColumnDefinition Width="{Binding BorderWidth.Left}"/>
+        <Grid.ColumnDefinitions>
+            <!-- Left border. -->
+            <ColumnDefinition Width="{Binding BorderWidth.Left}"/>
 
-                    <!-- Content cell. -->
-                    <ColumnDefinition Width="*"/>
+            <!-- Content cell. -->
+            <ColumnDefinition Width="*"/>
 
-                    <!-- Right border. -->
-                    <ColumnDefinition Width="{Binding BorderWidth.Right}"/>
-                </Grid.ColumnDefinitions>
+            <!-- Right border. -->
+            <ColumnDefinition Width="{Binding BorderWidth.Right}"/>
+        </Grid.ColumnDefinitions>
 
-                <!-- Top border. -->
-                <BoxView Grid.Row="0" Grid.ColumnSpan="3" Color="{Binding BorderColorTop, Mode=OneWay}"/>
+        <!-- Top border. -->
+        <BoxView Grid.Row="0" Grid.ColumnSpan="3" Color="{Binding BorderColorTop, Mode=OneWay}"/>
 
-                <!-- Bottom border. -->
-                <BoxView Grid.Row="2" Grid.ColumnSpan="3" Color="{Binding BorderColorBottom, Mode=OneWay}"/>
+        <!-- Bottom border. -->
+        <BoxView Grid.Row="2" Grid.ColumnSpan="3" Color="{Binding BorderColorBottom, Mode=OneWay}"/>
 
-                <!-- Left border. -->
-                <BoxView Grid.Column="0" Grid.RowSpan="3" Color="{Binding BorderColorLeft, Mode=OneWay}"/>
+        <!-- Left border. -->
+        <BoxView Grid.Column="0" Grid.RowSpan="3" Color="{Binding BorderColorLeft, Mode=OneWay}"/>
 
-                <!-- Right border. -->
-                <BoxView Grid.Column="2" Grid.RowSpan="3" Color="{Binding BorderColorRight, Mode=OneWay}"/>
+        <!-- Right border. -->
+        <BoxView Grid.Column="2" Grid.RowSpan="3" Color="{Binding BorderColorRight, Mode=OneWay}"/>
 
-                <!-- Content cell. -->
-                <ContentPresenter Grid.Row="1" Grid.Column="1" Padding="{Binding Padding}"/>
-            </Grid>
-        </ControlTemplate>
-    </ContentView.ControlTemplate>
+        <!-- Content cell. -->
+        <ContentPresenter Grid.Row="1" Grid.Column="1" Padding="{Binding Padding}"/>
+    </Grid>
 </ContentView>

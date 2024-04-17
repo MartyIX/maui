@@ -1,6 +1,62 @@
 ﻿<ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Maui.Controls.Sample.MainPage"
-    xmlns:local="clr-namespace:Maui.Controls.Sample">
+    xmlns:controls="clr-namespace:Maui.Controls.Sample.Sandbox"
+    xmlns:local="clr-namespace:Maui.Controls.Sample"
+    x:Class="Maui.Controls.Sample.MainPage">
+    <StackLayout>
+
+        <!-- Scenario 1: MAUI border. -->
+        <Label Text="Click the button below. No crash is expected." HorizontalOptions="Center"/>
+        <Border Margin="0,0,0,100">
+            <VerticalStackLayout>
+                <Button Text="Entry wrapped in MAUI border" Margin="0,0,0,10" WidthRequest="300">
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal"/>
+                                <VisualState Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="0.8" />
+
+                                        <!-- TargetName works OK for <Button> element. -->
+                                        <Setter TargetName="entry1" Property="Entry.Text" Value="Paris" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                </Button>
+                <Entry x:Name="entry1" Placeholder="Enter answer" WidthRequest="300" />
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- Scenario 2: Custom border control. -->
+        <Label Text="Click the button below. The app crashes!" HorizontalOptions="Center"/>
+        <controls:WsBorder Margin="0,0,0,10">
+            <VerticalStackLayout>
+                <Button Text="Entry wrapped in custom control border control" Margin="0,0,0,10" WidthRequest="300">
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal"/>
+                                <VisualState Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="0.8" />
+
+                                        <!-- TargetName does not work with <controls:WsBorder> element at all. -->
+                                        <!-- "entry2" is NOT found and the app crashes. -->
+                                        <Setter TargetName="entry2" Property="Entry.Text" Value="London" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                </Button>
+                <Entry x:Name="entry2" Placeholder="Enter answer" WidthRequest="300" />
+            </VerticalStackLayout>
+        </controls:WsBorder>
+
+    </StackLayout>
+
 </ContentPage>

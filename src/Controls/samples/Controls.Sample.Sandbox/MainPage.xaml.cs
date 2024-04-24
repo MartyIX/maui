@@ -14,5 +14,17 @@ namespace Maui.Controls.Sample
 		{
 			InitializeComponent();
 		}
+
+		private void Button_Clicked(object sender, EventArgs e)
+		{
+			Image image = new()
+			{
+				Source = ImageSource.FromFile("groceries.png"),
+				WidthRequest = 512,
+				HeightRequest = 512,
+			};
+
+			myLayout.Add(image);
+		}
 	}
 }

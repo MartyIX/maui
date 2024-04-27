@@ -10,6 +10,8 @@ namespace Maui.Controls.Sample
 {
 	public partial class MainPage : ContentPage
 	{
+		private static readonly ImageSource _imageSource = ImageSource.FromFile("circle.png");
+
 		public MainPage()
 		{
 			InitializeComponent();
@@ -19,12 +21,18 @@ namespace Maui.Controls.Sample
 		{
 			Image image = new()
 			{
-				Source = ImageSource.FromFile("groceries.png"),
-				WidthRequest = 512,
-				HeightRequest = 512,
+				Source = _imageSource,
+				WidthRequest = 82,
+				HeightRequest = 77,
 			};
 
-			myLayout.Add(image);
+			HorizontalStackLayout item = 
+			[
+				new Label() { Text = "My label"},
+				image
+			];
+
+			myLayout.Add(item);
 		}
 	}
 }

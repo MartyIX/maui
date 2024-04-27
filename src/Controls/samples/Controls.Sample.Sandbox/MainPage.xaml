@@ -6,7 +6,6 @@
     <VerticalStackLayout x:Name="myLayout">
         <!-- Click button to add the image dynamically. -->
         <Button Text="Show image" Clicked="Button_Clicked"/>
-        
-        <!--<Image WidthRequest="81" HeightRequest="121" Source="groceries.png"/>-->
+       
     </VerticalStackLayout>
 </ContentPage>

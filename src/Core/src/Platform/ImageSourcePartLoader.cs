@@ -51,8 +51,11 @@ namespace Microsoft.Maui.Platform
 
 		public async Task UpdateImageSourceAsync()
 		{
+			System.Diagnostics.Debug.WriteLine($"XXX {DateTime.UtcNow:HH:mm:ss.fff} ImageSourcePartLoader.UpdateImageSourceAsync [S]");
+
 			if (Setter.Handler is not IElementHandler handler || handler.PlatformView is not PlatformView platformView)
 			{
+				System.Diagnostics.Debug.WriteLine($"XXX {DateTime.UtcNow:HH:mm:ss.fff} ImageSourcePartLoader.UpdateImageSourceAsync [E]<#1>");
 				return;
 			}
 
@@ -66,22 +69,32 @@ namespace Microsoft.Maui.Platform
 #endif
 
 #if IOS || WINDOWS
+				System.Diagnostics.Debug.WriteLine($"XXX {DateTime.UtcNow:HH:mm:ss.fff} ImageSourcePartLoader.UpdateImageSourceAsync: [1]");
 				var scale = handler.MauiContext?.GetOptionalPlatformWindow()?.GetDisplayDensity() ?? 1.0f;
+
+				System.Diagnostics.Debug.WriteLine($"XXX {DateTime.UtcNow:HH:mm:ss.fff} ImageSourcePartLoader.UpdateImageSourceAsync: [2]");
 				var result = await imageSource.UpdateSourceAsync(platformView, _imageSourceServiceProvider, Setter.SetImageSource, scale, token)
 					.ConfigureAwait(false);
 
+				System.Diagnostics.Debug.WriteLine($"XXX {DateTime.UtcNow:HH:mm:ss.fff} ImageSourcePartLoader.UpdateImageSourceAsync: [3]");
 				SourceManager.CompleteLoad(result);
+
+				System.Diagnostics.Debug.WriteLine($"XXX {DateTime.UtcNow:HH:mm:ss.fff} ImageSourcePartLoader.UpdateImageSourceAsync: [4]");
 #elif ANDROID || TIZEN
 				var result = await imageSource.UpdateSourceAsync(platformView, _imageSourceServiceProvider, Setter.SetImageSource, token)
 					.ConfigureAwait(false);
 #else
 				await Task.CompletedTask;
 #endif
+
+				System.Diagnostics.Debug.WriteLine($"XXX {DateTime.UtcNow:HH:mm:ss.fff} ImageSourcePartLoader.UpdateImageSourceAsync: [5]");
 			}
 			else
 			{
 				Setter.SetImageSource(null);
 			}
+
+			System.Diagnostics.Debug.WriteLine($"XXX {DateTime.UtcNow:HH:mm:ss.fff} ImageSourcePartLoader.UpdateImageSourceAsync [E]");
 		}
 	}
 }

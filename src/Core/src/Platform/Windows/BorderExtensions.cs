@@ -16,19 +16,17 @@ namespace Microsoft.Maui.Platform
 
 		internal static void UpdatePath(this Path borderPath, IShape? borderShape, double width, double height)
 		{
-			if (borderShape is null || width <= 0 || height <= 0)
+			if (borderPath is null || borderShape is null || width <= 0 || height <= 0)
+			{
 				return;
+			}
 
-			var strokeThickness = borderPath?.StrokeThickness ?? 0;
+			var strokeThickness = borderPath.StrokeThickness;
 			var pathSize = new Graphics.Rect(0, 0, width - strokeThickness, height - strokeThickness);
 			var shapePath = borderShape.PathForBounds(pathSize);
 			var geometry = shapePath.AsPathGeometry();
 
-			if (borderPath is not null)
-			{
-				borderPath.Data = geometry;
-				borderPath.RenderTransform = new TranslateTransform() { X = strokeThickness / 2, Y = strokeThickness / 2 };
-			}
+			borderPath.Data = geometry;
 		}
 
 		public static void UpdateBackground(this Path borderPath, Paint? background)

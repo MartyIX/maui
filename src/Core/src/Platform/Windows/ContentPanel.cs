@@ -74,9 +74,11 @@ namespace Microsoft.Maui.Platform
 
 		internal void EnsureBorderPath()
 		{
-			if (!Children.Contains(_borderPath))
+			var children = Children;
+
+			if (!children.Contains(_borderPath))
 			{
-				Children.Add(_borderPath);
+				children.Add(_borderPath);
 			}
 		}
 
@@ -140,8 +142,12 @@ namespace Microsoft.Maui.Platform
 				return;
 			}
 
-			if (!Children.Contains(_content))
-				Children.Add(_content);
+			var children = Children;
+
+			if (!children.Contains(_content))
+			{
+				children.Add(_content);
+			}
 		}
 
 		void UpdateClip(IShape? borderShape, double width, double height)

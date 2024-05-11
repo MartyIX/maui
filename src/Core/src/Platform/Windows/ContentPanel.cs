@@ -13,11 +13,11 @@ namespace Microsoft.Maui.Platform
 {
 	public class ContentPanel : MauiPanel
 	{
-		readonly Path? _borderPath;
+		readonly Path _borderPath;
 		IBorderStroke? _borderStroke;
 		FrameworkElement? _content;
 
-		internal Path? BorderPath => _borderPath;
+		internal Path BorderPath => _borderPath;
 
 		internal FrameworkElement? Content
 		{
@@ -35,7 +35,7 @@ namespace Microsoft.Maui.Platform
 		{
 			var actual = base.ArrangeOverride(finalSize);
 
-			_borderPath?.Arrange(new global::Windows.Foundation.Rect(0, 0, finalSize.Width, finalSize.Height));
+			_borderPath.Arrange(new global::Windows.Foundation.Rect(0, 0, finalSize.Width, finalSize.Height));
 
 			var size = new global::Windows.Foundation.Size(Math.Max(0, actual.Width), Math.Max(0, actual.Height));
 
@@ -55,11 +55,6 @@ namespace Microsoft.Maui.Platform
 
 		void ContentPanelSizeChanged(object sender, SizeChangedEventArgs e)
 		{
-			if (_borderPath is null)
-			{
-				return;
-			}
-
 			var width = e.NewSize.Width;
 			var height = e.NewSize.Height;
 
@@ -84,11 +79,6 @@ namespace Microsoft.Maui.Platform
 
 		public void UpdateBackground(Paint? background)
 		{
-			if (_borderPath is null)
-			{
-				return;
-			}
-
 			_borderPath.UpdateBackground(background);
 		}
 
@@ -117,7 +107,7 @@ namespace Microsoft.Maui.Platform
 
 		void UpdateBorder(IShape? strokeShape)
 		{
-			if (strokeShape is null || _borderPath is null)
+			if (strokeShape is null)
 			{
 				return;
 			}
@@ -173,7 +163,7 @@ namespace Microsoft.Maui.Platform
 			var compositor = visual.Compositor;
 
 			PathF? clipPath;
-			float strokeThickness = (float)(_borderPath?.StrokeThickness ?? 0);
+			float strokeThickness = (float)(_borderPath.StrokeThickness);
 			// The path size should consider the space taken by the border (top and bottom, left and right)
 			var pathSize = new Rect(0, 0, width - strokeThickness * 2, height - strokeThickness * 2);
 

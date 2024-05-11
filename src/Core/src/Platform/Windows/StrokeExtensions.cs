@@ -17,13 +17,13 @@
 			if (stroke == null)
 				return;
 
-			platformView.BorderPath?.UpdateStroke(stroke);
+			platformView.BorderPath.UpdateStroke(stroke);
 		}
 
 		public static void UpdateStrokeThickness(this ContentPanel platformView, IBorderStroke border)
 		{
 			var strokeThickness = border.StrokeThickness;
-			platformView.BorderPath?.UpdateStrokeThickness(strokeThickness);
+			platformView.BorderPath.UpdateStrokeThickness(strokeThickness);
 		}
 
 		public static void UpdateStrokeDashPattern(this ContentPanel platformView, IBorderStroke border)
@@ -33,7 +33,7 @@
 			if (strokeDashPattern == null)
 				return;
 
-			platformView.BorderPath?.UpdateStrokeDashPattern(strokeDashPattern);
+			platformView.BorderPath.UpdateStrokeDashPattern(strokeDashPattern);
 		}
 
 		public static void UpdateStrokeDashOffset(this ContentPanel platformView, IBorderStroke border)
@@ -44,7 +44,7 @@
 				return;
 
 			var strokeDashOffset = border.StrokeDashOffset;
-			platformView.BorderPath?.UpdateBorderDashOffset(strokeDashOffset);
+			platformView.BorderPath.UpdateBorderDashOffset(strokeDashOffset);
 		}
 
 		public static void UpdateStrokeMiterLimit(this ContentPanel platformView, IBorderStroke border)
@@ -55,7 +55,7 @@
 				return;
 
 			var strokeMiterLimit = border.StrokeMiterLimit;
-			platformView.BorderPath?.UpdateStrokeMiterLimit(strokeMiterLimit);
+			platformView.BorderPath.UpdateStrokeMiterLimit(strokeMiterLimit);
 		}
 
 		public static void UpdateStrokeLineCap(this ContentPanel platformView, IBorderStroke border)
@@ -66,7 +66,7 @@
 				return;
 
 			var strokeLineCap = border.StrokeLineCap;
-			platformView.BorderPath?.UpdateStrokeLineCap(strokeLineCap);
+			platformView.BorderPath.UpdateStrokeLineCap(strokeLineCap);
 		}
 
 		public static void UpdateStrokeLineJoin(this ContentPanel platformView, IBorderStroke border)
@@ -77,7 +77,7 @@
 				return;
 
 			var strokeLineJoin = border.StrokeLineJoin;
-			platformView.BorderPath?.UpdateStrokeLineJoin(strokeLineJoin);
+			platformView.BorderPath.UpdateStrokeLineJoin(strokeLineJoin);
 		}
 	}
 }

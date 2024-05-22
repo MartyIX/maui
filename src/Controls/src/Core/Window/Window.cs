@@ -209,10 +209,13 @@ namespace Microsoft.Maui.Controls
 			_batchFrameUpdate++;
 			bool shouldTriggerSizeChanged = (Width != frame.Width) || (Height != frame.Height);
 
+			Console.WriteLine($"[before] X={X},Y={Y},MinWidth={MinimumWidth},Width={Width},Height={Height},frame={frame}");
+
 			X = frame.X;
 			Y = frame.Y;
 			Width = frame.Width;
 			Height = frame.Height;
+			Console.WriteLine($"[after] X={X},Y={Y},MinWidth={MinimumWidth},Width={Width},Height={Height},frame={frame}");
 
 			_batchFrameUpdate--;
 			if (_batchFrameUpdate < 0)
@@ -220,17 +223,26 @@ namespace Microsoft.Maui.Controls
 
 			if (_batchFrameUpdate == 0 && shouldTriggerSizeChanged)
 			{
+				Console.WriteLine($"SizeChanged is called");
 				SizeChanged?.Invoke(this, EventArgs.Empty);
 			}
 
 
+			Console.WriteLine($"#1");
 			// If for some reason during the PropertyChanged event on X,Y,Width,Height
 			// the user has changed these values. Then we need to propagate them back to the handler
 			UpdateHandler(X != frame.X, nameof(X));
+
+			Console.WriteLine($"#2");
 			UpdateHandler(Y != frame.Y, nameof(Y));
+
+			Console.WriteLine($"#3");
 			UpdateHandler(Width != frame.Width, nameof(Width));
+
+			Console.WriteLine($"#4");
 			UpdateHandler(Height != frame.Height, nameof(Height));
 
+			Console.WriteLine($"#5");
 
 			void UpdateHandler(bool condition, string property)
 			{

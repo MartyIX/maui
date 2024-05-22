@@ -30,8 +30,13 @@ namespace Microsoft.Maui.Platform
 		internal static void UpdateHeight(this UIWindow platformWindow, IWindow window) =>
 			platformWindow.UpdateUnsupportedCoordinate(window);
 
-		internal static void UpdateUnsupportedCoordinate(this UIWindow platformWindow, IWindow window) =>
+		internal static void UpdateUnsupportedCoordinate(this UIWindow platformWindow, IWindow window) 
+		{
+			Console.WriteLine($"[start] WindowExtensions::UpdateUnsupportedCoordinate: {platformWindow.Bounds.ToRectangle()}");
 			window.FrameChanged(platformWindow.Bounds.ToRectangle());
+
+			Console.WriteLine($"[end] WindowExtensions::UpdateUnsupportedCoordinate");
+		}
 
 		public static void UpdateMaximumWidth(this UIWindow platformWindow, IWindow window) =>
 			platformWindow.UpdateMaximumSize(window.MaximumWidth, window.MaximumHeight);

@@ -14,7 +14,11 @@ namespace Microsoft.Maui.ApplicationModel
 
 		public void ShowSettingsUI() => throw ExceptionUtils.NotSupportedOrImplementedException;
 
-		public AppTheme RequestedTheme => AppTheme.Unspecified;
+		public AppTheme RequestedTheme
+		{
+			get => AppTheme.Unspecified;
+			set { }
+		}
 
 		public AppPackagingModel PackagingModel => throw ExceptionUtils.NotSupportedOrImplementedException;
 

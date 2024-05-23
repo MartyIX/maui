@@ -175,6 +175,7 @@ namespace Microsoft.Maui.Controls
 
 				_userAppTheme = value;
 
+				AppInfo.RequestedTheme = value;
 				TriggerThemeChangedActual();
 			}
 		}

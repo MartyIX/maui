@@ -56,7 +56,11 @@ namespace Microsoft.Maui.ApplicationModel
 			};
 		}
 
-		public AppTheme RequestedTheme => GetRequestedTheme();
+		public AppTheme RequestedTheme 
+		{
+			get => GetRequestedTheme();
+			set { }
+		}
 
 		public AppPackagingModel PackagingModel => AppPackagingModel.Packaged;
 

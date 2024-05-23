@@ -651,8 +651,10 @@ namespace Microsoft.Maui.Controls
 			if (_changeHandlers != null)
 				foreach (Action<object, ResourcesChangedEventArgs> handler in _changeHandlers.ToList())
 					handler(this, new ResourcesChangedEventArgs(values));
+			
 			if (_dynamicResources == null)
 				return;
+
 			if (_bindableResources == null)
 				_bindableResources = new List<BindableObject>();
 			foreach (KeyValuePair<string, object> value in values)
@@ -662,7 +664,7 @@ namespace Microsoft.Maui.Controls
 				{
 					// when the DynamicResource bound to a BindableProperty is
 					// changing then the BindableProperty needs to be refreshed;
-					// The .Value.Item1 is the name of DynamicResouce to which the BindableProperty is bound.
+					// The .Value.Item1 is the name of DynamicResource to which the BindableProperty is bound.
 					// The .Key is the name of the DynamicResource whose value is changing.
 					if (dynR.Value.Item1 != value.Key)
 						continue;

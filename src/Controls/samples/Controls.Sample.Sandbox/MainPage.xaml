@@ -3,4 +3,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Maui.Controls.Sample.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample">
+  <VerticalStackLayout BackgroundColor="{AppThemeBinding Light=LightGray, Dark=Black}">
+    <HorizontalStackLayout>
+      <RadioButton x:Name="ThemeLight" Content="Light" CheckedChanged="ThemeLight_CheckedChanged" />
+      <RadioButton x:Name="ThemeDark" Content="Dark" CheckedChanged="ThemeLight_CheckedChanged" />
+    </HorizontalStackLayout>
+
+    <Picker x:Name="MyPicker"/>
+    
+  </VerticalStackLayout>
 </ContentPage>

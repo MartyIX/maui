@@ -26,7 +26,10 @@ namespace Microsoft.Maui.ApplicationModel
 		}
 
 		public AppTheme RequestedTheme
-			=> AppTheme.Unspecified;
+		{
+			get => AppTheme.Unspecified
+			set { }
+		}
 
 		public AppPackagingModel PackagingModel => AppPackagingModel.Packaged;
 

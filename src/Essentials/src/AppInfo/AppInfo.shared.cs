@@ -43,7 +43,7 @@ namespace Microsoft.Maui.ApplicationModel
 		/// Gets the detected theme of the system or application.
 		/// </summary>
 		/// <remarks>For platforms or platform versions which do not support themes, <see cref="AppTheme.Unspecified"/> is returned.</remarks>
-		AppTheme RequestedTheme { get; }
+		AppTheme RequestedTheme { get; set; }
 
 		/// <summary>
 		/// Gets the packaging model of this application.
@@ -97,7 +97,11 @@ namespace Microsoft.Maui.ApplicationModel
 		/// Gets the detected theme of the system or application.
 		/// </summary>
 		/// <remarks>For platforms or platform versions which do not support themes, <see cref="AppTheme.Unspecified"/> is returned.</remarks>
-		public static AppTheme RequestedTheme => Current.RequestedTheme;
+		public static AppTheme RequestedTheme
+		{
+			get => Current.RequestedTheme;
+			set => Current.RequestedTheme = value;
+		}
 
 		/// <summary>
 		/// Gets the packaging model of this application.

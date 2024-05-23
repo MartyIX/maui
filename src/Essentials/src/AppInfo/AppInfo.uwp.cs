@@ -69,6 +69,19 @@ namespace Microsoft.Maui.ApplicationModel
 
 				return _applicationTheme == ApplicationTheme.Dark ? AppTheme.Dark : AppTheme.Light;
 			}
+			set
+			{
+				bool isDifferent = (value == AppTheme.Dark && _applicationTheme == ApplicationTheme.Light)
+					|| (value == AppTheme.Light && _applicationTheme == ApplicationTheme.Dark);
+
+				if (isDifferent)
+				{
+					_applicationTheme = value == AppTheme.Dark ? ApplicationTheme.Dark : ApplicationTheme.Light;
+
+					if (Application.Current is Application app)
+						app.RequestedTheme = (ApplicationTheme)(int)_applicationTheme.Value;
+				}
+			}
 		}
 
 		public AppPackagingModel PackagingModel => AppInfoUtils.IsPackagedApp
@@ -85,7 +98,7 @@ namespace Microsoft.Maui.ApplicationModel
 				OnActiveWindowThemeChanged();
 		}
 
-		void OnActiveWindowThemeChanged()
+		public void OnActiveWindowThemeChanged()
 		{
 			if (Application.Current is Application app)
 				_applicationTheme = app.RequestedTheme;

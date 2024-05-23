@@ -67,6 +67,7 @@ namespace Microsoft.Maui.ApplicationModel
 					_ => AppTheme.Unspecified
 				};
 			}
+			set { }
 		}
 #elif __MACOS__
 		public AppTheme RequestedTheme
@@ -89,11 +90,17 @@ namespace Microsoft.Maui.ApplicationModel
 				}
 				return AppTheme.Light;
 			}
+
+			set { }
 		}
 #else
-		public AppTheme RequestedTheme =>
-			AppTheme.Unspecified;
+		public AppTheme RequestedTheme
+		{
+			get => AppTheme.Unspecified
+			set { }
+		}
 #endif
+
 
 #if __IOS__ || __TVOS__
 		public LayoutDirection RequestedLayoutDirection

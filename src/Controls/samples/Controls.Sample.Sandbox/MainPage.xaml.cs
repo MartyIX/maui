@@ -10,9 +10,24 @@ namespace Maui.Controls.Sample
 {
 	public partial class MainPage : ContentPage
 	{
+		private int i = 0;
+
 		public MainPage()
 		{
 			InitializeComponent();
 		}
-	}
+
+		private void Button_Clicked(object sender, EventArgs e)
+		{
+			i++;
+			if (i % 2 == 0)
+			{
+				myLabel.TextDecorations = TextDecorations.Underline | TextDecorations.Strikethrough;
+			}
+			else
+			{
+				myLabel.TextDecorations = TextDecorations.None;
+			}
+		}
+    }
 }

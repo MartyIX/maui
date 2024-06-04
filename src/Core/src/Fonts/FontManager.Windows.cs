@@ -28,10 +28,10 @@ namespace Microsoft.Maui
 		readonly IServiceProvider? _serviceProvider;
 
 		/// <remarks>Value is cached to avoid the performance hit of accessing <see cref="ResourceDictionary"/> many times.</remarks>
-		FontFamily? _defaultFontFamily;
+		readonly Dictionary<AppTheme, FontFamily?> _defaultFontFamilies;
 
 		/// <remarks>Value is cached to avoid the performance hit of accessing <see cref="ResourceDictionary"/> many times.</remarks>
-		double? _defaultFontSize;
+		readonly Dictionary<AppTheme, double?> _defaultFontSizes;
 
 		/// <summary>
 		/// Creates a new <see cref="EmbeddedFontLoader"/> instance.
@@ -43,6 +43,9 @@ namespace Microsoft.Maui
 		{
 			_fontRegistrar = fontRegistrar;
 			_serviceProvider = serviceProvider;
+
+			_defaultFontFamilies = new() { { AppTheme.Unspecified, null }, { AppTheme.Light, null }, { AppTheme.Dark, null } };
+			_defaultFontSizes = new() { { AppTheme.Unspecified, null }, { AppTheme.Light, null }, { AppTheme.Dark, null } };
 		}
 
 		/// <inheritdoc/>
@@ -50,8 +53,16 @@ namespace Microsoft.Maui
 		{
 			get
 			{
-				_defaultFontFamily ??= (FontFamily)Application.Current.Resources[SystemFontFamily];
-				return _defaultFontFamily;
+				AppTheme appTheme = AppInfo.RequestedTheme;
+				FontFamily? fontFamily = _defaultFontFamilies[appTheme];
+
+				if (fontFamily is null)
+				{
+					fontFamily = (FontFamily)Application.Current.Resources[SystemFontFamily];
+					_defaultFontFamilies[appTheme] = fontFamily;
+				}
+
+				return fontFamily;
 			}
 		}
 
@@ -60,8 +71,16 @@ namespace Microsoft.Maui
 		{
 			get
 			{
-				_defaultFontSize ??= (double)Application.Current.Resources[SystemFontSize];
-				return _defaultFontSize.Value;
+				AppTheme appTheme = AppInfo.RequestedTheme;
+				double? fontSize = _defaultFontSizes[appTheme];
+
+				if (fontSize is null)
+				{
+					fontSize = (double)Application.Current.Resources[SystemFontSize];
+					_defaultFontSizes[appTheme] = fontSize;
+				}
+
+				return fontSize.Value;
 			}
 		}
 

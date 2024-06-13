@@ -41,18 +41,19 @@ namespace Microsoft.Maui.Storage
 					resultList.Add(file);
 			}
 
+			/*
 			if (AppInfoUtils.IsPackagedApp)
 			{
 				var sw = Stopwatch.StartNew();
 
-				StorageItemAccessList list = StorageApplicationPermissions.FutureAccessList;
-
-				foreach (var file in resultList)
-					list.Add(file);
+				//StorageItemAccessList list = StorageApplicationPermissions.FutureAccessList;
+				//StorageFolder folder = await resultList[0].GetParentAsync();
+				//list.AddOrReplace("myToken", folder);
 
 				sw.Stop();
 				Debug.WriteLine($"{sw.ElapsedMilliseconds} ms");
 			}
+			*/
 
 			return resultList.Select(storageFile => new FileResult(storageFile));
 		}

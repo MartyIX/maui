@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Maui.ApplicationModel;
@@ -42,8 +43,15 @@ namespace Microsoft.Maui.Storage
 
 			if (AppInfoUtils.IsPackagedApp)
 			{
+				var sw = Stopwatch.StartNew();
+
+				StorageItemAccessList list = StorageApplicationPermissions.FutureAccessList;
+
 				foreach (var file in resultList)
-					StorageApplicationPermissions.FutureAccessList.Add(file);
+					list.Add(file);
+
+				sw.Stop();
+				Debug.WriteLine($"{sw.ElapsedMilliseconds} ms");
 			}
 
 			return resultList.Select(storageFile => new FileResult(storageFile));

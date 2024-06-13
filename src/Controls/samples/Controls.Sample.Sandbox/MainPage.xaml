@@ -3,5 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Maui.Controls.Sample.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample">
-
+  <VerticalStackLayout>
+    <Button Text="Create files" Clicked="Button_Clicked"/>
+    <Button Text="Pick files" Clicked="OnOpenClickedAsync"/>
+  </VerticalStackLayout>
 </ContentPage>

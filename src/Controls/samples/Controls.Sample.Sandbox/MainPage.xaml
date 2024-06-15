@@ -4,4 +4,9 @@
     x:Class="Maui.Controls.Sample.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample">
 
+    <VerticalStackLayout>
+        <Label Text="Hello!" ToolTipProperties.Text="Test"/>
+
+        <Button Text="Button!" ToolTipProperties.Text="I'm button"/>
+    </VerticalStackLayout>
 </ContentPage>

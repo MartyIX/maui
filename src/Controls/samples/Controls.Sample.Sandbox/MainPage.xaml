@@ -6,7 +6,22 @@
 
   <VerticalStackLayout>
     <Label Text="WebView"/>
-    <WebView x:Name="myWebView" Source="https://github.com/dotnet/maui" WidthRequest="400" HeightRequest="150"/>
+    <WebView x:Name="myWebView" WidthRequest="400" HeightRequest="150">
+      <WebView.Source>
+        <HtmlWebViewSource>
+          <HtmlWebViewSource.Html>
+            <![CDATA[
+                <html>
+                <body>
+                <H1>.NET MAUI</H1>
+                <p>Welcome to WebView. 👍</p>
+                </body>
+                </html>
+                ]]>
+          </HtmlWebViewSource.Html>
+        </HtmlWebViewSource>
+      </WebView.Source>
+    </WebView>
 
     <VerticalStackLayout x:Name="screenshotResult" AutomationId="screenshotResult"/>
 

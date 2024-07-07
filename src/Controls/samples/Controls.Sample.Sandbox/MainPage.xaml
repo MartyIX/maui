@@ -4,4 +4,14 @@
     x:Class="Maui.Controls.Sample.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample">
 
+  <VerticalStackLayout>
+    <Label Text="WebView"/>
+    <WebView x:Name="myWebView" Source="https://github.com/dotnet/maui" WidthRequest="400" HeightRequest="150"/>
+
+    <VerticalStackLayout x:Name="screenshotResult" AutomationId="screenshotResult"/>
+
+    <Button Text="Capture" Clicked="Button_Clicked"/>
+
+    <Label Text="Instructions: Click the capture button and expect a WebView screenshot to appear." FontAttributes="Bold" Margin="0,50,0,0"/>
+  </VerticalStackLayout>
 </ContentPage>

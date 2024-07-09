@@ -83,6 +83,7 @@ namespace Microsoft.Maui.Controls
 			bindable.SetValue(MarginProperty, margin);
 		}
 
+		// XXX-GESTURE-STORAGE: But here it is an observable collection and not simply IList as in IGestureController
 		readonly ObservableCollection<IGestureRecognizer> _gestureRecognizers = new ObservableCollection<IGestureRecognizer>();
 
 		PointerGestureRecognizer _recognizerForPointerOverState;
@@ -177,6 +178,7 @@ namespace Microsoft.Maui.Controls
 			get { return _gestureRecognizers; }
 		}
 
+		// XXX-RECOGNIZERS-STORAGE: Here gesture recornizers are stored.
 		ObservableCollection<IGestureRecognizer> _compositeGestureRecognizers;
 		IList<IGestureRecognizer> IGestureController.CompositeGestureRecognizers
 		{

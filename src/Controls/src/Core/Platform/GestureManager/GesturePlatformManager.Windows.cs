@@ -68,6 +68,9 @@ namespace Microsoft.Maui.Controls.Platform
 			}
 		}
 
+		// XXX-GESTURE-CONTAINER: This changes whenever:
+		// * _handler.VirtualView change
+		// * GetCompositeGestureRecognizers output changes
 		ObservableCollection<IGestureRecognizer>? ElementGestureRecognizers =>
 			(_handler.VirtualView as Element)?.GetCompositeGestureRecognizers() as ObservableCollection<IGestureRecognizer>;
 
@@ -585,6 +588,9 @@ namespace Microsoft.Maui.Controls.Platform
 			if (view == null)
 				return;
 
+			// XXX - ElementGestureRecognizers is a dynamiccally set. We can possibly watch for "OnHandlerChanged" event
+			// The idea is to subscribe pointer events only once there are actually PointerGestureRecornizers because
+			// otherwise this method is NOOP.
 			var pointerGestures = ElementGestureRecognizers.GetGesturesFor<PointerGestureRecognizer>();
 			foreach (var recognizer in pointerGestures)
 			{
@@ -812,6 +818,7 @@ namespace Microsoft.Maui.Controls.Platform
 				}
 			}
 
+			// XXX-REG: Here we subscribe the pointer events.
 			_subscriptionFlags |= SubscriptionFlags.ContainerPgrPointerEventsSubscribed;
 			_container.PointerEntered += OnPgrPointerEntered;
 			_container.PointerExited += OnPgrPointerExited;

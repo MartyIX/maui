@@ -4,4 +4,40 @@
     x:Class="Maui.Controls.Sample.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample">
 
+  <VerticalStackLayout>
+    <Label Text="First button has assigned a VisualStateManager with a pointer-over state."/>
+    <Button x:Name="button1" Text="Button 1">
+      <VisualStateManager.VisualStateGroups>
+        <VisualStateGroupList>
+          <VisualStateGroup>
+            <VisualState x:Name="Normal" />
+            <VisualState x:Name="Pressed">
+              <VisualState.Setters>
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=Yellow, Dark=Orange}" />
+              </VisualState.Setters>
+            </VisualState>
+            <VisualState x:Name="PointerOver">
+              <VisualState.Setters>
+                <Setter Property="BackgroundColor" Value="Red" />
+              </VisualState.Setters>
+            </VisualState>
+          </VisualStateGroup>
+        </VisualStateGroupList>
+      </VisualStateManager.VisualStateGroups>
+    </Button>
+
+    <Label Text="Second button has assigned PointerEntered and PointerExited gesture recognizers."/>
+    <Button x:Name="button2" Text="Button 2">
+      <Button.GestureRecognizers>
+        <PointerGestureRecognizer PointerEntered="PointerGestureRecognizer_PointerEntered" PointerExited="PointerGestureRecognizer_PointerExited" />
+      </Button.GestureRecognizers>
+    </Button>
+
+    <Label Text="Third button has assigned a pointer-over event in code behind."/>
+    <Button x:Name="button3" Text="Button 3"/>
+
+    <Label Text="Fourth button has assigned no pointer events."/>
+    <Button x:Name="button4" Text="Button 4"/>
+
+  </VerticalStackLayout>
 </ContentPage>

@@ -6,5 +6,12 @@
   <VerticalStackLayout>
     <Button Text="Test" Clicked="OnCounterClicked"/>
     <GraphicsView x:Name="graphicsVIew" WidthRequest="500" HeightRequest="500" />
+
+    <Button Text="Add new window" Clicked="NewWindowButton_Clicked"/>
+
+    <HorizontalStackLayout>
+      <Entry x:Name="windowToActivate" Text="2" />
+      <Button Text="Activate selected window" Clicked="ActivateWindow2_Clicked"/>
+    </HorizontalStackLayout>
   </VerticalStackLayout>
 </ContentPage>

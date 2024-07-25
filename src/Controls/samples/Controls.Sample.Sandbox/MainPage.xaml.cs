@@ -1,10 +1,11 @@
-﻿using System.IO;
-using Microsoft.Maui.Graphics.Platform;
+﻿using Microsoft.Maui.Graphics.Platform;
 
 namespace Maui.Controls.Sample;
 
 public partial class MainPage : ContentPage
 {
+	private int counter;
+
 	public MainPage()
 	{
 		InitializeComponent();
@@ -40,6 +41,63 @@ public partial class MainPage : ContentPage
 		catch (Exception ex)
 		{
 			Console.WriteLine(ex);
+		}
+	}
+
+	private void NewWindowButton_Clicked(object sender, EventArgs e)
+	{
+		counter++;
+		TestPage page = new()
+		{
+			Description = $"#{counter}"
+		};
+
+		Window secondWindow = new Window(page);
+		Application.Current!.OpenWindow(secondWindow);
+	}
+
+	private void ActivateWindow2_Clicked(object sender, EventArgs e)
+	{
+		IReadOnlyList<Window> windows = Application.Current!.Windows;
+
+		int windowNumber = int.Parse(windowToActivate.Text);
+		int windowIndex = windowNumber - 1;
+
+		if (windows.Count >= windowNumber)
+		{
+			Window windowToActivate = windows[windowIndex];
+			var platformView = windowToActivate.Handler.PlatformView;
+
+#if WINDOWS
+
+			if (platformView is Microsoft.UI.Xaml.Window platformWindow)
+			{
+				platformWindow.Activate();
+			}
+
+#elif MACCATALYST17_0_OR_GREATER
+
+			if (platformView is UIKit.UIView platformWindow)
+			{
+				UIKit.UISceneSessionActivationRequest activationRequest = UIKit.UISceneSessionActivationRequest.Create(platformWindow.Window.WindowScene!.Session);
+				UIKit.UIApplication.SharedApplication.ActivateSceneSession(activationRequest, errorHandler: null);
+			}
+
+#elif MACCATALYST
+
+			if (platformView is UIKit.UIView platformWindow)
+			{
+//#pragma warning disable CA1422 // Validate platform compatibility
+				UIKit.UIApplication.SharedApplication.RequestSceneSessionActivation(
+					sceneSession: null,
+					userActivity: platformWindow.Window.WindowScene!.UserActivity, // get the UserActivity
+					options: null,
+					errorHandler: null
+				);
+//#pragma warning restore CA1422 // Validate platform compatibility
+			}
+
+#endif
 		}
 	}
 }

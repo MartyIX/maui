@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Graphics.Platform;
+﻿using System.IO;
+using Microsoft.Maui.Graphics.Platform;
 
 namespace Maui.Controls.Sample;
 
@@ -13,14 +14,30 @@ public partial class MainPage : ContentPage
 	{
 		try
 		{
-			var imageUrl = "https://cdn-dynmedia-1.microsoft.com/is/image/microsoftcorp/Highlight-Surface-Laptop-AI-7Ed-Sapphire-MC001-3000x1682:VP5-1920x600";
-			var stream = await new HttpClient().GetStreamAsync(imageUrl);
-			var img = PlatformImage.FromStream(stream);
+			using HttpClient httpClient = new();
+
+			int count = 9;
+			Stream[] streams = new Stream[count];
+			Task<Microsoft.Maui.Graphics.IImage>[] imageTasks = new Task<Microsoft.Maui.Graphics.IImage>[count];
+
+			for (int i = 0; i < count; i++)
+			{
+				streams[i] = await httpClient.GetStreamAsync("https://picsum.photos/100");
+			}
+
+			for (int i = 0; i < count; i++)
+			{
+				Stream stream = streams[i];
+				imageTasks[i] = Task.Run(() => PlatformImage.FromStream(stream));
+			}
+
+			Microsoft.Maui.Graphics.IImage[] images = imageTasks.Select(task => task.Result).ToArray();
+
+			graphicsVIew.Drawable = new GraphicsDrawable(images);
 		}
 		catch (Exception ex)
 		{
 			Console.WriteLine(ex);
 		}
-
 	}
 }

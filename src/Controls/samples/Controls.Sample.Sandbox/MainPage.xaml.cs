@@ -60,8 +60,12 @@ public partial class MainPage : ContentPage
 	{
 		IReadOnlyList<Window> windows = Application.Current!.Windows;
 
+		debugInfo.Text += "#0 ";
+
 		int windowNumber = int.Parse(windowToActivate.Text);
 		int windowIndex = windowNumber - 1;
+
+		debugInfo.Text += $"windows.count {windows.Count} ?? {windowNumber}";	
 
 		if (windows.Count >= windowNumber)
 		{
@@ -77,16 +81,39 @@ public partial class MainPage : ContentPage
 
 #elif MACCATALYST17_0_OR_GREATER
 
+			debugInfo.Text += "+17_0_OR_GREATER ";
+
 			if (platformView is UIKit.UIView platformWindow)
 			{
-				UIKit.UISceneSessionActivationRequest activationRequest = UIKit.UISceneSessionActivationRequest.Create(platformWindow.Window.WindowScene!.Session);
-				UIKit.UIApplication.SharedApplication.ActivateSceneSession(activationRequest, errorHandler: null);
+				debugInfo.Text += "#1 ";
+
+				if (platformWindow is UIKit.UIWindow window) {
+					var windowScene = window.WindowScene;
+
+					if (windowScene is not null) {
+						UIKit.UISceneSessionActivationRequest activationRequest = UIKit.UISceneSessionActivationRequest.Create(windowScene.Session);
+
+						debugInfo.Text += "#2 ";
+						UIKit.UIApplication.SharedApplication.ActivateSceneSession(activationRequest, errorHandler: null);
+
+						debugInfo.Text += "#3 ";
+					} else {
+						debugInfo.Text += "#window.scene.is.null ";
+					}
+				} else {
+					debugInfo.Text += "#window.is.null ";	
+				}
 			}
+
+			debugInfo.Text += "#4 ";
 
 #elif MACCATALYST
 
+			debugInfo.Text += "#MACCATALYT ";
+
 			if (platformView is UIKit.UIView platformWindow)
 			{
+				debugInfo.Text += "#2 ";
 //#pragma warning disable CA1422 // Validate platform compatibility
 				UIKit.UIApplication.SharedApplication.RequestSceneSessionActivation(
 					sceneSession: null,
@@ -94,8 +121,11 @@ public partial class MainPage : ContentPage
 					options: null,
 					errorHandler: null
 				);
+				debugInfo.Text += "#3 ";
 //#pragma warning restore CA1422 // Validate platform compatibility
 			}
+
+			debugInfo.Text += "#4 ";
 
 #endif
 		}

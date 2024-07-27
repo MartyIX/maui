@@ -56,6 +56,7 @@ public partial class MainPage : ContentPage
 		Application.Current!.OpenWindow(secondWindow);
 	}
 
+/*
 	private void ActivateWindow2_Clicked(object sender, EventArgs e)
 	{
 		IReadOnlyList<Window> windows = Application.Current!.Windows;
@@ -130,4 +131,23 @@ public partial class MainPage : ContentPage
 #endif
 		}
 	}
+*/
+	private void ActivateWindow2_Clicked(object sender, EventArgs e)
+	{
+		IReadOnlyList<Window> windows = Application.Current!.Windows;
+
+		debugInfo.Text += "#0 ";
+
+		int windowNumber = int.Parse(windowToActivate.Text);
+		int windowIndex = windowNumber - 1;
+
+		debugInfo.Text += $"windows.count {windows.Count} ?? {windowNumber}";	
+
+		if (windows.Count >= windowNumber)
+		{
+			Window windowToActivate = windows[windowIndex];
+			windowToActivate.Activate();
+		}
+	}
+
 }

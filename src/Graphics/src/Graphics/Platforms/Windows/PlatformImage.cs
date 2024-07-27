@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Buffers;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -154,38 +153,10 @@ namespace Microsoft.Maui.Graphics.Platform
 		public static IImage FromStream(Stream stream, ImageFormat format = ImageFormat.Png)
 		{
 			var creator = PlatformGraphicsService.Creator;
-			
 			if (creator == null)
-			{
 				throw new Exception("No resource creator has been registered globally or for this thread.");
-			}
 
-			CanvasBitmap bitmap;
-
-			if (stream.CanSeek)
-			{
-				global::Windows.Foundation.IAsyncOperation<CanvasBitmap> bitmapAsync = CanvasBitmap.LoadAsync(creator, stream.AsRandomAccessStream());
-				bitmap = bitmapAsync.AsTask().GetAwaiter().GetResult();
-			}
-			else
-			{
-				byte[] bytes = ArrayPool<byte>.Shared.Rent(100 * 1024); // 100 kB.
-
-				try
-				{
-					using MemoryStream memoryStream = new(bytes);
-					stream.CopyTo(memoryStream);
-					memoryStream.Seek(0, SeekOrigin.Begin);
-
-					global::Windows.Foundation.IAsyncOperation<CanvasBitmap> bitmapAsync = CanvasBitmap.LoadAsync(creator, memoryStream.AsRandomAccessStream());
-					bitmap = bitmapAsync.AsTask().GetAwaiter().GetResult();
-				}
-				finally
-				{
-					ArrayPool<byte>.Shared.Return(bytes);
-				}
-			}
-
+			var bitmap = AsyncPump.Run(async () => await CanvasBitmap.LoadAsync(creator, stream.AsRandomAccessStream()));
 			return new PlatformImage(creator, bitmap);
 		}
 	}

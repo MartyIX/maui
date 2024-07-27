@@ -13,8 +13,5 @@
       <Button Text="Activate selected window" Clicked="ActivateWindow2_Clicked"/>
     </HorizontalStackLayout>
 
-    <Button Text="Generate images" Clicked="OnCounterClicked"/>
-    <GraphicsView x:Name="graphicsVIew" WidthRequest="500" HeightRequest="500" />
-
   </VerticalStackLayout>
 </ContentPage>

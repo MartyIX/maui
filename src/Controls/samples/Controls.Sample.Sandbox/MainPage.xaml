@@ -4,8 +4,6 @@
     x:Class="Maui.Controls.Sample.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample">
   <VerticalStackLayout>
-    <Button Text="Test" Clicked="OnCounterClicked"/>
-    <GraphicsView x:Name="graphicsVIew" WidthRequest="500" HeightRequest="500" />
 
     <Button Text="Add new window" Clicked="NewWindowButton_Clicked"/>
 
@@ -13,5 +11,9 @@
       <Entry x:Name="windowToActivate" Text="2" />
       <Button Text="Activate selected window" Clicked="ActivateWindow2_Clicked"/>
     </HorizontalStackLayout>
+
+    <Button Text="Generate images" Clicked="OnCounterClicked"/>
+    <GraphicsView x:Name="graphicsVIew" WidthRequest="500" HeightRequest="500" />
+
   </VerticalStackLayout>
 </ContentPage>

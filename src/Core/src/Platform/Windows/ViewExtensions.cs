@@ -36,7 +36,9 @@ namespace Microsoft.Maui.Platform
 		public static void Unfocus(this FrameworkElement platformView, IView view)
 		{
 			if (platformView is Control control)
+			{
 				UnfocusControl(control);
+			}
 		}
 
 		public static void UpdateVisibility(this FrameworkElement platformView, IView view)
@@ -378,14 +380,33 @@ namespace Microsoft.Maui.Platform
 
 		internal static void UnfocusControl(Control control)
 		{
-			if (control == null || !control.IsEnabled)
+			if (!control.IsEnabled)
+			{
 				return;
+			}
 
-			var isTabStop = control.IsTabStop;
-			control.IsTabStop = false;
-			control.IsEnabled = false;
-			control.IsEnabled = true;
-			control.IsTabStop = isTabStop;
+			// https://learn.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.control.focus?view=winrt-26100#remarks
+			// You can't remove focus from a control by calling Focused() method with Unfocused as the parameter.
+			// This value is not allowed and causes an exception. To remove focus from a control, set focus to a different control.
+
+			var xamlRootContent = control.XamlRoot?.Content;
+			if (xamlRootContent is null)
+			{
+				return;
+			}
+
+			var wasTabStop = xamlRootContent.IsTabStop;
+			if (!wasTabStop)
+			{
+				xamlRootContent.IsTabStop = true;
+			}
+
+			xamlRootContent.Focus(FocusState.Programmatic);
+
+			if (!wasTabStop)
+			{
+				xamlRootContent.IsTabStop = false;
+			}
 		}
 
 		internal static IWindow? GetHostedWindow(this IView? view)

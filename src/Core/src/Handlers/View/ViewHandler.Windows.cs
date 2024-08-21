@@ -1,31 +1,47 @@
 ﻿#nullable enable
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Input;
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
 
 namespace Microsoft.Maui.Handlers
 {
 	public partial class ViewHandler
 	{
+		static ViewHandler()
+		{
+			FocusManager.GotFocus += FocusManager_GotFocus;
+			FocusManager.LostFocus += FocusManager_LostFocus;
+		}
+
+		static readonly DependencyProperty MauiHandlerProperty = DependencyProperty.RegisterAttached("MauiHandler",
+			typeof(WeakReference<ViewHandler>), typeof(PlatformView), new PropertyMetadata(null));
+
+		static void SetMauiHandler(DependencyObject element, ViewHandler? handler)
+		{
+			var weakRef = handler != null ? new WeakReference<ViewHandler>(handler) : null;
+			element.SetValue(MauiHandlerProperty, weakRef);
+		}
+
+		static ViewHandler? GetMauiHandler(DependencyObject element)
+		{
+			var weakRef = (WeakReference<ViewHandler>?)element.GetValue(MauiHandlerProperty);
+			return weakRef?.TryGetTarget(out var viewHandler) == true ? viewHandler : null;
+		}
+
 		partial void ConnectingHandler(PlatformView? platformView)
 		{
-			if (platformView != null)
+			if (platformView is not null)
 			{
-				platformView.GotFocus += OnPlatformViewGotFocus;
-				platformView.LostFocus += OnPlatformViewLostFocus;
+				SetMauiHandler(platformView, this);
 			}
 		}
 
 		partial void DisconnectingHandler(PlatformView platformView)
 		{
+			SetMauiHandler(platformView, null);
 			UpdateIsFocused(false);
-
-			platformView.GotFocus -= OnPlatformViewGotFocus;
-			platformView.LostFocus -= OnPlatformViewLostFocus;
 		}
 
 		static partial void MappingFrame(IViewHandler handler, IView view)
@@ -88,7 +104,9 @@ namespace Microsoft.Maui.Handlers
 		public static void MapToolbar(IViewHandler handler, IView view)
 		{
 			if (view is IToolbarElement tb)
+			{
 				MapToolbar(handler, tb);
+			}
 		}
 
 		internal static void MapToolbar(IElementHandler handler, IToolbarElement toolbarElement)
@@ -133,25 +151,35 @@ namespace Microsoft.Maui.Handlers
 			}
 		}
 
-		void OnPlatformViewGotFocus(object sender, RoutedEventArgs args)
+		static void FocusManager_GotFocus(object? sender, FocusManagerGotFocusEventArgs e)
 		{
-			UpdateIsFocused(true);
+			if (e.NewFocusedElement is PlatformView platformView && GetMauiHandler(platformView) is { } handler)
+			{
+				handler.UpdateIsFocused(true);
+			}
 		}
 
-		void OnPlatformViewLostFocus(object sender, RoutedEventArgs args)
+		static void FocusManager_LostFocus(object? sender, FocusManagerLostFocusEventArgs e)
 		{
-			UpdateIsFocused(false);
+			if (e.OldFocusedElement is PlatformView platformView && GetMauiHandler(platformView) is { } handler)
+			{
+				handler.UpdateIsFocused(false);
+			}
 		}
 
 		void UpdateIsFocused(bool isFocused)
 		{
 			if (VirtualView == null)
+			{
 				return;
+			}
 
 			bool updateIsFocused = (isFocused && !VirtualView.IsFocused) || (!isFocused && VirtualView.IsFocused);
 
 			if (updateIsFocused)
+			{
 				VirtualView.IsFocused = isFocused;
+			}
 		}
 	}
 }

@@ -10,9 +10,11 @@
         <Button Text="Generate Grid" Clicked="Button_Clicked"/>
         <Entry x:Name="BatchSize" Text="15"/>
         <Button Text="Batch Generate Grid" Clicked="BatchGenerate_ClickedAsync"/>
+        <Button x:Name="myFocusEntry" Text="Test" Clicked="TestClicked"/>
 
         <HorizontalStackLayout x:Name="myGridWrapper">
             <Grid x:Name="contentGrid"/>
         </HorizontalStackLayout>
+
     </VerticalStackLayout>
 </ContentPage>

@@ -25,6 +25,11 @@ public partial class MainPage : ContentPage
 		info.Text = $"Clearing grid took: {sw.ElapsedMilliseconds} ms";
 	}
 
+	private void TestClicked(object sender, EventArgs e)
+	{
+		info.Text = $"My entry is {(myFocusEntry.IsFocused ? "focused" : "not focused")}";
+	}
+
 	private void Button_Clicked(object sender, EventArgs e)
 	{
 		Stopwatch sw = Stopwatch.StartNew();

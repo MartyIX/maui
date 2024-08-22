@@ -93,8 +93,13 @@ namespace Microsoft.Maui.DeviceTests
 				Assert.True(result1);
 
 				// assert
+				System.Diagnostics.Debug.WriteLine("XXX: WaitForFocused");
 				await inputControl1.WaitForFocused();
+
+				System.Diagnostics.Debug.WriteLine("XXX: #1");
 				Assert.True(inputControl1.IsFocused);
+
+				System.Diagnostics.Debug.WriteLine("XXX: #2");
 				Assert.False(inputControl2.IsFocused);
 
 				// UNfocus the first control (revert the focus)

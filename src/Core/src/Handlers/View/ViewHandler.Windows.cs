@@ -11,15 +11,45 @@ namespace Microsoft.Maui.Handlers
 {
 	public partial class ViewHandler
 	{
-		static ConditionalWeakTable<PlatformView, ViewHandler>? FocusManagerMapping;
+		static Dictionary<PlatformView, ViewHandler>? FocusManagerMapping;
+
+		class TypeComparer : IEqualityComparer<PlatformView>
+		{
+			public bool Equals(PlatformView? x, PlatformView? y)
+			{
+				if (x is null)
+				{
+					throw new ArgumentNullException(nameof(x));
+				}
+
+				if (y is null)
+				{
+					throw new ArgumentNullException(nameof(y));
+				}
+
+				if (x.Equals(y))
+				{
+					return true;
+				}
+
+				return false;
+			}
+
+			public int GetHashCode(PlatformView obj)
+			{
+				return obj.GetHashCode();
+			}
+		}
 
 		partial void ConnectingHandler(PlatformView? platformView)
 		{
 			if (platformView is not null)
 			{
+				System.Diagnostics.Debug.WriteLine($"XXX: > ConnectingHandler: Platform view: {platformView.GetType().FullName} ({platformView.GetHashCode()})");
+
 				if (FocusManagerMapping is null)
 				{
-					FocusManagerMapping = [];
+					FocusManagerMapping = new(new TypeComparer());
 
 					FocusManager.GotFocus += FocusManager_GotFocus;
 					FocusManager.LostFocus += FocusManager_LostFocus;
@@ -34,6 +64,8 @@ namespace Microsoft.Maui.Handlers
 			_ = FocusManagerMapping ?? throw new InvalidOperationException($"{nameof(FocusManagerMapping)} should have been set.");
 
 			UpdateIsFocused(false);
+
+			System.Diagnostics.Debug.WriteLine($"XXX: > DisconnectingHandler: Removing platform view: {platformView.GetHashCode()}");
 			FocusManagerMapping.Remove(platformView);
 		}
 
@@ -146,22 +178,57 @@ namespace Microsoft.Maui.Handlers
 
 		static void FocusManager_GotFocus(object? sender, FocusManagerGotFocusEventArgs e)
 		{
+			System.Diagnostics.Debug.WriteLine($"XXX: > FocusManager_GotFocus({e.NewFocusedElement})");
 			_ = FocusManagerMapping ?? throw new InvalidOperationException($"{nameof(FocusManagerMapping)} should have been set.");
 
-			if (e.NewFocusedElement is PlatformView platformView && FocusManagerMapping.TryGetValue(platformView, out ViewHandler? viewHandler))
+			if (e.NewFocusedElement is PlatformView platformView)
 			{
-				viewHandler.UpdateIsFocused(true);
+				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus: is platform view: '{platformView.GetType().FullName}'");
+
+				if (FocusManagerMapping.TryGetValue(platformView, out ViewHandler? viewHandler))
+				{
+					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus: true");
+					viewHandler.UpdateIsFocused(true);
+				}
+				else
+				{
+					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus: Not found platform view {platformView.GetHashCode()}!");
+				}
 			}
+			else
+			{
+				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus: not a platform view but: {e.NewFocusedElement?.GetType().FullName}");
+			}
+
+			System.Diagnostics.Debug.WriteLine($"XXX: < FocusManager_GotFocus");
 		}
 
 		static void FocusManager_LostFocus(object? sender, FocusManagerLostFocusEventArgs e)
 		{
+			System.Diagnostics.Debug.WriteLine($"XXX: > FocusManager_LostFocus({e.OldFocusedElement})");
+
 			_ = FocusManagerMapping ?? throw new InvalidOperationException($"{nameof(FocusManagerMapping)} should have been set.");
 
-			if (e.OldFocusedElement is PlatformView platformView && FocusManagerMapping.TryGetValue(platformView, out ViewHandler? viewHandler))
+			if (e.OldFocusedElement is PlatformView platformView)
 			{
-				viewHandler.UpdateIsFocused(false);
+				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus: is platform view: '{platformView.GetType().FullName}'");
+
+				if (FocusManagerMapping.TryGetValue(platformView, out ViewHandler? viewHandler))
+				{
+					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus: false");
+					viewHandler.UpdateIsFocused(false);
+				}
+				else
+				{
+					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus: Not found platform view {platformView.GetHashCode()}!");
+				}
 			}
+			else
+			{
+				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus: not a platform view but: {e.OldFocusedElement?.GetType().FullName}");
+			}
+
+			System.Diagnostics.Debug.WriteLine($"XXX: < FocusManager_LostFocus");
 		}
 
 		void UpdateIsFocused(bool isFocused)

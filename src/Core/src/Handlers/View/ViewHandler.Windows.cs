@@ -5,53 +5,34 @@ using System.Runtime.CompilerServices;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
+using System.Linq;
 using PlatformView = Microsoft.UI.Xaml.FrameworkElement;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Automation;
 
 namespace Microsoft.Maui.Handlers
 {
 	public partial class ViewHandler
 	{
 		static Dictionary<PlatformView, ViewHandler>? FocusManagerMapping;
-
-		class TypeComparer : IEqualityComparer<PlatformView>
-		{
-			public bool Equals(PlatformView? x, PlatformView? y)
-			{
-				if (x is null)
-				{
-					throw new ArgumentNullException(nameof(x));
-				}
-
-				if (y is null)
-				{
-					throw new ArgumentNullException(nameof(y));
-				}
-
-				if (x.Equals(y))
-				{
-					return true;
-				}
-
-				return false;
-			}
-
-			public int GetHashCode(PlatformView obj)
-			{
-				return obj.GetHashCode();
-			}
-		}
+		static int Counter;
 
 		partial void ConnectingHandler(PlatformView? platformView)
 		{
 			if (platformView is not null)
 			{
-				System.Diagnostics.Debug.WriteLine($"XXX: > ConnectingHandler: Platform view: {platformView.GetType().FullName} ({platformView.GetHashCode()})");
+				Counter++;
+				string automationId = $"X{platformView.GetType().Name}{Counter}";
+				AutomationProperties.SetAutomationId(platformView, automationId);
+
+				System.Diagnostics.Debug.WriteLine($"XXX: > ConnectingHandler: Platform view: {platformView.GetType().FullName} ({platformView.GetHashCode()}) ('{automationId}')");
 
 				if (FocusManagerMapping is null)
 				{
-					FocusManagerMapping = new(new TypeComparer());
+					FocusManagerMapping = new(EqualityComparer<PlatformView>.Default);
 
 					FocusManager.GotFocus += FocusManager_GotFocus;
+					FocusManager.GettingFocus += FocusManager_GettingFocus;
 					FocusManager.LostFocus += FocusManager_LostFocus;
 				}
 
@@ -176,14 +157,28 @@ namespace Microsoft.Maui.Handlers
 			}
 		}
 
+		private void FocusManager_GettingFocus(object? sender, GettingFocusEventArgs e)
+		{
+			System.Diagnostics.Debug.WriteLine($"XXX: > FocusManager_GettingFocus(oldFocusedElement:{e.OldFocusedElement?.GetType().FullName}, newFocusedElement:{e.NewFocusedElement?.GetType().FullName})");
+
+			if (e.NewFocusedElement is PlatformView platformView)
+			{
+				string automationId = e.NewFocusedElement is not null ? AutomationProperties.GetAutomationId(e.NewFocusedElement) : "NULL";
+				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GettingFocus: is platform view: '{platformView.GetType().FullName}'|'{automationId}'");
+			}
+
+			System.Diagnostics.Debug.WriteLine($"XXX: < FocusManager_GettingFocus");
+		}
+
 		static void FocusManager_GotFocus(object? sender, FocusManagerGotFocusEventArgs e)
 		{
-			System.Diagnostics.Debug.WriteLine($"XXX: > FocusManager_GotFocus({e.NewFocusedElement})");
+			System.Diagnostics.Debug.WriteLine($"XXX: > FocusManager_GotFocus({e.NewFocusedElement?.GetType().FullName})");
 			_ = FocusManagerMapping ?? throw new InvalidOperationException($"{nameof(FocusManagerMapping)} should have been set.");
 
 			if (e.NewFocusedElement is PlatformView platformView)
 			{
-				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus: is platform view: '{platformView.GetType().FullName}'");
+				string automationId = e.NewFocusedElement is not null ? AutomationProperties.GetAutomationId(e.NewFocusedElement) : "NULL";
+				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus: is platform view: '{platformView.GetType().FullName}'|'{automationId}'");
 
 				if (FocusManagerMapping.TryGetValue(platformView, out ViewHandler? viewHandler))
 				{
@@ -192,6 +187,11 @@ namespace Microsoft.Maui.Handlers
 				}
 				else
 				{
+					if (platformView is Button)
+					{
+						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus[Button]: Not found platform view {platformView.GetHashCode()} (automationId: {automationId})!");
+					}
+
 					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus: Not found platform view {platformView.GetHashCode()}!");
 				}
 			}
@@ -204,14 +204,14 @@ namespace Microsoft.Maui.Handlers
 		}
 
 		static void FocusManager_LostFocus(object? sender, FocusManagerLostFocusEventArgs e)
-		{
-			System.Diagnostics.Debug.WriteLine($"XXX: > FocusManager_LostFocus({e.OldFocusedElement})");
-
+		{			
+			System.Diagnostics.Debug.WriteLine($"XXX: > FocusManager_LostFocus({e.OldFocusedElement?.GetType().FullName})");
 			_ = FocusManagerMapping ?? throw new InvalidOperationException($"{nameof(FocusManagerMapping)} should have been set.");
 
 			if (e.OldFocusedElement is PlatformView platformView)
 			{
-				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus: is platform view: '{platformView.GetType().FullName}'");
+				string automationId = e.OldFocusedElement is not null ? AutomationProperties.GetAutomationId(e.OldFocusedElement) : "NULL";
+				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus: is platform view: '{platformView.GetType().FullName}'|{automationId}");
 
 				if (FocusManagerMapping.TryGetValue(platformView, out ViewHandler? viewHandler))
 				{

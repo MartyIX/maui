@@ -27,8 +27,8 @@ namespace Microsoft.Maui.DeviceTests
 			TStub inputControl2;
 			var layout = new TLayoutStub
 			{
-				(inputControl1 = new TStub { Width = 100, Height = 50 }),
-				(inputControl2 = new TStub { Width = 100, Height = 50 })
+				(inputControl1 = new TStub { Width = 100, Height = 50, AutomationId = "TestControl1" }),
+				(inputControl2 = new TStub { Width = 100, Height = 50, AutomationId = "TestControl2" })
 			};
 			layout.Width = 100;
 			layout.Height = 150;

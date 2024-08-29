@@ -63,6 +63,8 @@ namespace Microsoft.Maui.DeviceTests
 		[Fact]
 		public async Task UnfocusAndIsFocusedIsWorking()
 		{
+			System.Diagnostics.Debug.WriteLine($"XXX: [TEST] UnfocusAndIsFocusedIsWorking STARTS!");
+
 			EnsureHandlerCreated(builder =>
 			{
 				builder.ConfigureMauiHandlers(handler =>

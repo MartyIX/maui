@@ -48,7 +48,7 @@ namespace Microsoft.Maui.DeviceTests
 				});
 			});
 		}
-#if !MACCATALYST
+//#if !MACCATALYST
 		[Fact]
 		public async Task PageLayoutDoesNotExceedWindowBounds()
 		{
@@ -76,13 +76,13 @@ namespace Microsoft.Maui.DeviceTests
 				var pageBounds = contentPage.GetBoundingBox();
 				var window = contentPage.Window;
 
-				Assert.True(pageBounds.X >= 0);
-				Assert.True(pageBounds.Y >= 0);
-				Assert.True(pageBounds.Width <= window.Width);
-				Assert.True(pageBounds.Height <= window.Height);
+				Assert.True(pageBounds.X >= 0, $"{pageBounds.X} >=0");
+				Assert.True(pageBounds.Y >= 0, $"{pageBounds.Y} >=0");
+				Assert.True(pageBounds.Width <= window.Width, $"{pageBounds.Width} <= {window.Width}");
+				Assert.True(pageBounds.Height <= window.Height, $"{pageBounds.Height} <= {window.Height}");
 			});
 		}
-#endif
+//#endif
 
 #if ANDROID || IOS || MACCATALYST
 		[Fact]

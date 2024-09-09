@@ -28,7 +28,8 @@ namespace Microsoft.Maui.Handlers
 				string automationId = $"X{platformView.GetType().Name}{Counter}";
 				AutomationProperties.SetAutomationId(platformView, automationId);
 
-				System.Diagnostics.Debug.WriteLine($"XXX: > ConnectingHandler: Platform view: {platformView.GetType().FullName} ({platformView.GetHashCode()}) ('{automationId}')");
+				System.Diagnostics.Debug.WriteLine($"XXX: > ConnectingHandler: Connecting view {VirtualView?.GetType().FullName} " +
+					$"with platform view: {platformView.GetType().FullName} ({platformView.GetHashCode()}) ('{automationId}')");
 
 				if (FocusManagerMapping is null)
 				{
@@ -50,7 +51,8 @@ namespace Microsoft.Maui.Handlers
 
 			UpdateIsFocused(false);
 
-			System.Diagnostics.Debug.WriteLine($"XXX: > DisconnectingHandler: Removing platform view: {platformView.GetHashCode()}");
+			System.Diagnostics.Debug.WriteLine($"XXX: > DisconnectingHandler: Removing view {VirtualView?.GetType().FullName} " +
+				$"with platform view: {platformView.GetType().FullName} ({platformView.GetHashCode()})");
 			FocusManagerMapping.Remove(platformView);
 
 			platformView.GotFocus -= OnPlatformViewGotFocus;
@@ -166,43 +168,96 @@ namespace Microsoft.Maui.Handlers
 
 		void OnPlatformViewGotFocus(object sender, RoutedEventArgs args)
 		{
+			System.Diagnostics.Debug.WriteLine($"XXX: > OnPlatformViewGotFocus[{VirtualView?.GetType().FullName} ({VirtualView?.GetHashCode()}); " +
+				$"platformView: {VirtualView?.Handler?.PlatformView?.GetType().FullName} ({VirtualView?.Handler?.PlatformView?.GetHashCode()})]");
+
 			UpdateIsFocused(true);
-			System.Diagnostics.Debug.WriteLine($"XXX: OnPlatformViewGotFocus(sender:{sender?.GetType().FullName} ({sender?.GetHashCode()}))");
+
+			System.Diagnostics.Debug.WriteLine($"XXX: < OnPlatformViewGotFocus");
 		}
 
 		void OnPlatformViewLostFocus(object sender, RoutedEventArgs args)
 		{
+			System.Diagnostics.Debug.WriteLine($"XXX: > OnPlatformViewLostFocus[{VirtualView?.GetType().FullName} ({VirtualView?.GetHashCode()}); " +
+				$"platformView: {VirtualView?.Handler?.PlatformView?.GetType().FullName} ({VirtualView?.Handler?.PlatformView?.GetHashCode()})]");
+
 			UpdateIsFocused(false);
-			System.Diagnostics.Debug.WriteLine($"XXX: OnPlatformViewLostFocus(sender:{sender?.GetType().FullName} ({sender?.GetHashCode()}))");
+
+			System.Diagnostics.Debug.WriteLine($"XXX: < OnPlatformViewLostFocus");
+		}
+
+		private void FocusManager_LosingFocus(object? sender, LosingFocusEventArgs e)
+		{
+			System.Diagnostics.Debug.WriteLine($"XXX: > #FocusManager#LosingFocus(e.Direction:{e.Direction},e.FocusState:{e.FocusState},e.Handled:{e.Handled}," +
+				$"sender:{sender?.GetType().FullName} ({sender?.GetHashCode()})," +
+				$"correlationId:{e.CorrelationId}," +
+				$"oldFocusedElement:{e.OldFocusedElement?.GetType().FullName} ({e.OldFocusedElement?.GetHashCode()}))" +
+				$"newFocusedElement:{e.NewFocusedElement?.GetType().FullName} ({e.NewFocusedElement?.GetHashCode()}))"
+				);
+			_ = FocusManagerMapping ?? throw new InvalidOperationException($"{nameof(FocusManagerMapping)} should have been set.");
+
+			if (e.OldFocusedElement is PlatformView oldPlatformView)
+			{
+				if (FocusManagerMapping.TryGetValue(oldPlatformView, out ViewHandler? viewHandler))
+				{
+					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LosingFocus[OLD_FOCUSED]: OK!! [platform view: {oldPlatformView.GetType().FullName} ({oldPlatformView.GetHashCode()})]");
+					// viewHandler.UpdateIsFocused(false, @new: true);
+				}
+				else
+				{
+					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LosingFocus[OLD_FOCUSED]: Not FrameworkElement instance.");
+				}
+			}
+
+			//if (e.NewFocusedElement is PlatformView newPlatformView)
+			//{
+			//	if (FocusManagerMapping.TryGetValue(newPlatformView, out ViewHandler? viewHandler))
+			//	{
+			//		System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LosingFocus[NEW_FOCUSED]: OK!! [platform view: {newPlatformView.GetType().FullName} ({newPlatformView.GetHashCode()})]");
+			//		viewHandler.UpdateIsFocused(true, @new: true);
+			//	}
+			//	else
+			//	{
+			//		System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LosingFocus[NEW_FOCUSED]: Not FrameworkElement instance.");
+			//	}
+			//}
+
+			System.Diagnostics.Debug.WriteLine($"XXX: < FocusManager_LosingFocus");
 		}
 
 		static void FocusManager_GettingFocus(object? sender, GettingFocusEventArgs e)
 		{
 			_ = FocusManagerMapping ?? throw new InvalidOperationException($"{nameof(FocusManagerMapping)} should have been set.");
 
-			System.Diagnostics.Debug.WriteLine($"XXX: > FocusManager_GettingFocus(sender:{sender?.GetType().FullName} ({sender?.GetHashCode()}),correlationId:{e.CorrelationId}," +
-				$"oldFocusedElement:{e.OldFocusedElement?.GetType().FullName} ({e.OldFocusedElement?.GetHashCode()})," +
-				$"newFocusedElement:{e.NewFocusedElement?.GetType().FullName}  ({e.NewFocusedElement?.GetHashCode()}))");
+			System.Diagnostics.Debug.WriteLine($"XXX: > #FocusManager#GettingFocus(e.Direction:{e.Direction},e.FocusState:{e.FocusState},e.Handled:{e.Handled}," +
+				$"sender:{sender?.GetType().FullName} ({sender?.GetHashCode()})," +
+				$"correlationId:{e.CorrelationId}," +
+				$"oldFocusedElement:{e.OldFocusedElement?.GetType().FullName ?? "NULL"} ({e.OldFocusedElement?.GetHashCode()})," +
+				$"newFocusedElement:{e.NewFocusedElement?.GetType().FullName ?? "NULL"}  ({e.NewFocusedElement?.GetHashCode()}))");
 
-			if (e.NewFocusedElement is PlatformView platformView)
+			//if (e.OldFocusedElement is PlatformView oldPlatformView)
+			//{
+			//	if (FocusManagerMapping.TryGetValue(oldPlatformView, out ViewHandler? viewHandler))
+			//	{
+			//		System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GettingFocus[OLD_FOCUSED]: OK!! [platform view: {oldPlatformView.GetType().FullName} ({oldPlatformView.GetHashCode()})]");
+			//		viewHandler.UpdateIsFocused(false, @new: true);
+			//	}
+			//	else
+			//	{
+			//		System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GettingFocus[OLD_FOCUSED]: Not FrameworkElement instance.");
+			//	}
+			//}
+
+			if (e.NewFocusedElement is PlatformView newPlatformView)
 			{
-				string automationId = e.NewFocusedElement is not null ? AutomationProperties.GetAutomationId(e.NewFocusedElement) : "NULL";
-
-				if (FocusManagerMapping.TryGetValue(platformView, out ViewHandler? viewHandler))
+				if (FocusManagerMapping.TryGetValue(newPlatformView, out ViewHandler? viewHandler))
 				{
-					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GettingFocus: OK!! [platform view: '{platformView.GetType().FullName}'|{platformView.GetHashCode()}|'{automationId}']");
-					viewHandler.UpdateIsFocused(true, dry: true);
+					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GettingFocus[NEW_FOCUSED]: OK!! [platform view: '{newPlatformView.GetType().FullName} ({newPlatformView.GetHashCode()})]");
+					// viewHandler.UpdateIsFocused(true, @new: true);
 				}
 				else
 				{
-					if (platformView is Button)
-					{
-						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GettingFocus[Button]: Not found platform view [platform view: '{platformView.GetType().FullName}'|{platformView.GetHashCode()}|'{automationId}']");
-					}
-					else
-					{
-						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GettingFocus[Other]: Not found platform view [platform view: '{platformView.GetType().FullName}'|{platformView.GetHashCode()}]");
-					}
+					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GettingFocus[NEW_FOCUSED]: Not FrameworkElement instance.");
 				}
 			}
 
@@ -213,123 +268,124 @@ namespace Microsoft.Maui.Handlers
 		{
 			_ = FocusManagerMapping ?? throw new InvalidOperationException($"{nameof(FocusManagerMapping)} should have been set.");
 
-			if (sender is null)
-			{
-				var v = FocusManager.GetFocusedElement();
-				System.Diagnostics.Debug.WriteLine($"XXX: NO SENDER: {v?.GetType().FullName} ({v?.GetHashCode()})");
-			}
-
-			System.Diagnostics.Debug.WriteLine($"XXX: > FocusManager_GotFocus(sender:{sender?.GetType().FullName} ({sender?.GetHashCode()}),correlationId:{e.CorrelationId},newFocusedElement:{e.NewFocusedElement?.GetType().FullName} ({e.NewFocusedElement?.GetHashCode()}))");
+			System.Diagnostics.Debug.WriteLine($"XXX: > #FocusManager#GotFocus(sender:{sender?.GetType().FullName ?? "NULL"} ({sender?.GetHashCode()})," +
+				$"correlationId:{e.CorrelationId}," +
+				$"newFocusedElement:{e.NewFocusedElement?.GetType().FullName ?? "NULL"} ({e.NewFocusedElement?.GetHashCode()}))");
 
 			if (e.NewFocusedElement is PlatformView platformView)
 			{
-				string automationId = e.NewFocusedElement is not null ? AutomationProperties.GetAutomationId(e.NewFocusedElement) : "NULL";
-
 				if (FocusManagerMapping.TryGetValue(platformView, out ViewHandler? viewHandler))
 				{
-					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus: OK!! [platform view: '{platformView.GetType().FullName}'|{platformView.GetHashCode()}|'{automationId}']");
-					viewHandler.UpdateIsFocused(true, dry: true);
+					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus: OK!! [platform view: {platformView.GetType().FullName} ({platformView.GetHashCode()})]");
+					viewHandler.UpdateIsFocused(true, @new: true);
 				}
 				else
 				{
 					if (platformView is Button)
 					{
-						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus[Button]: Not found platform view [platform view: '{platformView.GetType().FullName}'|{platformView.GetHashCode()}|'{automationId}']");
+						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus[Button]: Not found platform view [platform view: {platformView.GetType().FullName} ({platformView.GetHashCode()})]");
 					}
 					else
 					{
-						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus[Other]: Not found platform view [platform view: '{platformView.GetType().FullName}'|{platformView.GetHashCode()}]");
+						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus[Other]: Not found platform view [platform view: {platformView.GetType().FullName} ({platformView.GetHashCode()})]");
 					}
 				}
 			}
 			else if (e.NewFocusedElement is DependencyObject dependencyObject)
 			{
-				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus[DEPENDENCY_OBJECT]: {dependencyObject?.GetType().FullName} ({dependencyObject?.GetHashCode()})");
-			} 
+				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus[DEPENDENCY_OBJECT]: {dependencyObject.GetType().FullName} ({dependencyObject.GetHashCode()})");
+				int child = 0;
+
+				foreach (FrameworkElement next in FindDescendants<PlatformView>(dependencyObject))
+				{
+					child++;
+					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus[DEP][{child}]: First: {next.GetType().FullName} ({next.GetHashCode()})");
+
+					if (FocusManagerMapping.TryGetValue(next, out ViewHandler? viewHandler))
+					{
+						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus[DEP][{child}]: FOUND!!!");
+						viewHandler.UpdateIsFocused(true, @new: true);
+					}
+					else
+					{
+						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus[DEP][{child}]: NOT FOUND FOUND!!!");
+					}
+				}
+			}
 			else if (e.NewFocusedElement is null)
 			{
 				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus: NEW focused element is NULL; {e.NewFocusedElement}");
 			}
 			else
 			{
-				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus: not a platform view but: {e.NewFocusedElement?.GetType().FullName}");
+				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_GotFocus: Not a platform view but: {e.NewFocusedElement?.GetType().FullName}");
 			}
 
 			System.Diagnostics.Debug.WriteLine($"XXX: < FocusManager_GotFocus");
 		}
 
-		private void FocusManager_LosingFocus(object? sender, LosingFocusEventArgs e)
+		private static IEnumerable<T> FindDescendants<T>(Microsoft.UI.Xaml.DependencyObject dobj)
+			where T : Microsoft.UI.Xaml.DependencyObject
 		{
-			System.Diagnostics.Debug.WriteLine($"XXX: > FocusManager_LosingFocus(sender:{sender?.GetType().FullName} ({sender?.GetHashCode()}),correlationId:{e.CorrelationId}," +
-				$"oldFocusedElement:{e.OldFocusedElement?.GetType().FullName} ({e.OldFocusedElement?.GetHashCode()}))" + 
-				$"newFocusedElement:{e.NewFocusedElement?.GetType().FullName} ({e.NewFocusedElement?.GetHashCode()}))"
-				);
-			_ = FocusManagerMapping ?? throw new InvalidOperationException($"{nameof(FocusManagerMapping)} should have been set.");
-
-			if (e.OldFocusedElement is PlatformView platformView)
+			int count = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetChildrenCount(dobj);
+			for (int i = 0; i < count; i++)
 			{
-				string automationId = e.OldFocusedElement is not null ? AutomationProperties.GetAutomationId(e.OldFocusedElement) : "NULL";
+				Microsoft.UI.Xaml.DependencyObject element = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetChild(dobj, i);
+				if (element is T t)
+					yield return t;
 
-				if (FocusManagerMapping.TryGetValue(platformView, out ViewHandler? viewHandler))
-				{
-					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LosingFocus: OK!!! [platform view: '{platformView.GetType().FullName}'|{platformView.GetHashCode()}|'{automationId}']");
-					// viewHandler.UpdateIsFocused(false, dry: true);
-				}
-				else
-				{
-					if (platformView is Button)
-					{
-						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LosingFocus[Button]: Not found platform view [platform view: '{platformView.GetType().FullName}'|{platformView.GetHashCode()}|'{automationId}']");
-					}
-					else
-					{
-						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LosingFocus[Other]: Not found platform view [platform view: '{platformView.GetType().FullName}'|{platformView.GetHashCode()}]");
-					}
-				}
+				foreach (T descendant in FindDescendants<T>(element))
+					yield return descendant;
 			}
-			else
-			{
-				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LosingFocus: not a platform view but: {e.OldFocusedElement?.GetType().FullName}");
-			}
-
-			System.Diagnostics.Debug.WriteLine($"XXX: < FocusManager_LosingFocus");
 		}
 
 		static void FocusManager_LostFocus(object? sender, FocusManagerLostFocusEventArgs e)
 		{
-			System.Diagnostics.Debug.WriteLine($"XXX: > FocusManager_LostFocus(sender:{sender?.GetType().FullName} ({sender?.GetHashCode()}),correlationId:{e.CorrelationId},oldFocusedElement:{e.OldFocusedElement?.GetType().FullName} ({e.OldFocusedElement?.GetHashCode()}))");
+			System.Diagnostics.Debug.WriteLine($"XXX: > #FocusManager#LostFocus(sender:{sender?.GetType().FullName} ({sender?.GetHashCode()}),correlationId:{e.CorrelationId},oldFocusedElement:{e.OldFocusedElement?.GetType().FullName} ({e.OldFocusedElement?.GetHashCode()}))");
 			_ = FocusManagerMapping ?? throw new InvalidOperationException($"{nameof(FocusManagerMapping)} should have been set.");
 
 			if (e.OldFocusedElement is PlatformView platformView)
 			{
-				string automationId = e.OldFocusedElement is not null ? AutomationProperties.GetAutomationId(e.OldFocusedElement) : "NULL";
-
 				if (FocusManagerMapping.TryGetValue(platformView, out ViewHandler? viewHandler))
 				{
-					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus: OK!!! [platform view: '{platformView.GetType().FullName}'|{platformView.GetHashCode()}|'{automationId}']");
-					viewHandler.UpdateIsFocused(false, dry: true);
+					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus: OK!!! [platform view: {platformView.GetType().FullName} ({platformView.GetHashCode()})]");
+					viewHandler.UpdateIsFocused(false, @new: true);
 				}
 				else
 				{
-					if (platformView is Button)
+					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus: Not found FrameworkElement [platform view: {platformView.GetType().FullName} ({platformView.GetHashCode()})]");
+				}
+			}
+			else if (e.OldFocusedElement is DependencyObject dependencyObject)
+			{
+				foreach (FrameworkElement next in FindDescendants<PlatformView>(dependencyObject))
+				{
+					System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus[DEP]: First: {next.GetType().FullName} ({next.GetHashCode()})");
+
+					if (FocusManagerMapping.TryGetValue(next, out ViewHandler? viewHandler))
 					{
-						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus[Button]: Not found platform view [platform view: '{platformView.GetType().FullName}'|{platformView.GetHashCode()}|'{automationId}']");
+						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus[DEP]: FOUND!!!");
+						viewHandler.UpdateIsFocused(false, @new: true);
 					}
 					else
 					{
-						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus[Other]: Not found platform view [platform view: '{platformView.GetType().FullName}'|{platformView.GetHashCode()}]");
+						System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus[DEP]: NOT FOUND FOUND!!!");
 					}
 				}
 			}
+			else if (e.OldFocusedElement is null)
+			{
+				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus: OLD focused element is NULL; {e.OldFocusedElement}");
+			}
 			else
 			{
-				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus: not a platform view but: {e.OldFocusedElement?.GetType().FullName}");
+				System.Diagnostics.Debug.WriteLine($"XXX: FocusManager_LostFocus: Not a platform view.");
 			}
 
 			System.Diagnostics.Debug.WriteLine($"XXX: < FocusManager_LostFocus");
 		}
 
-		void UpdateIsFocused(bool isFocused, bool dry = false)
+		void UpdateIsFocused(bool isFocused, bool @new = false)
 		{
 			if (VirtualView == null)
 			{
@@ -340,15 +396,22 @@ namespace Microsoft.Maui.Handlers
 
 			if (updateIsFocused)
 			{
-				if (dry)
+				if (@new)
 				{
-					System.Diagnostics.Debug.WriteLine($"XXX: UpdateIsFocused [NEW]: VirtualView:{VirtualView.GetType().FullName} isFocused={isFocused} [{VirtualView.Handler?.PlatformView?.GetType().FullName}|{VirtualView.Handler?.PlatformView?.GetHashCode()}]");
+					System.Diagnostics.Debug.WriteLine($"XXX: * UpdateIsFocused [NEW]: VirtualView:{VirtualView.GetType().FullName} isFocused={isFocused} " +
+						$"[platformView: {VirtualView.Handler?.PlatformView?.GetType().FullName} ({VirtualView.Handler?.PlatformView?.GetHashCode()})]");
+					VirtualView.IsFocused = isFocused;
 				}
 				else
 				{
-					System.Diagnostics.Debug.WriteLine($"XXX: UpdateIsFocused [OLD]: VirtualView:{VirtualView.GetType().FullName} isFocused={isFocused} [{VirtualView.Handler?.PlatformView?.GetType().FullName}|{VirtualView.Handler?.PlatformView?.GetHashCode()}]");
-					VirtualView.IsFocused = isFocused;
+					System.Diagnostics.Debug.WriteLine($"XXX: * UpdateIsFocused [OLD]: VirtualView:{VirtualView.GetType().FullName} isFocused={isFocused} " +
+						$"[platformView: {VirtualView.Handler?.PlatformView?.GetType().FullName} ({VirtualView.Handler?.PlatformView?.GetHashCode()})]");
 				}
+			}
+			else
+			{
+				System.Diagnostics.Debug.WriteLine($"XXX: * UpdateIsFocused [{(@new ? "NEW" : "OLD")}][NO_CHANGE]: VirtualView:{VirtualView.GetType().FullName} isFocused={isFocused} " +
+					$"[platformView: {VirtualView.Handler?.PlatformView?.GetType().FullName} ({VirtualView.Handler?.PlatformView?.GetHashCode()})]");
 			}
 		}
 	}

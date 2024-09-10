@@ -380,8 +380,11 @@ namespace Microsoft.Maui.Platform
 
 		internal static void UnfocusControl(Control control)
 		{
+			System.Diagnostics.Debug.WriteLine($"XXX: UnfocusControl: #0");
+
 			if (!control.IsEnabled)
 			{
+				System.Diagnostics.Debug.WriteLine($"XXX: UnfocusControl:#1");
 				return;
 			}
 
@@ -392,12 +395,14 @@ namespace Microsoft.Maui.Platform
 			var xamlRootContent = control.XamlRoot?.Content;
 			if (xamlRootContent is null)
 			{
+				System.Diagnostics.Debug.WriteLine($"XXX: UnfocusControl:#2");
 				return;
 			}
 
 			var wasTabStop = xamlRootContent.IsTabStop;
 			if (!wasTabStop)
 			{
+				System.Diagnostics.Debug.WriteLine($"XXX: UnfocusControl:#3");
 				xamlRootContent.IsTabStop = true;
 			}
 
@@ -405,8 +410,11 @@ namespace Microsoft.Maui.Platform
 
 			if (!wasTabStop)
 			{
+				System.Diagnostics.Debug.WriteLine($"XXX: UnfocusControl:#4");
 				xamlRootContent.IsTabStop = false;
 			}
+
+			System.Diagnostics.Debug.WriteLine($"XXX: UnfocusControl:#5");
 		}
 
 		internal static IWindow? GetHostedWindow(this IView? view)

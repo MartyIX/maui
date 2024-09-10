@@ -93,17 +93,28 @@ namespace Microsoft.Maui.DeviceTests
 				Assert.True(result1);
 
 				// assert
+				System.Diagnostics.Debug.WriteLine($"XXX: #TEST: WaitForFocused (HC: {inputControl1.Handler?.PlatformView?.GetHashCode()})");
 				await inputControl1.WaitForFocused();
+
+				System.Diagnostics.Debug.WriteLine($"XXX: #TEST: Assert#1: inputControl1.IsFocused (HC: {inputControl1.Handler?.PlatformView?.GetHashCode()})");
 				Assert.True(inputControl1.IsFocused);
+
+				System.Diagnostics.Debug.WriteLine($"XXX: #TEST: Assert#2: !inputControl2.IsFocused (HC: {inputControl2.Handler?.PlatformView?.GetHashCode()})");
 				Assert.False(inputControl2.IsFocused);
 
 				// UNfocus the first control (revert the focus)
+				System.Diagnostics.Debug.WriteLine($"XXX: #TEST: Unfocus inputControl1! (HC: {inputControl1.Handler?.PlatformView?.GetHashCode()})");
 				inputControl1.Handler.Invoke(nameof(IView.Unfocus));
 
 				// assert
+				System.Diagnostics.Debug.WriteLine($"XXX: #TEST: Wait until inputControl1 is not focused (HC: {inputControl1.Handler?.PlatformView?.GetHashCode()})");
 				await inputControl1.WaitForUnFocused();
+
+				System.Diagnostics.Debug.WriteLine($"XXX: #TEST: Assert#3: !inputControl1.IsFocused (HC: {inputControl1.Handler?.PlatformView?.GetHashCode()})");
 				Assert.False(inputControl1.IsFocused);
 				Assert.False(inputControl2.IsFocused);
+
+				System.Diagnostics.Debug.WriteLine($"XXX: #TEST: DONE!");
 			});
 		}
 #endif

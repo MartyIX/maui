@@ -4,4 +4,14 @@
     x:Class="Maui.Controls.Sample.MainPage"
     xmlns:local="clr-namespace:Maui.Controls.Sample">
 
+  <Grid BackgroundColor="White">
+    <Path Fill="Black" Aspect="Uniform">
+      <Path.Data>
+        M 12 2
+      A 2 2 0 0 0 10 4
+      A 2 2 0 0 0 10 4.29
+      </Path.Data>
+    </Path>
+  </Grid>
+
 </ContentPage>

@@ -32,7 +32,7 @@ namespace Microsoft.Maui.Handlers
 
 		public IElement? VirtualView { get; private protected set; }
 
-		internal bool _isPlatformViewNew;
+		bool IsInitialized { get; set; }
 
 		public virtual void SetMauiContext(IMauiContext mauiContext) =>
 			MauiContext = mauiContext;
@@ -58,7 +58,7 @@ namespace Microsoft.Maui.Handlers
 				isNew = true;
 			}
 
-			_isPlatformViewNew = isNew;
+			IsInitialized = isNew;
 
 			if (VirtualView.Handler != this)
 			{
@@ -91,7 +91,7 @@ namespace Microsoft.Maui.Handlers
 
 			_mapper.UpdateProperties(this, VirtualView);
 
-			_isPlatformViewNew = false;
+			IsInitialized = false;
 		}
 
 		public virtual void UpdateValue(string property)

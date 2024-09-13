@@ -1,1 +1,2 @@
 #nullable enable
+Microsoft.Maui.IElementHandler.IsInitialized.get -> bool

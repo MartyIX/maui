@@ -46,6 +46,15 @@
 		/// </summary>  
 		IElement? VirtualView { get; }
 
+		/// <summary>
+		/// Gets if the platform view was initialized for the first time or not.
+		/// </summary>
+#if NETSTANDARD2_0
+		bool IsInitialized { get; }
+#else
+		bool IsInitialized => false;
+#endif
+
 		/// <summary>  
 		/// Gets the .NET MAUI context associated with the element.  
 		/// </summary>  

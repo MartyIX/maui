@@ -19,7 +19,7 @@ namespace Microsoft.Maui.Platform
 			if (rotationX % 360 == 0 && rotationY % 360 == 0 && rotation % 360 == 0 &&
 				translationX == 0 && translationY == 0 && scaleX == 1 && scaleY == 1)
 			{
-				bool? skipInitialization = (view.Handler as ElementHandler)?._isPlatformViewNew ?? false;
+				bool? skipInitialization = view.Handler?.IsInitialized ?? false;
 
 				if (skipInitialization != true)
 				{

@@ -41,7 +41,7 @@ namespace Microsoft.Maui.Platform
 
 		public static void UpdateVisibility(this FrameworkElement platformView, IView view)
 		{
-			bool? skipInitialization = (view.Handler as ElementHandler)?._isPlatformViewNew ?? false
+			bool skipInitialization = (view.Handler?.IsInitialized ?? false)
 				|| !(view.Visibility == Visibility.Visible && view.Opacity == 1.0);
 
 			if (skipInitialization != true)
@@ -99,7 +99,7 @@ namespace Microsoft.Maui.Platform
 		public static void UpdateOpacity(this FrameworkElement platformView, IView view)
 		{
 			var opacity = view.Visibility == Visibility.Hidden ? 0 : view.Opacity;
-			bool? skipInitialization = (view.Handler as ElementHandler)?._isPlatformViewNew ?? false
+			bool skipInitialization = (view.Handler?.IsInitialized ?? false) 
 				|| opacity != 1;
 
 			if (skipInitialization != true)
@@ -131,7 +131,7 @@ namespace Microsoft.Maui.Platform
 
 		public static void UpdateFlowDirection(this FrameworkElement platformView, IView view)
 		{
-			bool? skipInitialization = (view.Handler as ElementHandler)?._isPlatformViewNew ?? false
+			bool skipInitialization = (view.Handler?.IsInitialized ?? false)
 				|| view.FlowDirection != FlowDirection.MatchParent;
 
 			if (skipInitialization != true)
@@ -154,7 +154,7 @@ namespace Microsoft.Maui.Platform
 
 		public static void UpdateAutomationId(this FrameworkElement platformView, IView view)
 		{
-			bool? skipInitialization = (view.Handler as ElementHandler)?._isPlatformViewNew ?? false
+			bool skipInitialization = (view.Handler?.IsInitialized ?? false)
 				|| view.AutomationId is not null;
 
 			if (skipInitialization != true)
@@ -202,7 +202,7 @@ namespace Microsoft.Maui.Platform
 
 		public static void UpdateWidth(this FrameworkElement platformView, IView view)
 		{
-			bool? skipInitialization = (view.Handler as ElementHandler)?._isPlatformViewNew ?? false
+			bool skipInitialization = (view.Handler?.IsInitialized ?? false)
 				|| !double.IsNaN(view.Width);
 
 			if (skipInitialization != true) 
@@ -215,7 +215,7 @@ namespace Microsoft.Maui.Platform
 
 		public static void UpdateHeight(this FrameworkElement platformView, IView view)
 		{
-			bool? skipInitialization = (view.Handler as ElementHandler)?._isPlatformViewNew ?? false
+			bool skipInitialization = (view.Handler?.IsInitialized ?? false)
 				|| !double.IsNaN(view.Height);
 
 			if (skipInitialization != true)
@@ -246,7 +246,7 @@ namespace Microsoft.Maui.Platform
 		{
 			var minWidth = view.MinimumWidth;
 
-			bool? skipInitialization = (view.Handler as ElementHandler)?._isPlatformViewNew ?? false
+			bool skipInitialization = (view.Handler?.IsInitialized ?? false)
 				|| Dimension.IsMinimumSet(minWidth);
 
 			if (skipInitialization != true)
@@ -263,7 +263,7 @@ namespace Microsoft.Maui.Platform
 
 		public static void UpdateMaximumHeight(this FrameworkElement platformView, IView view)
 		{
-			bool? skipInitialization = (view.Handler as ElementHandler)?._isPlatformViewNew ?? false
+			bool skipInitialization = (view.Handler?.IsInitialized ?? false)
 				|| !Dimension.IsMaximumSet(view.MaximumHeight);
 
 			if (skipInitialization != true)
@@ -274,7 +274,7 @@ namespace Microsoft.Maui.Platform
 
 		public static void UpdateMaximumWidth(this FrameworkElement platformView, IView view)
 		{
-			bool? skipInitialization = (view.Handler as ElementHandler)?._isPlatformViewNew ?? false
+			bool skipInitialization = (view.Handler?.IsInitialized ?? false)
 				|| !Dimension.IsMaximumSet(view.MaximumWidth);
 
 			if (skipInitialization != true) 
@@ -466,7 +466,7 @@ namespace Microsoft.Maui.Platform
 
 		public static void UpdateInputTransparent(this FrameworkElement nativeView, IViewHandler handler, IView view)
 		{
-			bool? skipInitialization = (view.Handler as ElementHandler)?._isPlatformViewNew ?? false
+			bool skipInitialization = (view.Handler?.IsInitialized ?? false)
 				|| !view.InputTransparent;
 
 			if (skipInitialization != true) 

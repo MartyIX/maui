@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using CoreAnimation;
-using CoreGraphics;
 using Microsoft.Maui.Graphics;
 using UIKit;
 
@@ -15,7 +13,9 @@ namespace Microsoft.Maui.Platform
 			CALayer? backgroundLayer = platformView.Layer as MauiCALayer;
 
 			if (backgroundLayer == null && borderShape == null)
+			{
 				return;
+			}
 
 			platformView.UpdateMauiCALayer(border);
 		}
@@ -26,7 +26,9 @@ namespace Microsoft.Maui.Platform
 			CALayer? backgroundLayer = platformView.Layer as MauiCALayer;
 
 			if (backgroundLayer == null && borderBrush.IsNullOrEmpty())
+			{
 				return;
+			}
 
 			platformView.UpdateMauiCALayer(border);
 		}
@@ -38,7 +40,9 @@ namespace Microsoft.Maui.Platform
 			bool hasBorder = border.Shape != null && border.Stroke != null;
 
 			if (backgroundLayer == null && !hasBorder)
+			{
 				return;
+			}
 
 			platformView.UpdateMauiCALayer(border);
 		}
@@ -50,7 +54,9 @@ namespace Microsoft.Maui.Platform
 			bool hasBorder = border.Shape != null && border.Stroke != null;
 
 			if (backgroundLayer == null && !hasBorder)
+			{
 				return;
+			}
 
 			platformView.UpdateMauiCALayer(border);
 		}
@@ -63,7 +69,9 @@ namespace Microsoft.Maui.Platform
 			bool hasBorder = border.Shape != null && border.Stroke != null;
 
 			if (backgroundLayer == null && !hasBorder && (strokeDashPattern == null || strokeDashPattern.Length == 0))
+			{
 				return;
+			}
 
 			platformView.UpdateMauiCALayer(border);
 		}
@@ -75,7 +83,9 @@ namespace Microsoft.Maui.Platform
 			bool hasBorder = border.Shape != null && border.Stroke != null;
 
 			if (backgroundLayer == null && !hasBorder)
+			{
 				return;
+			}
 
 			platformView.UpdateMauiCALayer(border);
 		}
@@ -86,7 +96,9 @@ namespace Microsoft.Maui.Platform
 			bool hasBorder = border.Shape != null && border.Stroke != null;
 
 			if (backgroundLayer == null && !hasBorder)
+			{
 				return;
+			}
 
 			platformView.UpdateMauiCALayer(border);
 		}
@@ -97,7 +109,9 @@ namespace Microsoft.Maui.Platform
 			bool hasBorder = border.Shape != null && border.Stroke != null;
 
 			if (backgroundLayer == null && !hasBorder)
+			{
 				return;
+			}
 
 			platformView.UpdateMauiCALayer(border);
 		}
@@ -131,30 +145,40 @@ namespace Microsoft.Maui.Platform
 				return;
 			}
 
-			if (backgroundLayer is MauiCALayer mauiCALayer)
+			var isInitializing = ((platformView as ContentView)?.View?.Handler as ElementHandler)?._isInitializing ?? false;
+			var setProperties = !isInitializing || border is not null;
+
+			if (setProperties)
 			{
-				if (border is IView view)
-					mauiCALayer.SetBackground(view.Background);
-				else
-					mauiCALayer.SetBackground(new SolidPaint(Colors.Transparent));
-
-				mauiCALayer.SetBorderBrush(border?.Stroke);
-				mauiCALayer.SetBorderWidth(border?.StrokeThickness ?? 0);
-				mauiCALayer.SetBorderDash(border?.StrokeDashPattern, border?.StrokeDashOffset ?? 0);
-				mauiCALayer.SetBorderMiterLimit(border?.StrokeMiterLimit ?? 0);
-
-				if (border != null)
+				if (backgroundLayer is MauiCALayer mauiCALayer)
 				{
-					mauiCALayer.SetBorderLineJoin(border.StrokeLineJoin);
-					mauiCALayer.SetBorderLineCap(border.StrokeLineCap);
+					if (border is IView view)
+					{
+						mauiCALayer.SetBackground(view.Background);
+					}
+					else
+					{
+						mauiCALayer.SetBackground(new SolidPaint(Colors.Transparent));
+					}
+
+					mauiCALayer.SetBorderBrush(border?.Stroke);
+					mauiCALayer.SetBorderWidth(border?.StrokeThickness ?? 0);
+					mauiCALayer.SetBorderDash(border?.StrokeDashPattern, border?.StrokeDashOffset ?? 0);
+					mauiCALayer.SetBorderMiterLimit(border?.StrokeMiterLimit ?? 0);
+
+					if (border != null)
+					{
+						mauiCALayer.SetBorderLineJoin(border.StrokeLineJoin);
+						mauiCALayer.SetBorderLineCap(border.StrokeLineCap);
+					}
+
+					mauiCALayer.SetBorderShape(border?.Shape);
 				}
 
-				mauiCALayer.SetBorderShape(border?.Shape);
-			}
-
-			if (platformView is ContentView contentView)
-			{
-				contentView.Clip = border;
+				if (platformView is ContentView contentView)
+				{
+					contentView.Clip = border;
+				}
 			}
 		}
 	}

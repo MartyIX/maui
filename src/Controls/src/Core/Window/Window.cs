@@ -211,11 +211,16 @@ namespace Microsoft.Maui.Controls
 
 		void IWindow.FrameChanged(Rect frame)
 		{
+			Console.WriteLine($"Window.FrameChanged * frame={frame} (window=HC:{GetHashCode()},window.PlatformView=HC:{Handler?.PlatformView?.GetHashCode()};" 
+				+ $"typeof(Window)='{GetType().FullName}')");
+
 			if (new Rect(X, Y, Width, Height) == frame)
 			{
+				Console.WriteLine($"Window.FrameChanged: $<EQUAL>.");
 				return;
 			}
 
+			Console.WriteLine($"Window.FrameChanged: X={X},Y={Y},Width={Width},Height={Height}");
 			_batchFrameUpdate++;
 
 			var shouldTriggerSizeChanged = (Width != frame.Width) || (Height != frame.Height);
@@ -233,6 +238,8 @@ namespace Microsoft.Maui.Controls
 			{
 				SizeChanged?.Invoke(this, EventArgs.Empty);
 			}
+
+			Console.WriteLine($"Window.FrameChanged: $");
 		}
 
 		private protected override void UpdateHandlerValue(string property, bool valueChanged)

@@ -52,6 +52,7 @@ namespace Microsoft.Maui.DeviceTests
 		[Fact]
 		public async Task PageLayoutDoesNotExceedWindowBounds()
 		{
+			Console.WriteLine($"ShellTests: PageLayoutDoesNotExceedWindowBounds *");
 			SetupBuilder();
 
 			var button = new Button()
@@ -75,12 +76,17 @@ namespace Microsoft.Maui.DeviceTests
 				await OnFrameSetToNotEmpty(contentPage);
 				var pageBounds = contentPage.GetBoundingBox();
 				var window = contentPage.Window;
+				Console.WriteLine($"ShellTests: window=HC:{window.GetHashCode()};window.platformView=HC:{window.Handler?.PlatformView?.GetHashCode()};typeof(Window)='{window.GetType().FullName}'");
 
-				Assert.True(pageBounds.X >= 0, $"{pageBounds.X} >=0");
-				Assert.True(pageBounds.Y >= 0, $"{pageBounds.Y} >=0");
-				Assert.True(pageBounds.Width <= window.Width, $"{pageBounds.Width} <= {window.Width}");
-				Assert.True(pageBounds.Height <= window.Height, $"{pageBounds.Height} <= {window.Height}");
+				Console.WriteLine($"ShellTests: X={window.X},Y={window.Y},Width={window.Width},Height={window.Height}");
+
+				Assert.True(pageBounds.X >= 0, $"X: {pageBounds.X} >=0");
+				Assert.True(pageBounds.Y >= 0, $"Y: {pageBounds.Y} >=0");
+				Assert.True(pageBounds.Width <= window.Width, $"W: {pageBounds.Width} <= {window.Width}");
+				Assert.True(pageBounds.Height <= window.Height, $"H: {pageBounds.Height} <= {window.Height}");
 			});
+
+			Console.WriteLine($"ShellTests: PageLayoutDoesNotExceedWindowBounds $");
 		}
 //#endif
 

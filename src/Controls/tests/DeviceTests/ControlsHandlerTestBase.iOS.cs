@@ -19,27 +19,41 @@ namespace Microsoft.Maui.DeviceTests
 		Task SetupWindowForTests<THandler>(IWindow window, Func<Task> runTests, IMauiContext mauiContext = null)
 		where THandler : class, IElementHandler
 		{
+			Console.WriteLine($"ControlsHandlerTestBase.SetupWindowForTests * window:{window.GetHashCode()}");
+
 			mauiContext ??= MauiContext;
 			return InvokeOnMainThreadAsync(async () =>
 			{
+				Console.WriteLine($"ControlsHandlerTestBase.SetupWindowForTests[UI] * window:{window.GetHashCode()}");
+
 				IElementHandler windowHandler = null;
 				try
 				{
 					windowHandler = window.ToHandler(mauiContext);
+					Console.WriteLine($"ControlsHandlerTestBase.SetupWindowForTests[UI]: windowHandler='{windowHandler.GetType().FullName}'");
 					await runTests.Invoke();
 				}
 				finally
 				{
+					Console.WriteLine($"ControlsHandlerTestBase.SetupWindowForTests[UI]: finally clause");
+
 					if (windowHandler is WindowHandlerStub windowHandlerStub)
 					{
-						if (windowHandlerStub.IsDisconnected)
+						Console.WriteLine($"ControlsHandlerTestBase.SetupWindowForTests[UI]: is WindowHandlerStub");
+						if (windowHandlerStub.IsDisconnected) {
+							Console.WriteLine($"ControlsHandlerTestBase.SetupWindowForTests[UI]: Wait for disconnecting");
 							await windowHandlerStub.FinishedDisconnecting;
+						}
 					}
 
 					if (windowHandler is not null)
 					{
+						Console.WriteLine($"ControlsHandlerTestBase.SetupWindowForTests[UI]: #1; windowHandler is not null");
+
 						if (window is Window controlsWindow && controlsWindow.Navigation.ModalStack.Count > 0)
 						{
+							Console.WriteLine($"ControlsHandlerTestBase.SetupWindowForTests[UI]: #2; controlsWindow={controlsWindow.GetType().FullName}");
+							
 							for (int i = 0; i < controlsWindow.Navigation.ModalStack.Count; i++)
 							{
 								var page = controlsWindow.Navigation.ModalStack[i];
@@ -55,13 +69,18 @@ namespace Microsoft.Maui.DeviceTests
 
 					if (windowHandler is WindowHandlerStub whs)
 					{
+						Console.WriteLine($"ControlsHandlerTestBase.SetupWindowForTests[UI]: #3");
+
 						if (!whs.IsDisconnected)
 							window.Handler.DisconnectHandler();
 
 						await whs.FinishedDisconnecting;
 					}
-					else
+					else 
+					{
+						Console.WriteLine($"ControlsHandlerTestBase.SetupWindowForTests[UI]: #4");
 						window.Handler?.DisconnectHandler();
+					}
 
 					var vc =
 						(window.Content?.Handler as IPlatformViewHandler)?
@@ -76,6 +95,7 @@ namespace Microsoft.Maui.DeviceTests
 
 					bool dangling = false;
 
+					Console.WriteLine($"ControlsHandlerTestBase.SetupWindowForTests[UI]: #5");
 					while (rootView?.PresentedViewController is not null)
 					{
 						dangling = true;
@@ -84,6 +104,8 @@ namespace Microsoft.Maui.DeviceTests
 
 					Assert.False(dangling, "Test failed to cleanup modals");
 				}
+
+				Console.WriteLine($"ControlsHandlerTestBase.SetupWindowForTests[UI] $");
 			});
 		}
 

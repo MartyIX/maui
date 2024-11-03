@@ -87,15 +87,29 @@ namespace Microsoft.Maui.DeviceTests
 
 		IWindow CreateWindowForContent(IElement view)
 		{
+			Console.WriteLine($"ControlsHandlerTestBase.CreateWindowForContent *");
+
 			IWindow window;
 
 			if (view is IWindow w)
+			{
+				Console.WriteLine($"ControlsHandlerTestBase.CreateWindowForContent: Is IWindow.");
 				window = w;
+			}
 			else if (view is Page page)
+			{
+				Console.WriteLine($"ControlsHandlerTestBase.CreateWindowForContent: Is Page.");
 				window = new Controls.Window(page);
-			else
-				window = new Controls.Window(new ContentPage() { Content = (View)view });
 
+				Console.WriteLine($"ControlsHandlerTestBase.CreateWindowForContent: Is Page; window.Handler={window.Handler?.GetType().FullName}");
+			}
+			else 
+			{
+				Console.WriteLine($"ControlsHandlerTestBase.CreateWindowForContent: Other.");
+				window = new Controls.Window(new ContentPage() { Content = (View)view });
+			}
+
+			Console.WriteLine($"ControlsHandlerTestBase.CreateWindowForContent $");
 			return window;
 		}
 
@@ -139,6 +153,8 @@ namespace Microsoft.Maui.DeviceTests
 		protected Task CreateHandlerAndAddToWindow<THandler>(IElement view, Func<THandler, Task> action, IMauiContext mauiContext = null, TimeSpan? timeOut = null)
 			where THandler : class, IElementHandler
 		{
+			Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow * view=HC:{view.GetHashCode()} (view={view.GetType().FullName})");
+
 			mauiContext ??= MauiContext;
 
 			if (System.Diagnostics.Debugger.IsAttached)
@@ -146,24 +162,33 @@ namespace Microsoft.Maui.DeviceTests
 			else
 				timeOut ??= TimeSpan.FromSeconds(15);
 
+			Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow $");
+
 			return InvokeOnMainThreadAsync(async () =>
 			{
+				Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow[UI] *");
 				IWindow window = CreateWindowForContent(view);
 
 				var application = mauiContext.Services.GetService<IApplication>();
 
 				if (application is ApplicationStub appStub)
 				{
+					Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow[UI]: application is ApplicationStub");
 					appStub.SetWindow((Window)window);
 
 					// Trigger the work flow of creating a window
+					Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow[UI]: application - create window");
 					_ = application.CreateWindow(null);
+
+					Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow[UI]: done: window=HC:{window.GetHashCode()},window.PlatformView=HC:{window.Handler?.PlatformView?.GetHashCode()}");
 				}
 
 				try
 				{
+					Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow[UI]: Wait to take over main content");
 					await _takeOverMainContentSempahore.WaitAsync();
 
+					Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow[UI]: window=HC:{window.GetHashCode()},window.PlatformView=HC:{window.Handler?.PlatformView?.GetHashCode()}");
 					await SetupWindowForTests<THandler>(window, async () =>
 					{
 						IView content = window.Content;
@@ -194,6 +219,7 @@ namespace Microsoft.Maui.DeviceTests
 
 						if (content is VisualElement vc)
 						{
+							Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow[UI]: Content is VisualElement");
 							await OnLoadedAsync(vc);
 
 							if (vc.Frame.Height < 0 && vc.Frame.Width < 0)
@@ -216,17 +242,21 @@ namespace Microsoft.Maui.DeviceTests
 
 						// Gives time for the measure/layout pass to settle
 						await Task.Yield();
-						if (view is VisualElement veBeingTested)
+						if (view is VisualElement veBeingTested) {
+							Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow[UI]: view is VisualElement");
 							await OnLoadedAsync(veBeingTested);
+						}
 
 #if !WINDOWS
 						if (window is Window controlsWindow)
 						{
+							Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow[UI]: window is controlsWindow");
 							if (!controlsWindow.IsActivated)
 								window.Activated();
 						}
 						else
 						{
+							Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow[UI]: window is NOT controlsWindow");
 							controlsWindow = null;
 							window.Activated();
 						}
@@ -238,14 +268,25 @@ namespace Microsoft.Maui.DeviceTests
 
 						THandler handler;
 
-						if (typeof(THandler).IsAssignableFrom(window.Handler.GetType()))
+						if (typeof(THandler).IsAssignableFrom(window.Handler.GetType())) {
+							Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow[UI]: HANDLER: $1");
 							handler = (THandler)window.Handler;
+						}
 						else if (typeof(THandler).IsAssignableFrom(window.Content.Handler.GetType()))
+						{
+							Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow[UI]: HANDLER: $2");
 							handler = (THandler)window.Content.Handler;
-						else if (window.Content is ContentPage cp && typeof(THandler).IsAssignableFrom(cp.Content.Handler.GetType()))
+						}
+						else if (window.Content is ContentPage cp && typeof(THandler).IsAssignableFrom(cp.Content.Handler.GetType())) 
+						{
+							Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow[UI]: HANDLER: $3");
 							handler = (THandler)cp.Content.Handler;
-						else if (typeof(THandler).IsAssignableFrom(typeof(WindowHandler)))
+						}
+						else if (typeof(THandler).IsAssignableFrom(typeof(WindowHandler))) 
+						{
+							Console.WriteLine($"ControlsHandlerTestBase.CreateHandlerAndAddToWindow[UI]: HANDLER: $4");
 							throw new Exception($"Use IWindowHandler instead of WindowHandler for CreateHandlerAndAddToWindow");
+						}
 						else
 							throw new Exception($"I can't work with {typeof(THandler)}");
 

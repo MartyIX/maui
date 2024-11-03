@@ -10,6 +10,8 @@ namespace Microsoft.Maui.Handlers
 
 		protected override void ConnectHandler(UIWindow platformView)
 		{
+			Console.WriteLine($"WindowHandler.ConnectHandler: {Environment.StackTrace}");
+
 			base.ConnectHandler(platformView);
 
 			// For newer iOS versions, we want to wait until we get effective window dimensions from the platform.
@@ -121,8 +123,17 @@ namespace Microsoft.Maui.Handlers
 
 			public void Connect(IWindow virtualView, UIWindow platformView)
 			{
+				Console.WriteLine($"WindowProxy.Connect * (hc:{platformView.GetHashCode()})");
+
+				Console.WriteLine($"WindowProxy.Connect: SystemFrame: {platformView.WindowScene?.EffectiveGeometry.SystemFrame.ToRectangle()}");
+
 				_virtualView = new(virtualView);
-				_effectiveGeometryObserver = platformView.WindowScene?.AddObserver("effectiveGeometry", NSKeyValueObservingOptions.OldNew, HandleEffectiveGeometryObserved);
+				_effectiveGeometryObserver = platformView.WindowScene?.AddObserver(
+					"effectiveGeometry", 
+					NSKeyValueObservingOptions.OldNew, 
+					HandleEffectiveGeometryObserved);
+
+				Console.WriteLine($"WindowProxy.Connect $");
 			}
 
 			public void Disconnect()
@@ -132,17 +143,34 @@ namespace Microsoft.Maui.Handlers
 
 			void HandleEffectiveGeometryObserved(NSObservedChange obj)
 			{
-				if (obj is not null && VirtualView is IWindow virtualView && obj.NewValue is UIWindowSceneGeometry newGeometry)
-				{
-					var newRectangle = newGeometry.SystemFrame.ToRectangle();
+				Console.WriteLine($"WindowProxy.HandleEffectiveGeometryObserved * obj = {obj} (obj.OldValue:{obj?.OldValue},obj.NewValue:{obj?.NewValue}," 
+					+ $"obj.change: {obj?.Change}, obj.IsPrior: {obj?.IsPrior})");
 
-					if (double.IsNaN(newRectangle.X) || double.IsNaN(newRectangle.Y) || double.IsNaN(newRectangle.Width) || double.IsNaN(newRectangle.Height)) 
+				if (obj is not null && VirtualView is IWindow virtualView) {
+					if (obj.NewValue is UIWindowSceneGeometry newGeometry)
 					{
-						return;
-					}
+						var newRectangle = newGeometry.SystemFrame.ToRectangle();
+						Console.WriteLine($"WindowProxy.HandleEffectiveGeometryObserved: newRectangle: {newRectangle}");
 
-					virtualView.FrameChanged(newRectangle);
+						if (double.IsNaN(newRectangle.X) || double.IsNaN(newRectangle.Y) || double.IsNaN(newRectangle.Width) || double.IsNaN(newRectangle.Height)) 
+						{
+							Console.WriteLine($"WindowProxy.HandleEffectiveGeometryObserved: NaN.");
+							return;
+						}
+
+						Console.WriteLine($"WindowProxy.HandleEffectiveGeometryObserved: Calling virtualView.FrameChanged.");
+						virtualView.FrameChanged(newRectangle);
+					}
+					else 
+					{
+						Console.WriteLine($"WindowProxy.HandleEffectiveGeometryObserved: New value is null; oldValue: {obj.OldValue}, change: {obj.Change}");
+					}
 				}
+				else {
+					Console.WriteLine($"WindowProxy.HandleEffectiveGeometryObserved: No virtual view.");
+				}
+
+				Console.WriteLine($"WindowProxy.HandleEffectiveGeometryObserved $");
 			}
 		}
 	}

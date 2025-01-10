@@ -29,6 +29,8 @@ public partial class MainPage : ContentPage
 	private void Button_Clicked(object sender, EventArgs e)
 	{
 		Stopwatch sw = Stopwatch.StartNew();
+		
+		/*
 		contentGrid.Clear();
 
 		for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
@@ -39,6 +41,21 @@ public partial class MainPage : ContentPage
 				contentGrid.Add(label, column: columnIndex, row: rowIndex);
 			}
 		}
+		*/
+
+		myGridWrapper.Clear();
+		Grid contentGrid = new();
+
+		for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
+		{
+			for (int columnIndex = 0; columnIndex < columnCount; columnIndex++)
+			{
+				Label label = new Label() { Text = $"[{columnIndex}x{rowIndex}]" };
+				contentGrid.Add(label, column: columnIndex, row: rowIndex);
+			}
+		}
+
+		myGridWrapper.Add(contentGrid);
 
 		sw.Stop();
 		info.Text = $"Grid was created in: {sw.ElapsedMilliseconds} ms";

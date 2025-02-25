@@ -5,6 +5,7 @@
     x:Class="Microsoft.Maui.Platform.Resources">
 
     <ResourceDictionary.MergedDictionaries>
+        <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
         <ResourceDictionary Source="MauiComboBoxStyle.xaml" />
         <ResourceDictionary Source="MauiSliderStyle.xaml" />
         <ResourceDictionary Source="MauiStepperStyle.xaml" />

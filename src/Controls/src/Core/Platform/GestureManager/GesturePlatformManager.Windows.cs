@@ -276,7 +276,7 @@ namespace Microsoft.Maui.Controls.Platform
 					{
 						e.Data.SetBitmap(RandomAccessStreamReference.CreateFromUri(bi.UriSource));
 					}
-					else if (!String.IsNullOrWhiteSpace(args.Data.Text))
+					else if (!string.IsNullOrWhiteSpace(args.Data.Text))
 					{
 						Uri? uri;
 						if (Uri.TryCreate(args.Data.Text, UriKind.Absolute, out uri))
@@ -309,7 +309,9 @@ namespace Microsoft.Maui.Controls.Platform
 			set
 			{
 				if (_element == value)
+				{
 					return;
+				}
 
 				if (_element is View && ElementGestureRecognizers is { } gestureRecognizersBefore)
 				{
@@ -526,9 +528,7 @@ namespace Microsoft.Maui.Controls.Platform
 
 		void OnManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
 		{
-			var view = Element as View;
-
-			if (view == null)
+			if (Element is not View view)
 			{
 				return;
 			}
@@ -540,8 +540,7 @@ namespace Microsoft.Maui.Controls.Platform
 
 		void OnManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
 		{
-			var view = Element as View;
-			if (view == null)
+			if (Element is not View view)
 			{
 				return;
 			}
@@ -646,8 +645,7 @@ namespace Microsoft.Maui.Controls.Platform
 
 		private void HandlePgrPointerEvent(PointerRoutedEventArgs e, Action<View, PointerGestureRecognizer> SendPointerEvent)
 		{
-			var view = Element as View;
-			if (view == null)
+			if (Element is not View view)
 			{
 				return;
 			}
@@ -673,8 +671,7 @@ namespace Microsoft.Maui.Controls.Platform
 
 		void OnTap(object sender, RoutedEventArgs e)
 		{
-			var view = Element as View;
-			if (view == null)
+			if (Element is not View view)
 			{
 				return;
 			}
@@ -738,10 +735,14 @@ namespace Microsoft.Maui.Controls.Platform
 				}
 
 				if ((g.Buttons & ButtonsMask.Primary) != ButtonsMask.Primary)
+				{
 					return false;
+				}
 
 				if (e is DoubleTappedRoutedEventArgs)
+				{
 					return g.NumberOfTapsRequired == 1 || g.NumberOfTapsRequired == 2;
+				}
 
 				return g.NumberOfTapsRequired == 1;
 			}
@@ -750,8 +751,7 @@ namespace Microsoft.Maui.Controls.Platform
 
 		void SwipeComplete(bool success)
 		{
-			var view = Element as View;
-			if (view == null || !_isSwiping)
+			if (Element is not View view || !_isSwiping)
 			{
 				return;
 			}
@@ -769,8 +769,7 @@ namespace Microsoft.Maui.Controls.Platform
 
 		void PanComplete(bool success)
 		{
-			var view = Element as View;
-			if (view == null || !_isPanning)
+			if (Element is not View view || !_isPanning)
 			{
 				return;
 			}
@@ -793,8 +792,7 @@ namespace Microsoft.Maui.Controls.Platform
 
 		void PinchComplete(bool success)
 		{
-			var view = Element as View;
-			if (view is null || !_isPinching)
+			if (Element is not View view || !_isPinching)
 			{
 				return;
 			}

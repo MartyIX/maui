@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Maui.Controls.Sample.Pages.Base;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Devices;
+using Microsoft.Maui.Graphics;
 
 namespace Maui.Controls.Sample.Pages
 {
@@ -13,6 +14,41 @@ namespace Maui.Controls.Sample.Pages
 			InitializeComponent();
 
 			BindingContext = this;
+		}
+
+		private void DragGestureRecognizer_DragStarting(object sender, DragStartingEventArgs e)
+		{
+			status.Text = $"DragGestureRecognizer_DragStarting: was called (sender={sender?.GetType()?.FullName})";
+
+			if (sender is DragGestureRecognizer dragGestureRecognizer) {
+				Element dragObject = dragGestureRecognizer.Parent;
+				e.Data.Properties.Add("MyDraggedObject", value: dragObject);
+			}
+		}
+
+		private void DragGestureRecognizer_DropCompleted(object sender, DropCompletedEventArgs e)
+		{
+			status.Text = $"DragGestureRecognizer_DropCompleted was called (sender={sender?.GetType()?.FullName})";
+		}
+
+		private void DropGestureRecognizer_Drop(object sender, DropEventArgs e)
+		{
+			if (sender is DropGestureRecognizer recornizer && recornizer.Parent is View dropObject)
+			{
+				status.Text = $"DropGestureRecognizer_Drop was called; sender={sender.GetType()?.FullName})";
+
+				dropObject.BackgroundColor = Colors.DarkRed;
+
+				if (e.Data.Properties.TryGetValue("MyDraggedObject", out object draggedObject)) 
+				{
+					var draggedObjectView = draggedObject as View;
+					status.Text = "DropGestureRecognizer_Drop: YEY. DRAGGED OBJECT WAS FOUND";
+				}
+			}
+			else
+			{
+				status.Text = "DropGestureRecognizer_Drop was called; sender=null";
+			}
 		}
 
 		void OnNewWindowClicked(object sender, EventArgs e)

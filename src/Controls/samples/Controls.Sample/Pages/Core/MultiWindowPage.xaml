@@ -10,10 +10,26 @@
             Padding="12"
             Spacing="6">
 
+            <Label x:Name="status" Text="Empty"/>
+            
+            <BoxView WidthRequest="200" HeightRequest="200" BackgroundColor="Green" AutomationId="DragObjectId">
+                <BoxView.GestureRecognizers>
+                    <DragGestureRecognizer DragStarting="DragGestureRecognizer_DragStarting" DropCompleted="DragGestureRecognizer_DropCompleted" />
+                </BoxView.GestureRecognizers>
+            </BoxView>
+
+            <BoxView WidthRequest="200" HeightRequest="200" BackgroundColor="Silver" AutomationId="DropObjectId">
+                <BoxView.GestureRecognizers>
+                    <DropGestureRecognizer Drop="DropGestureRecognizer_Drop" />
+                </BoxView.GestureRecognizers>
+            </BoxView>
+
+            <!--
             <WebView
                 HeightRequest="300"
                 WidthRequest="300"
-                Source="https://github.com/dotnet/maui" />
+                Source="https://github.com/dotnet/maui" /> 
+            -->
             
             <Label Text="Current Window Frame:" />
             <Label Text="{Binding Window.X, StringFormat='X = {0:0.00}'}" />

@@ -54,10 +54,11 @@ namespace Microsoft.Maui.Controls.Platform
 				session.Items.Length > 0 &&
 				session.Items[0].LocalObject is CustomLocalStateData cdi)
 			{
-				this.HandleDropCompleted(cdi.View, new PlatformDropCompletedEventArgs(cdi.View.Handler.PlatformView as UIView, interaction, session, operation));
+				HandleDropCompleted(cdi.View, new PlatformDropCompletedEventArgs(cdi.View.Handler.PlatformView as UIView, interaction, session, operation));
 			}
 		}
 
+		[Export("dragInteraction:itemsForBeginningSession:")]
 		[Preserve(Conditional = true)]
 		public UIDragItem[] GetItemsForBeginningSession(UIDragInteraction interaction, IUIDragSession session)
 		{
@@ -105,7 +106,9 @@ namespace Microsoft.Maui.Controls.Platform
 			if (HandleDragOver((View)_viewHandler.VirtualView, package, session.LocalDragSession, platformArgs))
 			{
 				if (platformArgs.DropProposal is not null)
+				{
 					return platformArgs.DropProposal;
+				}
 
 				operation = UIDropOperation.Copy;
 			}
@@ -139,15 +142,18 @@ namespace Microsoft.Maui.Controls.Platform
 				view.GestureRecognizers;
 
 			if (gestures == null)
+			{
 				return;
+			}
 
 			foreach (var gesture in gestures)
 			{
 				if (gesture is TRecognizer recognizer)
+				{
 					func(recognizer);
+				}
 			}
 		}
-
 
 		public UIDragItem[] HandleDragStarting(View element, IPlatformViewHandler handler, IUIDragSession session, PlatformDragStartingEventArgs platformArgs)
 		{
@@ -157,7 +163,9 @@ namespace Microsoft.Maui.Controls.Platform
 			SendEventArgs<DragGestureRecognizer>(rec =>
 			{
 				if (!rec.CanDrag)
+				{
 					return;
+				}
 
 				var viewHandlerRef = new WeakReference(handler);
 				var sessionRef = new WeakReference(session);
@@ -165,7 +173,9 @@ namespace Microsoft.Maui.Controls.Platform
 				var args = rec.SendDragStarting(element, (relativeTo) => CalculatePosition(relativeTo, viewHandlerRef, sessionRef), platformArgs);
 
 				if (args.Cancel)
+				{
 					return;
+				}
 
 #pragma warning disable CS0618 // Type or member is obsolete
 				if (!args.Handled)
@@ -178,37 +188,50 @@ namespace Microsoft.Maui.Controls.Platform
 						foreach (var item in dragItems)
 						{
 							if (item.LocalObject is null)
+							{
 								SetLocalObject(item, handler, args.Data);
+							}
 						}
+						
 						returnValue = dragItems;
 						return;
 					}
 
 					UIImage uIImage = null;
-					string clipDescription = String.Empty;
+					string clipDescription = string.Empty;
 					NSItemProvider itemProvider = null;
 
 					if (handler.PlatformView is UIImageView iv)
+					{
 						uIImage = iv.Image;
+					}
 
 					if (handler.PlatformView is UIButton b && b.ImageView != null)
-						uIImage = b.ImageView.Image;
-
-					if (uIImage != null)
 					{
-						if (uIImage != null)
+						uIImage = b.ImageView.Image;
+					}
+
+					if (uIImage is not null)
+					{
+						if (uIImage is not null)
+						{
 							itemProvider = new NSItemProvider(uIImage);
+						}
 						else
+						{
 							itemProvider = new NSItemProvider(new NSString(""));
+						}
 
 						if (args.Data.Image == null && handler.VirtualView is IImageElement imageElement)
+						{
 							args.Data.Image = imageElement.Source;
+						}
 					}
 					else
 					{
 						string text = args.Data.Text ?? clipDescription;
 
-						if (String.IsNullOrWhiteSpace(text))
+						if (string.IsNullOrWhiteSpace(text))
 						{
 							itemProvider = new NSItemProvider(handler.PlatformView.ConvertToImage());
 						}
@@ -223,7 +246,9 @@ namespace Microsoft.Maui.Controls.Platform
 					SetLocalObject(dragItem, handler, args.Data);
 
 					if (args.PlatformArgs.PreviewProvider is not null)
+					{
 						dragItem.PreviewProvider = args.PlatformArgs.PreviewProvider;
+					}
 
 					returnValue = new UIDragItem[] { dragItem };
 				}
@@ -260,7 +285,9 @@ namespace Microsoft.Maui.Controls.Platform
 			SendEventArgs<DropGestureRecognizer>(rec =>
 			{
 				if (!rec.AllowDrop)
+				{
 					return;
+				}
 
 				rec.SendDragLeave(dragEventArgs);
 				validTarget = validTarget || dragEventArgs.AcceptedOperation != DataPackageOperation.None;
@@ -280,7 +307,9 @@ namespace Microsoft.Maui.Controls.Platform
 			SendEventArgs<DropGestureRecognizer>(rec =>
 			{
 				if (!rec.AllowDrop)
+				{
 					return;
+				}
 
 				rec.SendDragOver(dragEventArgs);
 				validTarget = validTarget || dragEventArgs.AcceptedOperation != DataPackageOperation.None;
@@ -296,25 +325,30 @@ namespace Microsoft.Maui.Controls.Platform
 
 			var args = new DropEventArgs(datapackage?.View, (relativeTo) => CalculatePosition(relativeTo, viewHandlerRef, sessionRef), platformArgs);
 			SendEventArgs<DropGestureRecognizer>(async rec =>
-			{
-				if (!rec.AllowDrop)
-					return;
+				{
+					if (!rec.AllowDrop)
+					{
+						return;
+					}
 
-				try
-				{
-					await rec.SendDrop(args);
-				}
-				catch (Exception dropExc)
-				{
-					Application.Current?.FindMauiContext()?.CreateLogger<DropGestureRecognizer>()?.LogWarning(dropExc, "Error sending drop event");
-				}
-			}, (View)element);
+					try
+					{
+						await rec.SendDrop(args);
+					}
+					catch (Exception dropExc)
+					{
+						Application.Current?.FindMauiContext()?.CreateLogger<DropGestureRecognizer>()?.LogWarning(dropExc, "Error sending drop event");
+					}
+				}, 
+				element);
 		}
 
 		static internal Point? CalculatePosition(IElement relativeTo, WeakReference viewHandlerRef, WeakReference sessionRef)
 		{
 			if (sessionRef is null)
+			{
 				return null;
+			}
 
 			var viewHandler = viewHandlerRef.Target as IPlatformViewHandler;
 			var session = sessionRef.Target as IUIDragDropSession;
@@ -326,7 +360,9 @@ namespace Microsoft.Maui.Controls.Platform
 			CGPoint dragLocation;
 
 			if (virtualView is null)
+			{
 				return null;
+			}
 
 			// If relativeTo is null we get the location on the screen
 			if (relativeTo is null)
@@ -335,7 +371,9 @@ namespace Microsoft.Maui.Controls.Platform
 				dragLocation = session.LocationInView(platformView);
 
 				if (!screenLocation.HasValue)
+				{
 					return null;
+				}
 
 				double x = dragLocation.X + screenLocation.Value.X;
 				double y = dragLocation.Y + screenLocation.Value.Y;

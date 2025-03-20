@@ -69,7 +69,7 @@ namespace Microsoft.Maui.Controls
 		/// </summary>
 		public object DropCompletedCommandParameter
 		{
-			get { return (object)GetValue(DropCompletedCommandParameterProperty); }
+			get { return GetValue(DropCompletedCommandParameterProperty); }
 			set { SetValue(DropCompletedCommandParameterProperty, value); }
 		}
 
@@ -87,7 +87,7 @@ namespace Microsoft.Maui.Controls
 		/// </summary>
 		public object DragStartingCommandParameter
 		{
-			get { return (object)GetValue(DragStartingCommandParameterProperty); }
+			get { return GetValue(DragStartingCommandParameterProperty); }
 			set { SetValue(DragStartingCommandParameterProperty, value); }
 		}
 
@@ -117,21 +117,29 @@ namespace Microsoft.Maui.Controls
 
 #pragma warning disable CS0618 // Type or member is obsolete
 			if (!args.Handled)
+			{
 				args.Data.PropertiesInternal.Add("DragSource", element);
+			}
 #pragma warning restore CS0618 // Type or member is obsolete
 
 #pragma warning disable CS0618 // Type or member is obsolete
 			if (args.Cancel || args.Handled)
+			{
 				return args;
+			}
 #pragma warning restore CS0618 // Type or member is obsolete
 
 			_isDragActive = true;
 
 			if (args.Data.Image == null && element is IImageElement ie)
+			{
 				args.Data.Image = ie.Source;
+			}
 
-			if (String.IsNullOrWhiteSpace(args.Data.Text))
+			if (string.IsNullOrWhiteSpace(args.Data.Text))
+			{
 				args.Data.Text = element?.GetStringValue();
+			}
 
 			return args;
 		}

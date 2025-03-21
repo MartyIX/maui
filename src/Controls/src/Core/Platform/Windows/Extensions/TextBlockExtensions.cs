@@ -23,6 +23,9 @@ namespace Microsoft.Maui.Controls.Platform
 			textBlock.TextWrapping = textBlock.MaxLines > 1 ? TextWrapping.Wrap : TextWrapping.NoWrap;
 
 		public static void UpdateText(this TextBlock platformControl, Label label)
+			=> UpdateText(platformControl, label, isHandlerConnecting: false);
+
+		internal static void UpdateText(this TextBlock platformControl, Label label, bool isHandlerConnecting)
 		{
 			switch (label.TextType)
 			{
@@ -31,14 +34,17 @@ namespace Microsoft.Maui.Controls.Platform
 					break;
 
 				default:
-					if (label.FormattedText != null)
+					if (label.FormattedText is not null)
+					{
 						platformControl.UpdateInlines(label);
+					}
 					else
 					{
-						if (platformControl.TextHighlighters.Count > 0)
+						if (!isHandlerConnecting && platformControl.TextHighlighters.Count > 0)
 						{
 							platformControl.TextHighlighters.Clear();
 						}
+
 						platformControl.Text = TextTransformUtilites.GetTransformedText(label.Text, label.TextTransform);
 					}
 					break;

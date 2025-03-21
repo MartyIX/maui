@@ -41,51 +41,71 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapTranslationX(IViewHandler handler, IView view)
 		{
+			if (handler.IsConnectingHandler() && view.TranslationX == 0) return;
+
 			handler.ToPlatform().UpdateTransformation(view);
 		}
 
 		public static void MapTranslationY(IViewHandler handler, IView view)
 		{
+			if (handler.IsConnectingHandler() && view.TranslationY == 0) return;
+
 			handler.ToPlatform().UpdateTransformation(view);
 		}
 
 		public static void MapScale(IViewHandler handler, IView view)
 		{
+			if (handler.IsConnectingHandler() && view.Scale == 1) return;
+
 			handler.ToPlatform().UpdateTransformation(view);
 		}
 
 		public static void MapScaleX(IViewHandler handler, IView view)
 		{
+			if (handler.IsConnectingHandler() && view.ScaleX == 1) return;
+
 			handler.ToPlatform().UpdateTransformation(view);
 		}
 
 		public static void MapScaleY(IViewHandler handler, IView view)
 		{
+			if (handler.IsConnectingHandler() && view.ScaleY == 1) return;
+
 			handler.ToPlatform().UpdateTransformation(view);
 		}
 
 		public static void MapRotation(IViewHandler handler, IView view)
 		{
+			if (handler.IsConnectingHandler() && view.Rotation % 360 == 0) return;
+
 			handler.ToPlatform().UpdateTransformation(view);
 		}
 
 		public static void MapRotationX(IViewHandler handler, IView view)
 		{
+			if (handler.IsConnectingHandler() && view.RotationX % 360 == 0) return;
+
 			handler.ToPlatform().UpdateTransformation(view);
 		}
 
 		public static void MapRotationY(IViewHandler handler, IView view)
 		{
+			if (handler.IsConnectingHandler() && view.RotationY % 360 == 0) return;
+
 			handler.ToPlatform().UpdateTransformation(view);
 		}
 
 		public static void MapAnchorX(IViewHandler handler, IView view)
 		{
+			if (handler.IsConnectingHandler() && view.AnchorX == 0.5) return;
+
 			handler.ToPlatform().UpdateTransformation(view);
 		}
 
 		public static void MapAnchorY(IViewHandler handler, IView view)
 		{
+			if (handler.IsConnectingHandler() && view.AnchorY == 0.5) return;
+
 			handler.ToPlatform().UpdateTransformation(view);
 		}
 

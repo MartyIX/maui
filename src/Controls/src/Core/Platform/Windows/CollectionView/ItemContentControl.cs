@@ -286,7 +286,7 @@ namespace Microsoft.Maui.Controls.Platform
 			UI.Xaml.Automation.Peers.AccessibilityView defaultAccessibilityView =
 				UI.Xaml.Automation.Peers.AccessibilityView.Content;
 
-			if (!String.IsNullOrWhiteSpace(semantics?.Description) || !String.IsNullOrWhiteSpace(semantics?.Hint))
+			if (!string.IsNullOrWhiteSpace(semantics?.Description) || !string.IsNullOrWhiteSpace(semantics?.Hint))
 			{
 				defaultAccessibilityView = UI.Xaml.Automation.Peers.AccessibilityView.Raw;
 			}

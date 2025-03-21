@@ -29,10 +29,15 @@ namespace Microsoft.Maui.Handlers
 			MapHeight(this, VirtualView);
 		}
 
-		public static void MapHeight(ILabelHandler handler, ILabel view) =>
-			// VerticalAlignment only works when the container's Height is set and the child's Height is Auto. The child's Height
-			// is set to Auto when the container is introduced
-			handler.ToPlatform().UpdateHeight(view);
+        public static void MapHeight(ILabelHandler handler, ILabel view)
+        {
+            if (!handler.HasContainer && handler.IsConnectingHandler() && (double.IsNaN(view.Height) || double.IsInfinity(view.Height)))
+                return;
+
+            // VerticalAlignment only works when the container's Height is set and the child's Height is Auto. The child's Height
+            // is set to Auto when the container is introduced
+            handler.ToPlatform().UpdateHeight(view);
+        }
 
 		public static void MapBackground(ILabelHandler handler, ILabel label)
 		{
@@ -43,7 +48,10 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapOpacity(ILabelHandler handler, ILabel label)
 		{
-			handler.PlatformView.UpdateOpacity(label);
+            if (handler.IsConnectingHandler() && label.Opacity == 1)
+                return;
+
+            handler.PlatformView.UpdateOpacity(label);
 			handler.ToPlatform().UpdateOpacity(label);
 		}
 
@@ -68,16 +76,23 @@ namespace Microsoft.Maui.Handlers
 
 		public static void MapVerticalTextAlignment(ILabelHandler handler, ILabel label)
 		{
-			handler.UpdateValue(nameof(IViewHandler.ContainerView));
+            if (!handler.HasContainer && handler.IsConnectingHandler() && label.VerticalTextAlignment == TextAlignment.Start)
+                return;
 
+            handler.UpdateValue(nameof(IViewHandler.ContainerView));
 			handler.PlatformView?.UpdateVerticalTextAlignment(label);
 		}
 
 		public static void MapTextDecorations(ILabelHandler handler, ILabel label) =>
 			handler.PlatformView?.UpdateTextDecorations(label);
 
-		public static void MapPadding(ILabelHandler handler, ILabel label) =>
+		public static void MapPadding(ILabelHandler handler, ILabel label)
+		{
+			if (handler.IsConnectingHandler() && (label.Padding.IsEmpty || label.Padding.IsNaN))
+				return;
+
 			handler.PlatformView?.UpdatePadding(label);
+		}
 
 		public static void MapLineHeight(ILabelHandler handler, ILabel label) =>
 			handler.PlatformView?.UpdateLineHeight(label);

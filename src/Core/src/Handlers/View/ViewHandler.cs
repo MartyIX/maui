@@ -227,6 +227,9 @@ namespace Microsoft.Maui.Handlers
 		/// <param name="view">The associated <see cref="IView"/> instance.</param>
 		public static void MapWidth(IViewHandler handler, IView view)
 		{
+			if (handler.IsConnectingHandler() && (double.IsNaN(view.Width) || double.IsInfinity(view.Width)))
+				return;
+
 			((PlatformView?)handler.PlatformView)?.UpdateWidth(view);
 		}
 
@@ -237,6 +240,9 @@ namespace Microsoft.Maui.Handlers
 		/// <param name="view">The associated <see cref="IView"/> instance.</param>
 		public static void MapHeight(IViewHandler handler, IView view)
 		{
+			if (handler.IsConnectingHandler() && (double.IsNaN(view.Height) || double.IsInfinity(view.Height)))
+				return;
+
 			((PlatformView?)handler.PlatformView)?.UpdateHeight(view);
 		}
 
@@ -254,7 +260,7 @@ namespace Microsoft.Maui.Handlers
 				return;
 			}
 #else
-			if (handler.IsConnectingHandler() && double.IsNaN(view.MinimumHeight)) return;
+			if (handler.IsConnectingHandler() && (double.IsNaN(view.MinimumHeight) || double.IsInfinity(view.MinimumHeight))) return;
 #endif
 
 			((PlatformView?)handler.PlatformView)?.UpdateMinimumHeight(view);
@@ -267,7 +273,7 @@ namespace Microsoft.Maui.Handlers
 		/// <param name="view">The associated <see cref="IView"/> instance.</param>
 		public static void MapMaximumHeight(IViewHandler handler, IView view)
 		{
-			if (handler.IsConnectingHandler() && double.IsNaN(view.MaximumHeight)) return;
+			if (handler.IsConnectingHandler() && (double.IsNaN(view.MaximumHeight) || double.IsInfinity(view.MaximumHeight))) return;
 
 			((PlatformView?)handler.PlatformView)?.UpdateMaximumHeight(view);
 		}
@@ -286,7 +292,7 @@ namespace Microsoft.Maui.Handlers
 				return;
 			}
 #else
-			if (handler.IsConnectingHandler() && double.IsNaN(view.MinimumWidth)) return;
+			if (handler.IsConnectingHandler() && (double.IsNaN(view.MinimumWidth) || double.IsInfinity(view.MinimumWidth))) return;
 #endif
 
 			((PlatformView?)handler.PlatformView)?.UpdateMinimumWidth(view);
@@ -299,7 +305,7 @@ namespace Microsoft.Maui.Handlers
 		/// <param name="view">The associated <see cref="IView"/> instance.</param>
 		public static void MapMaximumWidth(IViewHandler handler, IView view)
 		{
-			if (handler.IsConnectingHandler() && double.IsNaN(view.MaximumWidth)) return;
+			if (handler.IsConnectingHandler() && (double.IsNaN(view.MaximumWidth) || double.IsInfinity(view.MaximumWidth))) return;
 
 			((PlatformView?)handler.PlatformView)?.UpdateMaximumWidth(view);
 		}

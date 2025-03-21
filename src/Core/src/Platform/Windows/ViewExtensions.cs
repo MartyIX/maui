@@ -419,6 +419,9 @@ namespace Microsoft.Maui.Platform
 
 		public static void UpdateInputTransparent(this FrameworkElement nativeView, IViewHandler handler, IView view)
 		{
+			if (handler.IsConnectingHandler() && view.InputTransparent)
+				return;
+
 			if (nativeView is UIElement element)
 			{
 				element.IsHitTestVisible = !view.InputTransparent;

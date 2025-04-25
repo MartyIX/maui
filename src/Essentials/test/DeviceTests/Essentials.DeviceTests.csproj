@@ -11,6 +11,8 @@
     <RuntimeIdentifier Condition="$(TargetFramework.Contains('-maccatalyst')) and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'arm64'">maccatalyst-arm64</RuntimeIdentifier>
     <RuntimeIdentifiers Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">android-arm64;android-x86;android-x64</RuntimeIdentifiers>
     <ExcludeMicrosoftNetTestSdk>true</ExcludeMicrosoftNetTestSdk>
+    <ReportAnalyzer>true</ReportAnalyzer>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -55,6 +57,7 @@
     <ProjectReference Include="..\..\..\Controls\src\Xaml\Controls.Xaml.csproj" />
     <ProjectReference Include="..\..\..\Controls\src\Core\Controls.Core.csproj" />
     <ProjectReference Include="..\..\..\Essentials\src\Essentials.csproj" />
+    <PackageReference Include="xunit.analyzers" Version="1.20.0" />
   </ItemGroup>
 
   <ItemGroup>

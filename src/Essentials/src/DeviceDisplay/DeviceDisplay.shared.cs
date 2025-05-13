@@ -145,6 +145,7 @@ namespace Microsoft.Maui.Devices
 
 		protected void OnMainDisplayInfoChanged()
 		{
+			Console.WriteLine("Shared.OnMainDisplayInfoChanged called");
 			var metrics = GetMainDisplayInfo();
 			OnMainDisplayInfoChanged(new DisplayInfoChangedEventArgs(metrics));
 		}

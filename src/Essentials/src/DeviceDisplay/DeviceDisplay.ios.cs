@@ -7,7 +7,8 @@ namespace Microsoft.Maui.Devices
 {
 	partial class DeviceDisplayImplementation : IDeviceDisplay
 	{
-		NSObject? observer;
+		NSObject? _orientationObserver;
+		NSObject? _screenModeChangeObserver;
 
 		protected override bool GetKeepScreenOn() => UIApplication.SharedApplication.IdleTimerDisabled;
 
@@ -34,15 +35,17 @@ namespace Microsoft.Maui.Devices
 		[System.Runtime.Versioning.UnsupportedOSPlatform("ios13.0")]
 		protected override void StartScreenMetricsListeners()
 		{
-			var notificationCenter = NSNotificationCenter.DefaultCenter;
-			var notification = UIApplication.DidChangeStatusBarOrientationNotification;
-			observer = notificationCenter.AddObserver(notification, OnMainDisplayInfoChanged);
+			_orientationObserver = NSNotificationCenter.DefaultCenter.AddObserver(UIDevice.OrientationDidChangeNotification, OnMainDisplayInfoChanged);
+			_screenModeChangeObserver = NSNotificationCenter.DefaultCenter.AddObserver(UIScreen.ModeDidChangeNotification, OnMainDisplayInfoChanged);
 		}
 
 		protected override void StopScreenMetricsListeners()
 		{
-			observer?.Dispose();
-			observer = null;
+			_orientationObserver?.Dispose();
+			_orientationObserver = null;
+
+			_screenModeChangeObserver?.Dispose();
+			_screenModeChangeObserver = null;
 		}
 
 		void OnMainDisplayInfoChanged(NSNotification obj) =>

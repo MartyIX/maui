@@ -115,14 +115,18 @@ namespace Microsoft.Maui.Devices
 					SetCurrent(MainDisplayInfo);
 					StartScreenMetricsListeners();
 				}
+
 				MainDisplayInfoChangedInternal += value;
 			}
 			remove
 			{
 				var wasStopped = MainDisplayInfoChangedInternal is null;
 				MainDisplayInfoChangedInternal -= value;
+
 				if (!wasStopped && MainDisplayInfoChangedInternal is null)
+				{
 					StopScreenMetricsListeners();
+				}
 			}
 		}
 

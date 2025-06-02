@@ -65,6 +65,10 @@ Microsoft.Maui.ITitleBar.Title.get -> string?
 Microsoft.Maui.IWebView.ProcessTerminated(Microsoft.Maui.WebProcessTerminatedEventArgs! args) -> void
 *REMOVED*Microsoft.Maui.IWindow.Content.get -> Microsoft.Maui.IView!
 Microsoft.Maui.IWindow.Content.get -> Microsoft.Maui.IView?
+Microsoft.Maui.IWindow.IsMinimizable.get -> bool
+Microsoft.Maui.IWindow.IsMinimizable.set -> void
+Microsoft.Maui.IWindow.IsMaximizable.get -> bool
+Microsoft.Maui.IWindow.IsMaximizable.set -> void
 Microsoft.Maui.Platform.MauiAppCompatEditText
 Microsoft.Maui.Platform.MauiAppCompatEditText.MauiAppCompatEditText(Android.Content.Context! context) -> void
 Microsoft.Maui.Platform.MauiAppCompatEditText.SelectionChanged -> System.EventHandler?

@@ -64,6 +64,15 @@ namespace Microsoft.Maui.Controls
 		public static readonly BindableProperty TitleBarProperty = BindableProperty.Create(
 			nameof(TitleBar), typeof(TitleBar), typeof(Window), null, propertyChanged: TitleBarChanged);
 
+		/// <summary>Bindable property for <see cref="IsMinimizable"/>.</summary>
+		public static readonly BindableProperty IsMinimizableProperty = BindableProperty.Create(nameof(IsMinimizable),
+			typeof(bool), typeof(TitleBar), defaultValue: true, propertyChanged: OnIsMinimizableChanged);
+
+		/// <summary>Bindable property for <see cref="IsMaximizable"/>.</summary>
+		public static readonly BindableProperty IsMaximizableProperty = BindableProperty.Create(nameof(IsMaximizable),
+			typeof(bool), typeof(TitleBar), defaultValue: true, propertyChanged: OnIsMaximizableChanged);
+
+
 		HashSet<IWindowOverlay> _overlays = new HashSet<IWindowOverlay>();
 		List<IVisualTreeElement> _visualChildren;
 		Toolbar? _toolbar;

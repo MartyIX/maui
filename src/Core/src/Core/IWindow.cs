@@ -70,6 +70,16 @@ namespace Microsoft.Maui
 		FlowDirection FlowDirection { get; }
 
 		/// <summary>
+		/// Gets or sets a value that indicates whether this window can be minimized.
+		/// </summary>
+		bool IsMinimizable { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value that indicates whether this window can be maximized.
+		/// </summary>
+		bool IsMaximizable { get; set; }
+
+		/// <summary>
 		/// Adds a Window Overlay to the current Window.
 		/// </summary>
 		/// <param name="overlay"><see cref="IWindowOverlay"/>.</param>

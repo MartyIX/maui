@@ -95,8 +95,8 @@ namespace Maui.Controls.Sample.Pages
 		{
 			MauiWebView.Eval("alert('text')");
 
-			var result = await MauiWebView.EvaluateJavaScriptAsync(
-				"var test = function(){ return 'This string came from Javascript!'; }; test();");
+			var script = "var test = function(){ return 'This string came from JavaScript!'; }; \n test();";
+			var result = await MauiWebView.EvaluateJavaScriptAsync(script);
 
 			EvalResultLabel.Text = result;
 		}

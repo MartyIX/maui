@@ -6,7 +6,7 @@
     Title="WebView">
     <views:BasePage.Content>
         <ScrollView>
-            <VerticalStackLayout    
+            <VerticalStackLayout
                 Margin="12">
                 <Label
                     Text="HtmlWebViewSource (String)"
@@ -115,14 +115,14 @@
                 <Button
                     Text="Eval"
                     Clicked="OnEvalClicked"/>
-				<Label
+                <Label
                     Text="Eval Script (async)"
                     Style="{StaticResource Headline}"/>
                 <Button
                     Text="Eval Async"
                     Clicked="OnEvalAsyncClicked"/>
-				<Label
-					x:Name="EvalResultLabel"
+                <Label
+                    x:Name="EvalResultLabel"
                     Text="..."
                     Style="{StaticResource Headline}"/>
                 <Label

@@ -22,7 +22,9 @@ namespace Microsoft.Maui.Controls
 			{
 				var source = oldvalue as WebViewSource;
 				if (source != null)
+				{
 					source.SourceChanged -= ((WebView)bindable).OnSourceChanged;
+				}
 			}, propertyChanged: (bindable, oldvalue, newvalue) =>
 			{
 				var source = newvalue as WebViewSource;
@@ -119,8 +121,10 @@ namespace Microsoft.Maui.Controls
 		/// <include file="../../docs/Microsoft.Maui.Controls/WebView.xml" path="//Member[@MemberName='EvaluateJavaScriptAsync']/Docs/*" />
 		public async Task<string> EvaluateJavaScriptAsync(string script)
 		{
-			if (script == null)
+			if (script is null)
+			{
 				return null;
+			}
 
 			// Make all the platforms mimic Android's implementation, which is by far the most complete.
 			if (DeviceInfo.Platform != DevicePlatform.Android)
@@ -147,18 +151,20 @@ namespace Microsoft.Maui.Controls
 			else
 			{
 				// Use the handler command to evaluate the JS
-				result = await Handler.InvokeAsync(nameof(IWebView.EvaluateJavaScriptAsync),
-					new EvaluateJavaScriptAsyncRequest(script));
+				result = await Handler.InvokeAsync(nameof(IWebView.EvaluateJavaScriptAsync), new EvaluateJavaScriptAsyncRequest(script));
 			}
 
-			//if the js function errored or returned null/undefined treat it as null
+			// If the js function errored or returned null/undefined treat it as null
 			if (result == "null")
+			{
 				result = null;
-
-			//JSON.stringify wraps the result in literal quotes, we just want the actual returned result
-			//note that if the js function returns the string "null" we will get here and not above
-			else if (result != null)
+			}
+			// JSON.stringify wraps the result in literal quotes, we just want the actual returned result
+			// note that if the js function returns the string "null" we will get here and not above
+			else if (result is not null)
+			{
 				result = result.Trim('"');
+			}
 
 			return result;
 		}
